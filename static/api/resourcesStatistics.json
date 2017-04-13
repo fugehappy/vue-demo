@@ -1,0 +1,49 @@
+{
+  "code": 20000,
+  "data": [
+    {
+      "cateId": "58c13f5924ac32b2877a88c8",
+      "cateName": "电子教辅",
+      "monthStatistics": [
+        {
+          "yearMonth": 201703,
+          "count": 6
+        },
+        {
+          "yearMonth": 201704,
+          "count": 36
+        },
+        {
+          "yearMonth": 201705,
+          "count": 76
+        },
+        {
+          "yearMonth": 201706,
+          "count": 38
+        }
+      ]
+    },
+    {
+      "cateId": "58c13f5924ac32b2877a88c7",
+      "cateName": "电子教材",
+      "monthStatistics": [
+        {
+          "yearMonth": 201703,
+          "count": 36
+        },
+        {
+          "yearMonth": 201704,
+          "count": 55
+        },
+        {
+          "yearMonth": 201705,
+          "count": 95
+        },
+        {
+          "yearMonth": 201706,
+          "count": 56
+        }
+      ]
+    }
+  ]
+}

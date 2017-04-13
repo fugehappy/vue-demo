@@ -1,0 +1,238 @@
+/*
+ * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * 平台管理的css
+ */
+$height50: 50px;
+$height40: 40px;
+$height30: 30px;
+$padding40: 40px;
+
+.platform-wrap {
+  /* 角色权限关系 */
+  .title {
+    text-align: center;
+    margin-top: $height40;
+    color: $fontColor1;
+    font-size: $fontSize18;
+  }
+  .w-cell {
+    h4 {
+      height: $height50;
+      line-height: $height50;
+      border-bottom: 1px solid $baseColor4;
+      text-indent: 40px;
+      color: $baseColor1;
+    }
+    ul {
+      overflow: hidden;
+      padding: 0 40px;
+    }
+    li {
+      float: left;
+      width: 33.3%;
+      height: $height50;
+      line-height: $height50;
+    }
+    input[type = checkbox] {
+      margin-right: 20px;
+    }
+  }
+  .cell-btn-block {
+    text-align: center;
+    margin-top: $height50;
+    button {
+      padding-left: $height50;
+      padding-right: $height50;
+    }
+  }
+  /* 基础学科分类 */
+  .sub-title {
+    padding: 0 $padding40;
+    margin-top:  $height40;
+    margin-bottom: 20px;
+    font-size: $fontSize18;
+    color: $fontColor1;
+    position: relative;
+    .btn {
+      position: absolute;
+      right: $distance40;
+    }
+  }
+  .sort-table {
+    margin-bottom: $height50;
+    table {
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+      border-spacing: 0;
+      border-color: rgba(223, 230, 236, .2);
+    }
+    th {
+      height: $height40;
+      line-height: $height40;
+      vertical-align: middle;
+      font-weight: 400;
+    }
+    td {
+      height: $height40;
+    }
+  }
+}
+
+/* 基础学科分类 */
+.content-wrap .el-dialog__wrapper.middle-dialog .el-dialog {
+  width: 950px;
+  top: 10%;
+}
+.content-wrap .el-dialog__wrapper.tiny-dialog .el-dialog {
+  width: 420px;
+}
+.content-wrap .el-dialog__wrapper.tiny-dialog .el-dialog .el-dialog__body {
+  min-height: 50px;
+}
+.role-dialog {
+  .title {
+    text-align: center;
+    padding-bottom: $padding40;
+  }
+  .role-dialog-hd {
+    padding: 0 $padding40;
+  }
+  .role-dialog-cell {
+    h4 {
+      padding-left: $padding40;
+      padding-bottom: 20px;
+      color: $baseColor1;
+      margin-top: $distance40;
+      margin-bottom: 20px;
+      border-bottom: 1px solid $baseColor4;
+    }
+  }
+  .list {
+    padding: 0 $padding40;
+    li {
+      height: $height40;
+    }
+  }
+  .check-group {
+    padding: 0 $padding40;
+    li {
+      height: $height30;
+      line-height: $height30;
+    }
+    span {
+      margin-left: 10px;
+    }
+  }
+  .ft-group {
+    text-align: center;
+  }
+}
+/* 基础学科分类下的表格 */
+.sort-table {
+  * {
+    box-sizing: border-box;
+  }
+  .sort-table-hd, .sort-table-bd {
+    text-align: center;
+    overflow: hidden;
+    border-right: 1px solid $baseColor4;
+    border-bottom: 1px solid $baseColor4;
+    display: table;
+    width: 100%;
+    dd {
+      border-left: 1px solid #e5e5e5;
+      height: $distance32;
+      line-height: $distance32;
+      display: table-cell;
+      vertical-align: middle;
+      &:first-child {
+        border-left: 1px solid $baseColor4;
+      }
+    }
+    .el-select {
+      vertical-align: middle;
+    }
+    .el-input {
+      max-width: 217px;
+    }
+  }
+  .sort-table-hd {
+    border-top: 1px solid $baseColor4;
+    background-color: $baseColor2;
+    color: $baseColor1;
+  }
+}
+.category-table {
+  * {
+    box-sizing: border-box;
+  }
+  .hd {
+    background: #91a0a0;
+  }
+  .hd dl {
+    &:first-child {
+      border-top: 1px solid $baseColor4;
+    }
+    dd {
+      height: $distance30;
+      line-height: $distance30;
+      color: #fff;
+    }
+  }
+  dl {
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid $baseColor4;
+    border-top: none;
+    display: table;
+    width: 100%;
+    font-size: 14px;
+    color: $baseColor1;
+    dd {
+      min-width: 120px;
+      height: $distance32;
+      line-height: $distance32;
+      border-left: 1px solid $baseColor4;
+      display: table-cell;
+      &:first-child {
+        border-left: none;
+      }
+    }
+  }
+  .bd:nth-child(odd) {
+    background-color: #ececec;
+  }
+  a {
+    text-decoration: underline;
+    color: green;
+    cursor: pointer;
+  }
+}
+/* dialog */
+.dialog-box {
+  .ft-group {
+    text-align: center;
+  }
+}
+// 统计图表的样式
+.form-wrap {
+  padding: 20px;
+  border: 1px solid #d6d7d9;
+  position: relative;
+  .btn-group {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+}
+.echart-content {
+  border: 1px solid #d6d7d9;
+  border-top: 0;
+  padding: 20px;
+  h3 {
+    color: $baseColor1;
+    font-size: $fontSize18;
+    padding: 20px 0 40px;
+  }
+}

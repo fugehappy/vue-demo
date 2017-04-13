@@ -1,0 +1,1087 @@
+{
+  "code": 20000,
+  "data": [
+    {
+      "cateId": "58c13f5924ac32b2877a88c8",
+      "name": "电子教辅1",
+      "type": 0,
+      "parentCateId": null,
+      "relationCode": null,
+      "createTime": 1489059673,
+      "updateTime": 1489059673,
+      "tags": null,
+      "subCategory": {
+        "type": 1,
+        "typeName": "学段",
+        "categories": [
+          {
+            "cateId": "58c1403724acea7a10b6bcfc",
+            "name": "初中",
+            "type": 1,
+            "parentCateId": "58c13f5924ac32b2877a88c8",
+            "relationCode": "1",
+            "createTime": 1489059895,
+            "updateTime": 1489059895,
+            "tags": [{
+              "tagId": "58c1454d24ac7fbd269sda22",
+              "name": "机器人",
+              "cateId": "58c1444924ac9b7095sd9d8c",
+              "status": 0
+            }],
+            "subCategory": null
+          },
+          {
+            "cateId": "58c1403724acea7a10b6bcfd",
+            "name": "高中",
+            "type": 1,
+            "parentCateId": "58c13f5924ac32b2877a88c8",
+            "relationCode": "2",
+            "createTime": 1489059895,
+            "updateTime": 1489059895,
+            "tags": [],
+            "subCategory": null
+          },
+          {
+            "cateId": "58c1403724acea7a10b6bcfb",
+            "name": "小学",
+            "type": 1,
+            "parentCateId": "58c13f5924ac32b2877a88c8",
+            "relationCode": "0",
+            "createTime": 1489059895,
+            "updateTime": 1489059895,
+            "tags": null,
+            "subCategory": {
+              "type": 2,
+              "typeName": "学科",
+              "categories": [
+                {
+                  "cateId": "58c1416d24acab4e0ae85794",
+                  "name": "语文",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfb",
+                  "relationCode": "01",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac2",
+                        "name": "北师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85794",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d8c",
+                              "name": "四年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac2",
+                              "relationCode": "040",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a22",
+                                  "name": "机器人",
+                                  "cateId": "58c1444924ac9b7095f29d8c",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae85795",
+                  "name": "数学",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfb",
+                  "relationCode": "02",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac3",
+                        "name": "华师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85795",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d8d",
+                              "name": "四年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac3",
+                              "relationCode": "041",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a23",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d8d",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae85796",
+                  "name": "英语",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfb",
+                  "relationCode": "03",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac4",
+                        "name": "苏科版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85796",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d8e",
+                              "name": "五年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac4",
+                              "relationCode": "050",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a24",
+                                  "name": "国学",
+                                  "cateId": "58c1444924ac9b7095f29d8e",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "cateId": "58c13f5924ac32b2877a88c7",
+      "name": "电子教材",
+      "type": 0,
+      "parentCateId": null,
+      "relationCode": null,
+      "createTime": 1489059673,
+      "updateTime": 1489059673,
+      "tags": null,
+      "subCategory": {
+        "type": 1,
+        "typeName": "学段",
+        "categories": [
+          {
+            "cateId": "58c1403724acea7a10b6bcf9",
+            "name": "初中",
+            "type": 1,
+            "parentCateId": "58c13f5924ac32b2877a88c7",
+            "relationCode": "1",
+            "createTime": 1489059895,
+            "updateTime": 1489059895,
+            "tags": null,
+            "subCategory": {
+              "type": 2,
+              "typeName": "学科",
+              "categories": [
+                {
+                  "cateId": "58c1416d24acab4e0ae85797",
+                  "name": "语文",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "01",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac5",
+                        "name": "浙教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85797",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d8f",
+                              "name": "五年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac5",
+                              "relationCode": null,
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a25",
+                                  "name": "机器人",
+                                  "cateId": "58c1444924ac9b7095f29d8f",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae85798",
+                  "name": "数学",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "02",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac6",
+                        "name": "人教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85798",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d90",
+                              "name": "六年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac6",
+                              "relationCode": null,
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a26",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d90",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae85799",
+                  "name": "英语",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "03",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac7",
+                        "name": "北师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85799",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d91",
+                              "name": "六年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac7",
+                              "relationCode": null,
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a27",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d91",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae8579b",
+                  "name": "化学",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "05",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac9",
+                        "name": "苏科版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae8579b",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d93",
+                              "name": "七年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac9",
+                              "relationCode": "111",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a29",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d93",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae8579c",
+                  "name": "生物",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "04",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2aca",
+                        "name": "浙教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae8579c",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d94",
+                              "name": "八年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2aca",
+                              "relationCode": "120",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a2a",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d94",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae8579e",
+                  "name": "历史",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "07",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2acc",
+                        "name": "北师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae8579e",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": [],
+                        "subCategory": null
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae8579d",
+                  "name": "政治",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "09",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2acb",
+                        "name": "人教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae8579d",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d95",
+                              "name": "八年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2acb",
+                              "relationCode": "121",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a2b",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d95",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae8579f",
+                  "name": "地理",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "06",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2acd",
+                        "name": "华师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae8579f",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": [],
+                        "subCategory": null
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a0",
+                  "name": "信息技术",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": null,
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ace",
+                        "name": "苏科版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae857a0",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": [],
+                        "subCategory": null
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae8579a",
+                  "name": "物理",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf9",
+                  "relationCode": "10",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac8",
+                        "name": "华师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae8579a",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d92",
+                              "name": "七年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac8",
+                              "relationCode": "110",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a28",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d92",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "cateId": "58c1403724acea7a10b6bcf8",
+            "name": "小学",
+            "type": 1,
+            "parentCateId": "58c13f5924ac32b2877a88c7",
+            "relationCode": "0",
+            "createTime": 1489059894,
+            "updateTime": 1489059894,
+            "tags": null,
+            "subCategory": {
+              "type": 2,
+              "typeName": "学科",
+              "categories": [
+                {
+                  "cateId": "58c1416d24acab4e0ae85791",
+                  "name": "语文",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf8",
+                  "relationCode": "01",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2abc",
+                        "name": "人教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85791",
+                        "relationCode": null,
+                        "createTime": 1489060571,
+                        "updateTime": 1489060571,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d86",
+                              "name": "一年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2abc",
+                              "relationCode": "010",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a1c",
+                                  "name": "艺术",
+                                  "cateId": "58c1444924ac9b7095f29d86",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "cateId": "58c142dc24ac86d11efa2abd",
+                        "name": "北师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85791",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d87",
+                              "name": "一年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2abd",
+                              "relationCode": "011",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a1d",
+                                  "name": "国学",
+                                  "cateId": "58c1444924ac9b7095f29d87",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "cateId": "58c142dc24ac86d11efa2abe",
+                        "name": "华师大版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85791",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d88",
+                              "name": "二年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2abe",
+                              "relationCode": "020",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a1e",
+                                  "name": "机器人",
+                                  "cateId": "58c1444924ac9b7095f29d88",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae85792",
+                  "name": "数学",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf8",
+                  "relationCode": "02",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2abf",
+                        "name": "苏科版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85792",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d89",
+                              "name": "二年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2abf",
+                              "relationCode": "021",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a1f",
+                                  "name": "创客",
+                                  "cateId": "58c1444924ac9b7095f29d89",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac0",
+                        "name": "浙教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85792",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d8a",
+                              "name": "三年级上",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac0",
+                              "relationCode": "030",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a20",
+                                  "name": "艺术",
+                                  "cateId": "58c1444924ac9b7095f29d8a",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae85793",
+                  "name": "英语",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcf8",
+                  "relationCode": "03",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2ac1",
+                        "name": "人教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae85793",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": null,
+                        "subCategory": {
+                          "type": 4,
+                          "typeName": "年级",
+                          "categories": [
+                            {
+                              "cateId": "58c1444924ac9b7095f29d8b",
+                              "name": "三年级下",
+                              "type": 4,
+                              "parentCateId": "58c142dc24ac86d11efa2ac1",
+                              "relationCode": "031",
+                              "createTime": 1489060937,
+                              "updateTime": 1489060937,
+                              "tags": [
+                                {
+                                  "tagId": "58c1454d24ac7fbd26955a21",
+                                  "name": "国学",
+                                  "cateId": "58c1444924ac9b7095f29d8b",
+                                  "status": 0
+                                }
+                              ],
+                              "subCategory": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "cateId": "58c1403724acea7a10b6bcfa",
+            "name": "高中",
+            "type": 1,
+            "parentCateId": "58c13f5924ac32b2877a88c7",
+            "relationCode": "2",
+            "createTime": 1489059895,
+            "updateTime": 1489059895,
+            "tags": null,
+            "subCategory": {
+              "type": 2,
+              "typeName": "学科",
+              "categories": [
+                {
+                  "cateId": "58c1416d24acab4e0ae857a1",
+                  "name": "语文",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "01",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": null,
+                  "subCategory": {
+                    "type": 3,
+                    "typeName": "版本",
+                    "categories": [
+                      {
+                        "cateId": "58c142dc24ac86d11efa2acf",
+                        "name": "浙教版",
+                        "type": 3,
+                        "parentCateId": "58c1416d24acab4e0ae857a1",
+                        "relationCode": null,
+                        "createTime": 1489060572,
+                        "updateTime": 1489060572,
+                        "tags": [],
+                        "subCategory": null
+                      }
+                    ]
+                  }
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a2",
+                  "name": "数学",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "02",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a3",
+                  "name": "英语",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "03",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a5",
+                  "name": "化学",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "05",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a4",
+                  "name": "物理",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "10",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a6",
+                  "name": "生物",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "04",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a7",
+                  "name": "政治",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "09",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a9",
+                  "name": "地理",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "06",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857aa",
+                  "name": "信息技术",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": null,
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                },
+                {
+                  "cateId": "58c1416d24acab4e0ae857a8",
+                  "name": "历史",
+                  "type": 2,
+                  "parentCateId": "58c1403724acea7a10b6bcfa",
+                  "relationCode": "07",
+                  "createTime": 1489060205,
+                  "updateTime": 1489060205,
+                  "tags": [],
+                  "subCategory": null
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

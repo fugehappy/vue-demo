@@ -44,7 +44,10 @@
           <td>
             <label>
               <span>手机号</span>
-              <el-input v-model="searchForm.phoneNo" placeholder="请输入" :maxlength="11" class="text-input"></el-input>
+              <div class="el-input text-input">
+                <input class="el-input__inner" v-model="searchForm.phoneNo" :maxlength="11"
+                       @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+              </div>
             </label>
           </td>
           <td>
@@ -76,7 +79,7 @@
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="名称" width="180">
+        <el-table-column label="名称" min-width="180">
           <template scope="scope">
             <a @click="showLayer(scope.row)">{{scope.row.title}}</a>
           </template>
@@ -266,6 +269,7 @@
           this.$message.error('开始时间必须小于结束时间')
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getData()
       },
 

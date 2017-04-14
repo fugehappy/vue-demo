@@ -37,7 +37,7 @@ export default {
     },
     {
       isActive: false,
-      value: '定向条件',
+      value: '推送条件',
       path: '/pushCondition',
       isShow: true,
       navclass: 'menu-icon-condition',
@@ -101,7 +101,7 @@ export default {
     },
     {
       isActive: false,
-      value: '基础学科分类',
+      value: '基础学科配置',
       path: '/subjectCategory',
       isShow: true,
       navclass: 'menu-icon-subject',

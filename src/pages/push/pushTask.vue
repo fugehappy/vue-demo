@@ -68,7 +68,7 @@
             {{scope.row.pushTime ? jst.timestampFormat(Number(scope.row.pushTime)) : ''}}
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="120">
+        <el-table-column label="状态" width="90">
           <template scope="scope">
             <label v-if="scope.row.status == executed" class="pass-info">已执行</label>
             <label v-else>未执行</label>
@@ -248,6 +248,8 @@
             this.$message.error(MSG.DELETE_FAIL_MSG)
             this.CHANGE_PENDING(false)
           })
+        }).catch(() => {
+          // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
         })
       },
 
@@ -346,6 +348,7 @@
           this.$message.error('开始时间必须小于结束时间')
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getTaskLit()
       },
 

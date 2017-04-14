@@ -65,7 +65,6 @@
   import * as jst from 'js-common-tools'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
-  import echarts from 'echarts'
   export default {
     name: 'dealStatistics',
     props: {
@@ -108,21 +107,23 @@
             data: []
           },
           grid: {
-            left: '0',
-            containLabel: true
+            x: 40,
+            y: 20
           },
           toolbox: {
             feature: {
             }
           },
-          xAxis: {
+          xAxis: [{
             type: 'category',
             boundaryGap: false,
             data: []
-          },
+          }],
           yAxis: {
             type: 'value',
-            name: '元'
+            axisLabel: {
+              formatter: '{value} 元'
+            }
           },
           series: []
         }
@@ -135,7 +136,7 @@
        * 初始化图表
        */
       initChart (options) {
-        var myChart = echarts.init(document.getElementById('dealStatistics'))
+        var myChart = window.echarts.init(document.getElementById('dealStatistics'))
         myChart.setOption(options)
       },
 
@@ -151,6 +152,12 @@
        * 查询表单数据
        */
       searchData () {
+        if (this.searchForm.startTime && this.searchForm.endTime) {
+          if (this.searchForm.startTime > this.searchForm.endTime) {
+            this.$message.error('请选择统计起时间小于统计止时间')
+            return
+          }
+        }
         this.getDatas()
       },
 
@@ -216,7 +223,7 @@
             })
 
             this.chartOptions.legend.data = legendData
-            this.chartOptions.xAxis.data = xAxisDataAll
+            this.chartOptions.xAxis[0].data = xAxisDataAll
             this.chartOptions.series = series
 
             this.initChart(this.chartOptions)

@@ -14,13 +14,13 @@
       <div class="login-box">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="登录名">
-            <el-input v-model="form.loginName" @change="changeData" placeholder="请输入登录名"></el-input>
-            <div class="tips" v-show="btn && !form.loginName">{{LOGIN_USERNAME_NOT_EMPTY}}</div>
+            <el-input v-model="form.loginName" @change="checkLoginName" placeholder="请输入登录名"></el-input>
+            <div class="tips" v-show="btn && loginNameTips">{{loginNameTips}}</div>
           </el-form-item>
           <el-form-item label="登录密码">
-            <el-input v-model="form.password" @change="changeData" placeholder="请输入登录密码" type="password"></el-input>
-            <div class="tips" v-show="btn && !form.password">{{LOGIN_PASSWORD_NOT_EMPTY}}</div>
-            <div class="tips" v-show="validate.hasErr">{{LOGIN_PASSWORD_NOT_EMPTY}}</div>
+            <el-input v-model="form.password" @change="checkLoginPassword" placeholder="请输入登录密码" type="password"></el-input>
+            <div class="tips" v-show="btn && loginPasswordTips">{{loginPasswordTips}}</div>
+            <div class="tips" v-show="validate.errMsg">{{validate.errMsg}}</div>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" class="submit-btn" @click="submit">登录</el-button>
@@ -35,7 +35,7 @@
 
 <script>
   import {mapActions} from 'vuex'
-  import {USER_SIGNIN} from '../store/modules/userStore'
+  import {USER_SIGNIN, MENU_GET_USER_MENU_KEYS} from '../store/modules/userStore'
   import {CHANGE_PENDING} from 'store/globalStore'
   import * as Messages from '../config/messages'
   import * as CODE from '../config/code'
@@ -46,45 +46,81 @@
       this.$store.state
       return {
         ...Messages,
-        btn: false, // true 已经提交过， false没有提交过
+        btn: true, // true 已经提交过， false没有提交过
+        loginNameTips: '', // 登录名错误提示
+        loginPasswordTips: '', // 登录密码错误提示
         form: {
           loginName: '',
           password: ''
         },
         validate: {
-          hasErr: false,
           errMsg: ''
         }
       }
     },
     methods: {
-      ...mapActions([USER_SIGNIN, CHANGE_PENDING]),
-      changeData () {
-        this.validate.hasErr = false
+      ...mapActions([USER_SIGNIN, CHANGE_PENDING, MENU_GET_USER_MENU_KEYS]),
+      /**
+       * 检查登录名
+       */
+      checkLoginName () {
+        this.validate.errMsg = ''
+        let {loginName} = this.form
+        let len = loginName.toString().length
+        if (!loginName) {
+          this.loginNameTips = Messages.LOGIN_USERNAME_NOT_EMPTY
+          return false
+        } else if (len < 4 || len > 32) {
+          this.loginNameTips = Messages.LOGIN_USERNAME_LENGTH_ERR_MSG
+          return false
+        }
+        this.loginNameTips = ''
+        return true
+      },
+      /**
+       * 检查登录密码
+       */
+      checkLoginPassword () {
+        this.validate.errMsg = ''
+        let {password} = this.form
+        let len = password.toString().length
+        if (!password) {
+          this.loginPasswordTips = Messages.LOGIN_PASSWORD_NOT_EMPTY
+          return false
+        } else if (len < 6 || len > 32) {
+          this.loginPasswordTips = Messages.LOGIN_PASSWORD_LENGTH_ERR_MSG
+          return false
+        }
+        this.loginPasswordTips = ''
+        return true
       },
       submit () {
         this.btn = true
-        this.validate.hasErr = false
-        if (!this.form.loginName) {
-          return
-        } else if (!this.form.password) {
+        this.validate.errMsg = ''
+        if (!this.checkLoginName() || !this.checkLoginPassword()) {
           return
         }
         this.CHANGE_PENDING(true)
         this.USER_SIGNIN(this.form).then(res => {
+          this.CHANGE_PENDING(false)
           if (res.code == CODE.SUCCESS) {
-            this.$router.replace({path: '/index'})
+            // 获取已有的权限菜单，并跳转到第一个
+            this.MENU_GET_USER_MENU_KEYS().then((res) => {
+              let {hasPath} = this.$store.state.user
+              this.$router.replace({path: hasPath[2]})
+            }).catch((err) => {
+              globalErrorPrint(err)
+              this.$router.replace({path: '/index'})
+            })
           } else {
             this.validate.hasErr = true
             this.$message.error(Messages.LOGIN_PWDNAME_ERR_MSG)
           }
-          this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
           this.CHANGE_PENDING(false)
           if (err.responseJSON) {
             let {responseJSON} = err
-            this.validate.hasErr = true
             if (responseJSON.code == CODE.PASSWORD_ERROR) {
               // 用户名或密码错误
               this.validate.errMsg = Messages.LOGIN_PWDNAME_ERR_MSG
@@ -92,10 +128,10 @@
               // 无管理权限
               this.validate.errMsg = Messages.LOGIN_NO_MANAGE_PERMISION_MSG
             } else {
-              this.validate.errMsg = '服务器错误，请稍后重试'
+              this.validate.errMsg = Messages.SERVER_ERROR_MSG
             }
           } else {
-            this.$message.error('服务器错误，请稍后重试')
+            this.$message.error(Messages.SERVER_ERROR_MSG)
           }
         })
       }

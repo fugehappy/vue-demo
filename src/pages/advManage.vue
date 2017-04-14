@@ -238,6 +238,8 @@
             this.$message.error(MSG.DELETE_FAIL_MSG)
             this.CHANGE_PENDING(false)
           })
+        }).catch(() => {
+          // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
         })
       },
 
@@ -277,6 +279,7 @@
         formData.append('token', this.uploadtoken)
         formData.append('file', file)
 
+        this.progressValue = 0
         this.progressVisible = true // 上传进度条
         // 开始上传文件
         this.STORAGE_UPLOAD({
@@ -426,6 +429,7 @@
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getList()
       },
 

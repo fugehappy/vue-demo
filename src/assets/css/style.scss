@@ -9,6 +9,7 @@ $baseColor1: #767676;// 取消按钮背景颜色
 $baseColor2: #fff;// 背景,选项卡背景颜色
 $baseColor3: #63bd70;// 确定按钮的颜色
 $baseColor4: #d3d3d3;// 边框线的颜色
+$baseColor5: #6e6e6e;// 取消按钮按下时背景颜色
 $bgColor1: #91a0a0;// 表格行头背景颜色
 // 间距
 $distance40: 40px;
@@ -274,8 +275,12 @@ $navHeight: 50px;
     margin-top: $distance40;
     padding: 0 $distance40;
     color: $fontColor1;
-    display: flex;
-    justify-content: space-between;
+    position: relative;
+    button {
+      position: absolute;
+      right: $distance40;
+      bottom: 0;
+    }
   }
   // 文件审核样式
   .fileaudit-wrap {
@@ -290,8 +295,8 @@ $navHeight: 50px;
   // 统计
   .statistics-wrap {
     .echart-wrap {
-      width: 100%;
-      min-height: 400px;
+      width: 80%;
+      height: 400px;
     }
   }
   // 按钮占用整行
@@ -317,10 +322,8 @@ $navHeight: 50px;
 }
 
 // 覆写组件样式 begin
-.content-wrap {
-  .fix-wrapper {
-    padding: 0 $distance40;
-  }
+.content-wrap,
+.el-message-box__wrapper {
   /*按钮颜色样式*/
   .el-button {
     height: 26px;
@@ -359,14 +362,21 @@ $navHeight: 50px;
         width: 142px;
         margin-left: 60px;
       }
-      &:hover,
-      &.is-active,
-      &:focus {
-        background: $baseColor1;
+      &.is-active {
+        background: $baseColor5;
         border-color: $baseColor2;
         color: $baseColor2;
       }
+      &:active {
+        background: $baseColor5;
+        border-color: $baseColor2;
+      }
     }
+  }
+}
+.content-wrap {
+  .fix-wrapper {
+    padding: 0 $distance40;
   }
   /*搜索按钮，清除按钮，返回按钮 begin*/
   .search-icon i,
@@ -421,7 +431,6 @@ $navHeight: 50px;
         .el-dialog__title {
           color: #000000;
         }
-        .el-dialog__close,
         .el-dialog__close:hover {
           color: $BASE_COLOR;
         }
@@ -587,6 +596,7 @@ $navHeight: 50px;
     height: $distance32;
     line-height: $distance32;
     width: 268px;
+    min-width: 268px;
     &:first-child {
       border-left: 0;
     }
@@ -690,6 +700,10 @@ body {
   .el-input__inner:focus,
   .el-select .el-input__inner:focus {
     border-color: $baseColor3;
+  }
+  // 加载中遮罩样式
+  .el-loading-mask {
+    background-color: rgba(255,255,255,.1);
   }
 }
 // 覆写组件样式 end

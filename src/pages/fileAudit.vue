@@ -78,7 +78,7 @@
           <td>
             <label>
               <span>用户名称</span>
-              <el-input v-model="searchForm.userId" placeholder="请输入" class="text-input"></el-input>
+              <el-input v-model="searchForm.userId" placeholder="请输入" :maxlength="32" class="text-input"></el-input>
             </label>
           </td>
         </tr>
@@ -86,7 +86,10 @@
           <td>
             <label>
               <span>用户手机</span>
-              <el-input v-model="searchForm.phoneNo" placeholder="请输入" class="text-input"></el-input>
+              <div class="el-input text-input">
+                <input class="el-input__inner" v-model="searchForm.phoneNo" :maxlength="11"
+                       @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+              </div>
             </label>
           </td>
           <td>
@@ -120,7 +123,7 @@
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="名称" width="180"></el-table-column>
+        <el-table-column prop="title" label="名称" min-width="180"></el-table-column>
         <el-table-column label="类型" width="70">
           <template scope="scope">
             {{scope.row.paid == 1 ? '付费' : '免费'}}
@@ -205,7 +208,7 @@
           </div>
         </el-form>
       </div>
-      <div class="t-c pading-t20">
+      <div class="t-c pading-t20" v-if="layerForm.status == 1">
         <el-button @click="submitAudit" type="primary" class="large-btn">提交审核</el-button>
         <el-button @click="dialogFormVisible = false" type="cancel" class="large-btn">取消</el-button>
       </div>
@@ -378,6 +381,7 @@
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getData()
       },
 

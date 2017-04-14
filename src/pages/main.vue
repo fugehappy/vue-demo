@@ -72,6 +72,8 @@
             this.CHANGE_PENDING(false)
             this.$router.replace({path: 'login'})
           })
+        }).catch(() => {
+          // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
         })
       }
     }

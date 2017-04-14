@@ -16,7 +16,7 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="微信账户" name="weixin" class="tabpanel-box">
+      <el-tab-pane label="微信账户" name="weixin" class="tabpanel-box" v-if="false">
         <div class="form-wrap">
           <el-form label-width="180px" class="tabpanel">
             <el-form-item label="微信账户:">

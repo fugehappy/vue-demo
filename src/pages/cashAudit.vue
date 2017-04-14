@@ -12,7 +12,7 @@
           <td>
             <label>
               <span>提现方式</span>
-              <el-select v-model="searchForm.platform" placeholder="请选择">
+              <el-select v-model="searchForm.platform" :disabled="true" placeholder="请选择">
                 <el-option label="支付宝" :value="1"></el-option>
                 <el-option label="微信" :value="2"></el-option>
               </el-select>
@@ -72,22 +72,22 @@
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="userId" label="登陆账户" width="120"></el-table-column>
-        <el-table-column prop="tdUsername" label="收款人名" width="120"></el-table-column>
-        <el-table-column prop="tdPlatform" label="提现方式" width="100">
+        <el-table-column prop="userId" label="登陆账户" min-width="120"></el-table-column>
+        <el-table-column prop="tdUsername" label="收款人名" min-width="120"></el-table-column>
+        <el-table-column prop="tdPlatform" label="提现方式" min-width="100">
           <template scope="scope">
             <span v-if="scope.row.tdPlatform == 1">支付宝</span>
             <span v-if="scope.row.tdPlatform == 2">微信</span>
           </template>
         </el-table-column>
         <el-table-column prop="tdAccount" label="提现账号" min-width="180"></el-table-column>
-        <el-table-column prop="amount" label="金额" width="120"></el-table-column>
-        <el-table-column label="申请日期" width="120">
+        <el-table-column prop="amount" label="金额" min-width="120"></el-table-column>
+        <el-table-column label="申请日期" min-width="120">
           <template scope="scope">
             {{scope.row.createTime ? jst.timestampFormat(Number(scope.row.createTime), 'Y-m-d') : ''}}
           </template>
         </el-table-column>
-        <el-table-column prop="adminId" label="操作人员" width="120"></el-table-column>
+        <el-table-column prop="adminId" label="操作人员" min-width="120"></el-table-column>
         <el-table-column fixed="right" label="操作" width="120">
           <template scope="scope"><!--提现状态，0 等待处理；1 已处理，提现成功；2 已处理，提现失败-->
             <a @click="showLayer(scope.$index, scope.row)" v-if="scope.row.status == 0" class="default-info">去审核</a>
@@ -191,7 +191,7 @@
       return {
         jst: jst,
         searchForm: {
-          platform: '', // 支付平台
+          platform: 1, // 支付平台 1 支付宝；2 微信
           tdAccount: '', // 提现帐号
           userName: '',
           startTime: '',
@@ -295,6 +295,7 @@
         for (let item in this.searchForm) {
           this.searchForm[item] = ''
         }
+        this.searchForm.platform = 1 // 支付宝；暂时只支持
       },
 
       /**
@@ -306,6 +307,7 @@
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getList()
       },
 

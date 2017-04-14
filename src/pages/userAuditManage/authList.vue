@@ -34,13 +34,16 @@
             <td>
               <label>
                 <span>翰林账号</span>
-                <el-input v-model="searchForm.userId" placeholder="请输入" class="text-input"></el-input>
+                <el-input v-model="searchForm.userId" placeholder="请输入" :maxlength="32" class="text-input"></el-input>
               </label>
             </td>
             <td>
               <label>
                 <span>用户手机</span>
-                <el-input v-model="searchForm.phoneNo" placeholder="请输入" class="text-input"></el-input>
+                <div class="el-input text-input">
+                  <input class="el-input__inner" v-model="searchForm.phoneNo" :maxlength="11"
+                         @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+                </div>
               </label>
             </td>
           </tr>
@@ -74,23 +77,23 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="user.userId" label="翰林账号" width="180"></el-table-column>
-          <el-table-column prop="user.phoneNo" label="用户手机" width="180"></el-table-column>
-          <el-table-column label="认证类型" width="180">
+          <el-table-column prop="user.userId" label="翰林账号" min-width="180"></el-table-column>
+          <el-table-column prop="user.phoneNo" label="用户手机" min-width="180"></el-table-column>
+          <el-table-column label="认证类型" min-width="180">
             <template scope="scope">
               <span v-if="scope.row.type == 0">教师</span>
               <span v-if="scope.row.type == 1">三方个人</span>
               <span v-if="scope.row.type == 2">三方机构</span>
             </template>
           </el-table-column>
-          <el-table-column label="认证状态">
+          <el-table-column label="认证状态" min-width="180">
             <template scope="scope">
               <span v-if="scope.row.status == 0">等待审核</span>
               <span v-if="scope.row.status == 1" class="pass-info">审核通过</span>
               <span v-if="scope.row.status == 2" class="notpass-info">审核未通过</span>
             </template>
           </el-table-column>
-          <el-table-column label="申请日期" width="120">
+          <el-table-column label="申请日期" min-width="120">
             <template scope="scope">
               {{scope.row.createTime ? jst.timestampFormat(Number(scope.row.createTime), 'Y-m-d') : ''}}
             </template>
@@ -277,12 +280,6 @@
     methods: {
       ...mapActions([CHANGE_PENDING, IDENTIFICATION_GET_LIST, IDENTIFICATION_UPDATE]),
       /**
-       *
-       */
-      changePage (type) {
-
-      },
-      /**
        * 点击页面中的图片
        */
       eImgClick (e) {
@@ -364,6 +361,7 @@
           this.$message.error('开始时间必须小于结束时间')
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getData()
       },
 

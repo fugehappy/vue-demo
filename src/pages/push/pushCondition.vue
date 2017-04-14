@@ -108,8 +108,8 @@
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="条件名称" width="180"></el-table-column>
-        <el-table-column label="推送人群" width="180">
+        <el-table-column prop="title" label="条件名称" width="200"></el-table-column>
+        <el-table-column label="推送人群" width="100">
           <template scope="scope">
             <span>{{scope.row.receiverType == 1 ? '教师' : '学生'}}</span>
           </template>
@@ -318,6 +318,8 @@
             this.$message.error(MSG.DELETE_FAIL_MSG)
             this.CHANGE_PENDING(false)
           })
+        }).catch(() => {
+          // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
         })
       },
       handleCurrentChange (val) {
@@ -450,6 +452,7 @@
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getData()
       },
 

@@ -13,7 +13,7 @@ export default [
   },
   {
     path: '/auth', // 用户认证
-    name: 'authList',
+    name: 'auth',
     component: auth
   }
 ]

@@ -207,7 +207,7 @@
         tableConditionData: [],
         currentPage: 1,
         totalSize: 1,
-        pageSize: 5, // CONFIG.PAGE_SIZE,
+        pageSize: CONFIG.TINY_PAGE_SIZE,
         // 选择后的（推送条件）数据
         choiceConditionData: {},
         formLabelWidth: '120px'
@@ -253,6 +253,7 @@
        * 查询推送条件表单数据
        */
       searchConditionData () {
+        this.currentPage = 1 // 设置为第一页
         this.getData()
       },
 

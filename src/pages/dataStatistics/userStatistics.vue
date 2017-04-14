@@ -53,7 +53,6 @@
   import { USER_INFORMATION_STATISTICS } from 'store/modules/statisticsStore'
   import { SUCCESS } from '../../config/code'
   import { globalErrorPrint } from '../../utils/'
-  import echarts from 'echarts'
   export default {
     name: 'userStatistics',
     props: {
@@ -95,20 +94,22 @@
             data: []
           },
           grid: {
-            left: '0',
-            containLabel: true
+            x: 40,
+            y: 20
           },
           toolbox: {
             feature: {}
           },
-          xAxis: {
+          xAxis: [{
             type: 'category',
             boundaryGap: false,
             data: []
-          },
+          }],
           yAxis: [{
             type: 'value',
-            name: '人'
+            axisLabel: {
+              formatter: '{value} 人'
+            }
           }],
           series: []
         }
@@ -121,7 +122,7 @@
        * 初始化图表
        */
       initChart (options) {
-        var myChart = echarts.init(document.getElementById('userStatistics'))
+        var myChart = window.echarts.init(document.getElementById('userStatistics'))
         myChart.setOption(options)
       },
 
@@ -194,7 +195,7 @@
                 }
 
                 this.chartOptions.legend.data = legendData // 图表的legend
-                this.chartOptions.xAxis.data = xAxisDataAll // 图表x轴
+                this.chartOptions.xAxis[0].data = xAxisDataAll // 图表x轴
                 this.chartOptions.series = series // 图表y轴
 
                 this.initChart(this.chartOptions) // 绘制图表
@@ -278,6 +279,12 @@
        */
       searchData () {
         // 不同的条件
+        if (this.searchForm.startTime && this.searchForm.endTime) {
+          if (this.searchForm.startTime > this.searchForm.endTime) {
+            this.$message.error('请选择统计起时间小于统计止时间')
+            return
+          }
+        }
         this.getDatas()
       },
 

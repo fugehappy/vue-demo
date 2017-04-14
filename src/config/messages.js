@@ -5,6 +5,10 @@
  */
 export const LOGIN_USERNAME_NOT_EMPTY = '登录名不能为空'
 export const LOGIN_PASSWORD_NOT_EMPTY = '登录密码不能为空'
+export const LOGIN_USERNAME_LENGTH_ERR_MSG = '请输入4～32个字符'
+export const LOGIN_PASSWORD_LENGTH_ERR_MSG = '请输入6～32个字符'
+
+export const SERVER_ERROR_MSG = '服务器错误，请稍后重试'
 
 export const LOGIN_PWDNAME_ERR_MSG = '登录名或密码错误，请重新登录'
 export const LOGIN_NO_MANAGE_PERMISION_MSG = '对不起，该用户无管理权限'

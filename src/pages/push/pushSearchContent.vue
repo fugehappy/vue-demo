@@ -105,7 +105,7 @@
                    value="scope.row.contentId">
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="标题名称" width="180"></el-table-column>
+        <el-table-column prop="title" label="标题名称" width="150"></el-table-column>
         <el-table-column label="类型" width="70">
           <template scope="scope">
             {{scope.row.paid == 1 ? '付费' : '免费'}}
@@ -114,11 +114,6 @@
         <el-table-column label="文件分类" min-width="180">
           <template scope="scope">
             {{scope.row.conditions}}
-          </template>
-        </el-table-column>
-        <el-table-column label="文件名" width="220">
-          <template scope="scope">
-            {{scope.row.files ? scope.row.files[0].fileName : ''}}
           </template>
         </el-table-column>
         <el-table-column label="上传日期" width="120">
@@ -145,7 +140,7 @@
                 </div>
                 <div><span>联系电话:</span> {{scope.row.phoneNo}}</div>
                 <div><span>学科分类:</span> {{scope.row.conditions}}</div>
-                <div><span>文件名称:</span> {{scope.row.fileName}}</div>
+                <div><span>文件名称:</span> {{scope.row.files ? scope.row.files[0].fileName : ''}}</div>
                 <div><span>上传日期:</span> {{scope.row.createTime ? jst.timestampFormat(Number(scope.row.createTime), 'Y-m-d') : ''}}</div>
                 <div><span>内容简介:</span> {{scope.row.summary}}</div>
               </div>
@@ -176,9 +171,10 @@
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING, GET_CONTENT_CATEGORYS } from 'store/globalStore'
   import { CONTENT_GET_LIST } from 'store/modules/contentStore'
+  import { USER_GET_PROFILE } from 'store/modules/userStore'
   import * as jst from 'js-common-tools'
   import GlobalService from '../../services/GlobalService'
-//  import * as CONFIG from '../../config/'
+  import * as CONFIG from '../../config/'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
   import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp } from '../../utils/'
@@ -226,7 +222,7 @@
         tableContentData: [],
         currentPage: 1,
         totalSize: 1,
-        pageSize: 5, // CONFIG.PAGE_SIZE,
+        pageSize: CONFIG.TINY_PAGE_SIZE,
         // 选择后的（推送内容）数据
         choiceContentData: {},
         formLabelWidth: '120px',
@@ -235,7 +231,7 @@
       }
     },
     methods: {
-      ...mapActions([CHANGE_PENDING, GET_CONTENT_CATEGORYS, CONTENT_GET_LIST]),
+      ...mapActions([CHANGE_PENDING, GET_CONTENT_CATEGORYS, CONTENT_GET_LIST, USER_GET_PROFILE]),
       /**
        * 点击分页码
        */
@@ -297,6 +293,7 @@
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
+        this.currentPage = 1 // 设置为第一页
         this.getData()
       },
       /**
@@ -345,6 +342,10 @@
             this.tableContentData = newData
             this.totalSize = res.data.totalSize
             this.currentPage = res.data.currentPage
+            // 循环列表获取用户相关信息
+            this.tableContentData.map((item, index) => {
+              this.getUserProfile(index, item)
+            })
           } else {
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
@@ -353,6 +354,40 @@
           globalErrorPrint(err)
           this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           this.CHANGE_PENDING(false)
+        })
+      },
+
+      /**
+       * 强制更新表格数据
+       */
+      forceUpdateTable () {
+        let firstData = this.tableContentData.shift()
+        this.tableContentData.unshift(firstData)
+        console.log(JSON.stringify(this.tableContentData))
+        this.$forceUpdate()
+      },
+
+      /**
+       * 获取三方用户信息
+       */
+      getUserProfile (index, rowData) {
+        let params = {
+          userId: rowData.userId
+        }
+        this.USER_GET_PROFILE(params).then(res => {
+          if (res.code == CODE.SUCCESS) {
+            this.tableContentData[index].userId = res.data.userId
+            this.tableContentData[index].phoneNo = res.data.phoneNo
+            this.tableContentData[index].region = res.data.identification ? res.data.identification.type : ''
+          }
+          if (index == this.tableContentData.length - 1) {
+            setTimeout(() => {
+              this.forceUpdateTable()
+            }, 100)
+          }
+        }).catch((err) => {
+          globalErrorPrint(err)
+          this.forceUpdateTable()
         })
       }
     }

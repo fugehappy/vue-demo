@@ -80,13 +80,16 @@
                   <td>
                     <label>
                       <span>翰林账号</span>
-                      <el-input v-model="manager.userId" placeholder="翰林账号"></el-input>
+                      <el-input v-model="manager.userId" placeholder="翰林账号" :maxlength="32"></el-input>
                     </label>
                   </td>
                   <td>
                     <label>
                       <span>手机号码</span>
-                      <el-input v-model.number="manager.phoneNo" placeholder="手机号码"></el-input>
+                      <div class="el-input text-input">
+                        <input class="el-input__inner" v-model="manager.phoneNo" :maxlength="11"
+                               @keyup="manager.phoneNo = manager.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+                      </div>
                     </label>
                   </td>
                 </tr>
@@ -124,7 +127,7 @@
           </div>
           <div class="ft-group">
             <button class="el-button el-button--primary large-btn" @click="updateroleAssign">提交</button>
-            <button class="el-button el-button--cancel large-btn" @click="closeUpgradeDialog">返回</button>
+            <button class="el-button el-button--cancel large-btn" @click="resetUpgradeQueryManager">重置</button>
           </div>
         </div>
       </div>
@@ -316,6 +319,10 @@
         if (!this.manager.phoneNo && !this.manager.userId) {
           // 没输入内容恢复默认值
           this.resetUpgradeQueryManager()
+          return false
+        }
+        if (this.manager.phoneNo && !CONFIG.PHONENO_PATTERN.test(this.manager.phoneNo)) {
+          this.$message.error('手机号码格式错误')
           return false
         }
         this.GET_USER_INFO(this.manager).then((res) => {

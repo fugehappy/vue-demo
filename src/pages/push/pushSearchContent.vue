@@ -65,7 +65,10 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="手机号">
-              <el-input v-model="searchContentForm.phoneNo" placeholder="请输入" class="text-mid-input"></el-input>
+              <div class="el-input text-mid-input">
+                <input class="el-input__inner" v-model="searchContentForm.phoneNo" :maxlength="11"
+                       @keyup="searchContentForm.phoneNo = searchContentForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+              </div>
             </el-form-item>
           </el-col>
         </el-col>
@@ -288,9 +291,13 @@
        * 查询推送内容表单数据
        */
       searchContentData () {
-        let {startTime, endTime} = this.searchContentForm
+        let {startTime, endTime, phoneNo} = this.searchContentForm
         if (startTime > endTime) {
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          return
+        }
+        if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
+          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -363,7 +370,6 @@
       forceUpdateTable () {
         let firstData = this.tableContentData.shift()
         this.tableContentData.unshift(firstData)
-        console.log(JSON.stringify(this.tableContentData))
         this.$forceUpdate()
       },
 

@@ -39,6 +39,7 @@
   import {CHANGE_PENDING} from 'store/globalStore'
   import * as Messages from '../config/messages'
   import * as CODE from '../config/code'
+  import * as CONFIG from '../config/'
   import { globalErrorPrint } from '../utils/'
 
   export default {
@@ -87,8 +88,11 @@
         if (!password) {
           this.loginPasswordTips = Messages.LOGIN_PASSWORD_NOT_EMPTY
           return false
-        } else if (len < 6 || len > 32) {
+        } else if (len < 6 || len > 16) {
           this.loginPasswordTips = Messages.LOGIN_PASSWORD_LENGTH_ERR_MSG
+          return false
+        } else if (!CONFIG.PASSWORD_PATTERN.test(password)) {
+          this.loginPasswordTips = Messages.LOGIN_PASSWORD_PATTERN_ERR_MSG
           return false
         }
         this.loginPasswordTips = ''

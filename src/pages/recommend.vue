@@ -260,13 +260,17 @@
        */
       searchData () {
         this.hasSearched = true
-        let {startTime, endTime, gradeCode, subjectCode, phase} = this.searchForm
+        let {startTime, endTime, gradeCode, subjectCode, phase, phoneNo} = this.searchForm
         if (!gradeCode || !subjectCode || !phase) {
-          this.$message.error('请选择（学段、年级、学科）再搜索')
+          this.$message.error(MSG.SELECT_PHASE_GRADE_SUBJECT_2_SEARCH)
           return
         }
         if (startTime > endTime) {
-          this.$message.error('开始时间必须小于结束时间')
+          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          return
+        }
+        if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
+          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页

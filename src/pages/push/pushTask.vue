@@ -273,8 +273,8 @@
           })]
           Object.assign(this.layerTaskForm, rowData, {
             pushTime: jst.timestampFormat(rowData.pushTime, 'Y-m-d H:i:s'),
-            conditionName: rowData.contents[0].title,
-            resName: rowData.strategies[0].title
+            conditionName: rowData.strategies[0] ? rowData.strategies[0].title : '',
+            resName: rowData.contents[0] ? rowData.contents[0].title : ''
           })
           if (rowData.status == this.executed) {
             this.layerTaskForm.isExec = true

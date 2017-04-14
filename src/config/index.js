@@ -14,4 +14,6 @@ export const LOAD_DATA_COUNT = 3 // 循环加载次数
 
 export const USER_LOCALSTORAGE_KEY = 'hanlinUser' // 用户登录本地存储的key
 
+export const PASSWORD_PATTERN = /^(?![a-zA-z]+$)(?!0-9+$)(?![!@$_%^&*]+$)[a-zA-Z0-9!@$_%^&*]{6,16}$/ // 密码验证正则
+
 export const PHONENO_PATTERN = /^1[34578]\d{9}$/ // 手机号码验证正则

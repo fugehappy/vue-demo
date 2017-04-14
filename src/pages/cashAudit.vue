@@ -302,9 +302,13 @@
        * 查询表单数据
        */
       searchData () {
-        let {startTime, endTime} = this.searchForm
+        let {startTime, endTime, phoneNo} = this.searchForm
         if (startTime > endTime) {
           this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          return
+        }
+        if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
+          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页

@@ -2,139 +2,203 @@
 <!--广告管理页面-->
 <template>
   <div class="fileaudit-wrap">
-    <el-row>
-      <h3 class="top-title">
-        <span>广告管理</span>
-        <el-button @click="showLayer('')" type="primary" class="large-btn">新增</el-button>
-      </h3>
-    </el-row>
-    <v-divline></v-divline>
-    <!-- 搜索条件组合 begin -->
-    <div class="fix-wrapper">
-      <table class="table-custom" width="100%">
-        <tr>
-          <td>
-            <label>
-              <span>广告类型</span>
-              <el-select v-model="searchForm.type" placeholder="请选择">
-                <el-option label="图片广告" :value="0"></el-option>
-                <el-option label="视频广告" :value="1"></el-option>
-              </el-select>
-            </label>
-          </td>
-          <td>
-            <label>
-              <span>广告名称</span>
-              <el-input v-model="searchForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
-            </label>
-          </td>
-          <td>
-            <label>
-              <span>创建日期起</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
-            </label>
-          </td>
-          <td>
-            <label>
-              <span>创建日期止</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
-            </label>
-          </td>
-        </tr>
-      </table>
-      <div class="buttons-wrap">
-        <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
-        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+    <!-- 列表页面 -->
+    <el-col v-if="listPageVisible">
+      <el-row>
+        <h3 class="top-title">
+          <span>广告管理</span>
+          <el-button @click="showLayer('')" type="primary" class="large-btn">新增</el-button>
+        </h3>
+      </el-row>
+      <v-divline></v-divline>
+      <!-- 搜索条件组合 begin -->
+      <div class="fix-wrapper">
+        <table class="table-custom" width="100%">
+          <tr>
+            <td>
+              <label>
+                <span>广告类型</span>
+                <el-select v-model="searchForm.type" placeholder="请选择">
+                  <el-option label="图片广告" :value="0"></el-option>
+                  <el-option label="视频广告" :value="1"></el-option>
+                </el-select>
+              </label>
+            </td>
+            <td>
+              <label>
+                <span>广告名称</span>
+                <el-input v-model="searchForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
+              </label>
+            </td>
+            <td>
+              <label>
+                <span>创建日期起</span>
+                <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
+              </label>
+            </td>
+            <td>
+              <label>
+                <span>创建日期止</span>
+                <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
+              </label>
+            </td>
+          </tr>
+        </table>
+        <div class="buttons-wrap">
+          <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
+          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+        </div>
       </div>
-    </div>
-    <!-- 搜索条件组合 end -->
-    <v-divline></v-divline>
-    <!-- 表格数据 -->
-    <div class="fix-wrapper">
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="70">
-          <template scope="scope">
-            <span>{{scope.$index + 1}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="title" label="广告名称" width="180"></el-table-column>
-        <el-table-column prop="type" label="类型" width="90">
-          <template scope="scope">
-            {{scope.row.type == 0 ? '图片' : '视频'}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="targetResTitle" label="文档名称" width="180"></el-table-column>
-        <el-table-column label="广告展台地址" min-width="200">
-          <template scope="scope">
-            {{scope.row.type == 0 ? scope.row.bgImage : scope.row.videoUrl}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="updateTime" label="发布时间" width="120">
-          <template scope="scope">
-            {{jst.timestampFormat(scope.row.updateTime, 'Y-m-d')}}
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" width="120">
-          <template scope="scope">
-            <a @click="showLayer(scope.$index, scope.row)">更新</a>
-            <a @click="deleteRow(scope.$index, scope.row)">删除</a>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+      <!-- 搜索条件组合 end -->
+      <v-divline></v-divline>
+      <!-- 表格数据 -->
+      <div class="fix-wrapper">
+        <el-table :data="tableData" border style="width: 100%">
+          <el-table-column type="index" label="序号" width="70">
+            <template scope="scope">
+              <span>{{scope.$index + 1}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="title" label="广告名称" width="180"></el-table-column>
+          <el-table-column prop="type" label="类型" width="90">
+            <template scope="scope">
+              {{scope.row.type == 0 ? '图片' : '视频'}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="targetResTitle" label="文档名称" width="180"></el-table-column>
+          <el-table-column label="广告展台地址" min-width="200">
+            <template scope="scope">
+              {{scope.row.type == 0 ? scope.row.bgImage : scope.row.videoUrl}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="createTime" label="发布时间" width="120">
+            <template scope="scope">
+              {{jst.timestampFormat(scope.row.createTime, 'Y-m-d')}}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="120">
+            <template scope="scope">
+              <a @click="showLayer(scope.$index, scope.row)">更新</a>
+              <a @click="deleteRow(scope.$index, scope.row)">删除</a>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
-    <!--打开嵌入的表单-->
-    <el-dialog :title="(layerForm.isEdit ? '更新' : '新增') + '广告信息'" v-model="dialogFormVisible" :close-on-click-modal="false">
-      <el-form :model="layerForm">
-        <el-form-item label="* 广告名称" :label-width="formLabelWidth">
-          <el-input v-model="layerForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
-        </el-form-item>
-        <el-form-item label="* 广告类型" :label-width="formLabelWidth">
-          <el-select v-model="layerForm.type" @change="changeAdvType" :value="getAdvTypeText" :disabled="layerForm.isEdit" placeholder="请选择">
-            <el-option :value="0">图片广告</el-option>
-            <el-option :value="1">视频广告</el-option>
-          </el-select>
-        </el-form-item>
-
-        <!--选择为图片时-->
-        <div v-if="!isVideo">
-          <el-form-item label="* 展示内容" :label-width="formLabelWidth">
-            <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
-            <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
-              <input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>
-              选择</label>
+      <!--打开嵌入的表单-->
+      <el-dialog :title="(layerForm.isEdit ? '更新' : '新增') + '广告信息'" v-model="dialogFormVisible" top="10%" class="middle-dialog" :close-on-click-modal="false">
+        <el-form :model="layerForm">
+          <el-form-item label="* 广告名称" :label-width="formLabelWidth">
+            <el-input v-model="layerForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
           </el-form-item>
-        </div>
-        <!--选择为视频时-->
-        <div v-else>
-          <el-form-item label="* 展示内容" :label-width="formLabelWidth">
-            <el-input v-model="layerForm.videoUrl" class="text-input" placeholder="请输入视频地址或选择视频":disabled="layerForm.isEdit"></el-input>
-            <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
-              <input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>
-              选择</label>
+          <el-form-item label="* 广告类型" :label-width="formLabelWidth">
+            <el-select v-model="layerForm.type" @change="changeAdvType" :disabled="layerForm.isEdit" placeholder="请选择">
+              <el-option label="图片广告" :value="0"></el-option>
+              <el-option label="视频广告" :value="1"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="* 视频背景" :label-width="formLabelWidth">
-            <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
-            <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''">
-              <input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>选择
-            </label>
+
+          <!--选择为图片时-->
+          <div v-if="!isVideo">
+            <el-form-item label="* 展示内容" :label-width="formLabelWidth">
+              <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
+                <input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>
+                选择</label>
+            </el-form-item>
+          </div>
+          <!--选择为视频时-->
+          <div v-else>
+            <el-form-item label="* 展示内容" :label-width="formLabelWidth">
+              <el-input v-model="layerForm.videoUrl" class="text-input" placeholder="请输入视频地址或选择视频":disabled="layerForm.isEdit"></el-input>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
+                <input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>
+                选择</label>
+            </el-form-item>
+            <el-form-item label="* 视频背景" :label-width="formLabelWidth">
+              <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
+              <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''">
+                <input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>选择
+              </label>
+            </el-form-item>
+          </div>
+
+          <el-form-item label="* 推广连接" :label-width="formLabelWidth">
+            <el-input v-model="layerForm.targetResTitle" class="text-input" :readonly="true" placeholder="请选择"></el-input>
+            <label class="el-button push-choice el-button--default push-choice" @click="showPushContentLayer">选择</label>
           </el-form-item>
-        </div>
-
-        <el-form-item label="* 推广连接" :label-width="formLabelWidth">
-          <el-input v-model="layerForm.targetResTitle" class="text-input" :readonly="true" placeholder="请选择"></el-input>
-          <label class="el-button push-choice el-button--default push-choice" @click="showPushContentLayer">选择</label>
-        </el-form-item>
-        <el-form-item label="备注信息" :label-width="formLabelWidth">
-          <el-input v-model="layerForm.remark" type="textarea" placeholder="请备注需要说明的补充信息" :maxlength="250"></el-input>
-        </el-form-item>
-
-        <el-form-item :label-width="formLabelWidth">
+          <el-form-item label="备注信息" :label-width="formLabelWidth">
+            <el-input v-model="layerForm.remark" type="textarea" placeholder="请备注需要说明的补充信息" :maxlength="250"></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="t-c pading-t20">
           <el-button @click="submitAdv(layerForm.tableIndex)" type="primary" class="large-btn">提交广告</el-button>
           <el-button @click="dialogFormVisible = false" type="cancel" class="large-btn">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+        </div>
+      </el-dialog>
+    </el-col>
+
+    <!-- 新增页面 -->
+    <el-col v-else>
+      <el-row>
+        <h3 class="top-title">
+          <span>新增广告信息</span>
+          <el-button @click="listPageVisible = true" class="back-icon"><i></i>返回</el-button>
+        </h3>
+      </el-row>
+      <v-divline></v-divline>
+      <div class="fix-wrapper">
+        <el-form :model="layerForm" style="width: 800px;margin: 0 auto;">
+          <el-form-item label="* 广告名称" :label-width="formLabelWidth">
+            <el-input v-model="layerForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
+          </el-form-item>
+          <el-form-item label="* 广告类型" :label-width="formLabelWidth">
+            <el-select v-model="layerForm.type" @change="changeAdvType" :disabled="layerForm.isEdit" placeholder="请选择">
+              <el-option label="图片广告" :value="0"></el-option>
+              <el-option label="视频广告" :value="1"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <!--选择为图片时-->
+          <div v-if="!isVideo">
+            <el-form-item label="* 展示内容" :label-width="formLabelWidth">
+              <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
+                <input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>
+                选择</label>
+            </el-form-item>
+          </div>
+          <!--选择为视频时-->
+          <div v-else>
+            <el-form-item label="* 展示内容" :label-width="formLabelWidth">
+              <el-input v-model="layerForm.videoUrl" class="text-input" placeholder="请输入视频地址或选择视频":disabled="layerForm.isEdit"></el-input>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
+                <input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>
+                选择</label>
+            </el-form-item>
+            <el-form-item label="* 视频背景" :label-width="formLabelWidth">
+              <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
+              <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''">
+                <input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>选择
+              </label>
+            </el-form-item>
+          </div>
+
+          <el-form-item label="* 推广连接" :label-width="formLabelWidth">
+            <el-input v-model="layerForm.targetResTitle" class="text-input" :readonly="true" placeholder="请选择"></el-input>
+            <label class="el-button push-choice el-button--default push-choice" @click="showPushContentLayer">选择</label>
+          </el-form-item>
+          <el-form-item label="备注信息" :label-width="formLabelWidth">
+            <el-input v-model="layerForm.remark" type="textarea" placeholder="请备注需要说明的补充信息" :maxlength="250"></el-input>
+          </el-form-item>
+        </el-form>
+        <br>
+        <div class="t-c pading-t20">
+          <el-button @click="submitAdv(layerForm.tableIndex)" type="primary" class="large-btn">提交广告</el-button>
+          <el-button @click="showLayer('')" type="cancel" class="large-btn">重置</el-button>
+        </div>
+      </div>
+    </el-col>
 
     <!--推送内容查询-->
     <el-dialog title="推送内容查询" v-model="dialogFormPushContent" size="large" :close-on-click-modal="false">
@@ -154,7 +218,7 @@
   import * as CONFIG from '../config/'
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
-  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp } from '../utils/'
+  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage } from '../utils/'
   export default {
     name: 'pushConditionList',
     components: {
@@ -182,6 +246,7 @@
         tableData: [], // 列表数据
         dialogFormVisible: false, // 更新新增dialog
         dialogFormPushContent: false, // 内容查询 dialog
+        listPageVisible: true, // 列表页面和新增页面
         isVideo: false, // 是否为视频
         layerForm: {
           id: null,
@@ -196,17 +261,6 @@
           tableIndex: 0
         },
         formLabelWidth: '120px'
-      }
-    },
-    computed: {
-      getAdvTypeText: function () {
-        let {type} = this.layerForm
-        // 0 图片， 1 视频
-        if (type != 0 && type != 1) {
-          return ''
-        } else {
-          return type == 0 ? '图片广告' : '视频广告'
-        }
       }
     },
     methods: {
@@ -250,7 +304,7 @@
         let {startTime, endTime} = this.searchForm
         let newParm = {
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null
         }
         let newForm = cleanFormEmptyValue(this.searchForm)
         let params = Object.assign({}, newForm, newParm)
@@ -274,11 +328,25 @@
        * @param type 1：对应图片选择 2：对应视频选择
        */
       choiceAdvBgFile (event, type) {
+        if (!event.target.files) return
         let file = event.target.files[0]
         var formData = new FormData()
         formData.append('token', this.uploadtoken)
         formData.append('file', file)
 
+        if (type == 2) {
+          // 视频验证 (mp4)(5M以内)
+          if (!CONFIG.VIDEO_PATTERN.test(file.type) || file.size > CONFIG.UPLOAD_VIDEO_MAX_SIZE) {
+            this.$message.error(MSG.UPLOAD_VIDEO_FORMAT_ERR_MSG)
+            return
+          }
+        } else {
+          // 图片验证 (jpg，gif，png)(2M以内)
+          if (!CONFIG.IMAGES_PATTERN.test(file.type) || file.size > CONFIG.UPLOAD_IMAGES_MAX_SIZE) {
+            this.$message.error(MSG.UPLOAD_IMAGES_FORMAT_ERR_MSG)
+            return
+          }
+        }
         this.progressValue = 0
         this.progressVisible = true // 上传进度条
         // 开始上传文件
@@ -321,14 +389,15 @@
           this.layerForm.isEdit = true
           this.layerForm.tableIndex = index
           Object.assign(this.layerForm, rowData)
+          this.dialogFormVisible = true
         } else {
           for (let item in this.layerForm) {
             this.layerForm[item] = ''
           }
           this.layerForm.type = 0
           this.layerForm.isEdit = false
+          this.listPageVisible = false
         }
-        this.dialogFormVisible = true
       },
 
       /**
@@ -340,25 +409,25 @@
         if (this.isVideo) {
           // 如果是视频（标题，类型，推广链接，展示内容，背景图片以及视频，描述）不能为空
           if (!title || !targetResTitle || !targetResId || !videoUrl || !bgImage) {
-            this.$message.error('（广告名称/广告类型/展示内容/视频背景/推广连接）都必须填写')
+            errorMessage(this, '（广告名称/广告类型/展示内容/视频背景/推广连接）都必须填写')
             return
           }
           if (!jst.isUrl(videoUrl)) {
-            this.$message.error('展示内容格式不正确，请填写正确的视频地址')
+            errorMessage(this, '展示内容格式不正确，请填写正确的视频地址')
             return
           }
           if (!jst.isUrl(bgImage)) {
-            this.$message.error('视频背景图片格式不正确，请填写正确的图片地址')
+            errorMessage(this, '视频背景图片格式不正确，请填写正确的图片地址')
             return
           }
         } else {
           // 如果是图片（标题，类型，推广链接，展示内容，描述）不能为空
           if (!title || !targetResTitle || !targetResId || !bgImage) {
-            this.$message.error('（广告名称/广告类型/展示内容/推广连接）都必须填写')
+            errorMessage(this, '（广告名称/广告类型/展示内容/推广连接）都必须填写')
             return
           }
           if (!jst.isUrl(bgImage)) {
-            this.$message.error('展示内容格式不正确，请填写正确的图片地址')
+            errorMessage(this, '展示内容格式不正确，请填写正确的图片地址')
             return
           }
         }
@@ -391,8 +460,8 @@
           this.isVideo = true
         } else {
           this.isVideo = false
-          this.layerForm.bgImage = ''
         }
+        if (!this.layerForm.isEdit) this.layerForm.bgImage = ''
       },
 
       /**
@@ -426,7 +495,7 @@
       searchData () {
         let {startTime, endTime} = this.searchForm
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页

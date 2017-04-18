@@ -177,7 +177,7 @@
   import * as CONFIG from '../config/'
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
-  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp } from '../utils/'
+  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage } from '../utils/'
   export default {
     name: 'cashAuditList',
     mounted () {
@@ -304,11 +304,11 @@
       searchData () {
         let {startTime, endTime, phoneNo} = this.searchForm
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
-          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
+          errorMessage(this, MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -323,7 +323,7 @@
         let {startTime, endTime} = this.searchForm
         let newParm = {
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }

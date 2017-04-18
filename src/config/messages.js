@@ -5,9 +5,8 @@
  */
 export const LOGIN_USERNAME_NOT_EMPTY = '登录名不能为空'
 export const LOGIN_PASSWORD_NOT_EMPTY = '登录密码不能为空'
-export const LOGIN_USERNAME_LENGTH_ERR_MSG = '请输入4～32个字符'
-export const LOGIN_PASSWORD_LENGTH_ERR_MSG = '请输入6～16个字符'
-export const LOGIN_PASSWORD_PATTERN_ERR_MSG = '密码格式错误'
+export const LOGIN_USERNAME_PATTERN_ERR_MSG = '登录名格式不正确，为6-16位的字母或数字的组合!'
+export const LOGIN_PASSWORD_PATTERN_ERR_MSG = '密码格式不正确，为6-16位的字母和数字的组合!'
 
 export const PHONENO_PATTERN_ERR_MSG = '手机号码格式错误'
 
@@ -27,3 +26,6 @@ export const UPLOAD_FILE_FAIL_MSG = '文件上传失败，请重新尝试上传�
 
 export const STARTTIME_GREATER_THAN_ENDTIME_MSG = '开始时间必须小于结束时间'
 export const SELECT_PHASE_GRADE_SUBJECT_2_SEARCH = '请选择（学段、年级、学科）再搜索' // 精品推荐
+
+export const UPLOAD_IMAGES_FORMAT_ERR_MSG = '上传图片格式(jpg，gif，png)或大小(2M以内)错误' // 上传图片格式错误提示
+export const UPLOAD_VIDEO_FORMAT_ERR_MSG = '上传视频格式(mp4)或大小(5M以内)错误' // 上传视频格式错误提示

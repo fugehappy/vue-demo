@@ -18,6 +18,7 @@
       <dl class="sort-table-bd">
         <dd>
           <el-select v-model="categoryValue" placeholder="请选择" @change="selectSort('sort', $event)">
+            <el-option label="请选择" value=""></el-option>
             <el-option
                     v-for="item in categoryData"
                     :label="item.name"
@@ -28,6 +29,7 @@
         <dd>
           <el-select v-model="sectionValue" :disabled="options.section" placeholder="请选择"
                      @change="selectSort('section', $event)">
+            <el-option label="请选择" value=""></el-option>
             <el-option
                     v-for="item in sectionData"
                     :label="item.name"
@@ -38,6 +40,7 @@
         <dd>
           <el-select v-model="courseValue" :disabled="options.course" placeholder="请选择"
                      @change="selectSort('course', $event)">
+            <el-option label="请选择" value=""></el-option>
             <el-option
                     v-for="item in courseData"
                     :label="item.name"
@@ -48,6 +51,7 @@
         <dd>
           <el-select v-model="versionValue" :disabled="options.version" placeholder="请选择"
                      @change="selectSort('version', $event)">
+            <el-option label="请选择" value=""></el-option>
             <el-option
                     v-for="item in versionData"
                     :label="item.name"
@@ -58,6 +62,7 @@
         <dd>
           <el-select v-model="gradeValue" :disabled="options.grade" placeholder="请选择"
                      @change="selectSort('grade', $event)">
+            <el-option label="请选择" value=""></el-option>
             <el-option
                     v-for="item in gradeData"
                     :label="item.name"
@@ -67,6 +72,7 @@
         </dd>
         <dd>
           <el-select v-model="tagValue" :disabled="disabledTagFlag" placeholder="请选择">
+            <el-option label="请选择" value=""></el-option>
             <el-option
                     v-for="item in tagData"
                     :label="item.tagName"
@@ -182,7 +188,8 @@
 
       /**
        * 删除基础学科分类
-       * @rowData param
+       * @index 选择的行数
+       * @rowData param 选择的数据
        */
       delSubject (index, rowData) {
         this.$confirm('确认删除?', '提示', {
@@ -203,7 +210,7 @@
               tagId: rowData.tagId,
               state: 'tag'
             }
-          } else if (jst.isNullOrEmpty(rowData.subCategory, true)) {
+          } else if (jst.isNullOrEmpty(rowData.subCategory ? rowData.subCategory.categories : rowData.subCategory, true)) {
             // 删除类别
             data = {
               cateId: rowData.cateId,
@@ -221,6 +228,8 @@
                 })
                 this.filterTableData.splice(index, 1)
                 this.getCategoryList(true)
+                let rowType = this.rowName2typeCode(this.rowName)
+                this.deleteCategoryAfterUpdateSelectData(rowType)
               } else {
                 this.$message.error('删除失败')
               }
@@ -237,13 +246,19 @@
 
       /**
        * 选择分类
-       * @type param 类型
+       * @type param 选择的下拉框 （分类sort，学段section，学科course，版本version）
        * @evt param 数据
        */
       async selectSort (type, evt) {
         await this.resetSelect(type)
         if (this.selectIsChanging) return
         this.selectIsChanging = true
+        // 点击的请选择
+        if (!evt) {
+          this.clickCategoryToInit(type)
+          await new Promise((resolve, reject) => setTimeout(() => resolve(this.selectIsChanging = false), 300))
+          return
+        }
         // 传入参数判断
         if (!type) return false
         let data = evt.subCategory && evt.subCategory.categories ? evt.subCategory.categories : null
@@ -428,7 +443,52 @@
       },
 
       /**
+       * 点击每个分类（请选择），初始化当前分类对应的table数据
+       * @type 选择的下拉框 （分类sort，学段section，学科course，版本version）
+       */
+      clickCategoryToInit (type) {
+        // 根据不同条件筛选数据
+        switch (type) {
+          case 'sort':
+            this.rowName = this.categoryLabel.sort
+            this.filterTableData = this.categoryData
+            this.sectionValue = ''
+            this.options.section = true
+            this.cateId = ''
+            break
+          case 'section':
+            this.rowName = this.categoryLabel.section
+            this.filterTableData = this.sectionData
+            this.courseValue = ''
+            this.options.course = true
+            this.cateId = this.categoryValue.cateId
+            break
+          case 'course':
+            this.rowName = this.categoryLabel.course
+            this.filterTableData = this.courseData
+            this.versionValue = ''
+            this.options.version = true
+            this.cateId = this.sectionValue.cateId
+            break
+          case 'version':
+            this.rowName = this.categoryLabel.version
+            this.filterTableData = this.versionData
+            this.gradeValue = ''
+            this.options.grade = true
+            this.cateId = this.courseValue.cateId
+            break
+          case 'grade':
+            this.rowName = this.categoryLabel.grade
+            this.filterTableData = this.gradeData
+            this.cateId = this.versionValue.cateId
+            break
+        }
+        this.filterTableNameCellIsVisible = true
+        this.tagValue = '' // tag下拉中显示为请选择
+      },
+      /**
        * 重置被选择的下一级别
+       * @type 选择的下拉框 （分类sort，学段section，学科course，版本version）
        */
       resetSelect (type) {
         this.filterTableData = []
@@ -460,13 +520,12 @@
           case 'version':
             this.gradeValue = ''
             break
-          case 'grade':
-            break
         }
       },
 
       /**
        * 打开变更对话框
+       * @index 行数
        * @rowData param 数据
        */
       openUpdateDialog (index, rowData) {
@@ -531,31 +590,40 @@
           this.$message.error('异常错误')
         })
       },
+
       /**
-       * 添加类别
-       * @type param 类型
+       * 根据类别名称获取code
+       * @text param rowName
        */
-      addCategory (state) {
-        if (!state) return false
+      rowName2typeCode (text) {
         let type = null
-        let parentCateId = this.cateId
-        switch (state) {
-          case '分类':
+        switch (text) {
+          case this.categoryLabel.sort: // 分类
             type = 0
             break
-          case '学段':
+          case this.categoryLabel.section: // 学段
             type = 1
             break
-          case '学科':
+          case this.categoryLabel.course: // 学科
             type = 2
             break
-          case '版本':
+          case this.categoryLabel.version: // 版本
             type = 3
             break
-          case '年级':
+          case this.categoryLabel.grade: // 年级
             type = 4
             break
         }
+        return type
+      },
+      /**
+       * 添加类别
+       * @text param rowName
+       */
+      addCategory (text) {
+        if (!text) return false
+        let type = this.rowName2typeCode(text)
+        let parentCateId = this.cateId
         this.$prompt('添加类别', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
@@ -606,7 +674,7 @@
       /**
        * 新增成功后更新下拉框的数据列表
        * 当有标签时而新增其子分类的变化
-       * @param type 新增的类别
+       * @param type 新增的类别  1学段，2学科，3版本，4年级
        * @param data 新增当前数据
        */
       addCategoryAfterUpdateSelectData (type, data) {
@@ -617,7 +685,6 @@
             // 给（分类）增加子类，将其tag清空，并将data添加到当前选择的（分类）的子级
             this.categoryData.map(item => {
               if (item.cateId == this.cateId) {
-                item.tags = null
                 item.subCategory = item.subCategory ? item.subCategory : {}
                 let thisCategories = item.subCategory.categories ? item.subCategory.categories : []
                 thisCategories.push(data)
@@ -636,7 +703,6 @@
             // 给（学段）增加子类，将其tag清空，并将data添加到当前选择的（学段）的子级
             this.sectionData.map(item => {
               if (item.cateId == this.cateId) {
-                item.tags = null
                 item.subCategory = item.subCategory ? item.subCategory : {}
                 let thisCategories = item.subCategory.categories ? item.subCategory.categories : []
                 thisCategories.push(data)
@@ -654,7 +720,6 @@
             // 给学科增加子类，将其tag清空，并将data添加到当前选择的学科的子级
             this.courseData.map(item => {
               if (item.cateId == this.cateId) {
-                item.tags = null
                 item.subCategory = item.subCategory ? item.subCategory : {}
                 let thisCategories = item.subCategory.categories ? item.subCategory.categories : []
                 thisCategories.push(data)
@@ -672,7 +737,6 @@
             // 给版本增加子类，将其tag清空，并将data添加到当前选择的版本的子级
             this.versionData.map(item => {
               if (item.cateId == this.cateId) {
-                item.tags = null
                 item.subCategory = item.subCategory ? item.subCategory : {}
                 let thisCategories = item.subCategory.categories ? item.subCategory.categories : []
                 thisCategories.push(data)
@@ -690,6 +754,109 @@
         this.tagData = []
         this.tagValue = '' // 标签下拉显示‘请选择’
         this.disabledTagFlag = true // 标签下拉不启用
+      },
+
+      /**
+       * 新增标签成功后更新下拉框的数据列表
+       * @param type 新增的类别  1学段，2学科，3版本，4年级
+       * @param data 新增当前数据
+       */
+      addTagAfterUpdateSelectData (type, data) {
+        // 如果data不是对象则直接返回
+        if (!data || typeof data !== 'object') return
+        switch (type) {
+          case 1: // '学段'
+            this.categoryData.map(item => {
+              if (item.cateId == this.cateId) {
+                item.tags = item.tags ? item.tags : []
+                if (!item.tags.length) {
+                  item.tags.push(data)
+                }
+                this.selectSort('sort', item)
+              }
+              return item
+            })
+
+            break
+          case 2: // '学科'
+            this.sectionData.map(item => {
+              if (item.cateId == this.cateId) {
+                item.tags = item.tags ? item.tags : []
+                if (!item.tags.length) {
+                  item.tags.push(data)
+                }
+                this.selectSort('section', item)
+              }
+              return item
+            })
+            break
+          case 3: // '版本'
+            this.courseData.map(item => {
+              if (item.cateId == this.cateId) {
+                item.tags = item.tags ? item.tags : []
+                if (!item.tags.length) {
+                  item.tags.push(data)
+                }
+                this.selectSort('course', item)
+              }
+              return item
+            })
+            break
+          case 4: // '年级'
+            this.versionData.map(item => {
+              if (item.cateId == this.cateId) {
+                item.tags = item.tags ? item.tags : []
+                if (!item.tags.length) {
+                  item.tags.push(data)
+                }
+                this.selectSort('version', item)
+              }
+              return item
+            })
+            break
+        }
+        this.tagValue = '' // 标签下拉显示‘请选择’
+        this.disabledTagFlag = false // 标签下拉启用
+      },
+
+      /**
+       * 删除成功后更新下拉框的数据列表
+       * 当有标签时而新增其子分类的变化
+       * @param type 删除的类别  1学段，2学科，3版本，4年级
+       */
+      deleteCategoryAfterUpdateSelectData (type) {
+        if (type == 0) return
+        switch (type) {
+          case 1: // '学段'
+            this.categoryData.map(item => {
+              if (item.cateId == this.cateId) {
+                this.selectSort('sort', item)
+              }
+            })
+
+            break
+          case 2: // '学科'
+            this.sectionData.map(item => {
+              if (item.cateId == this.cateId) {
+                this.selectSort('section', item)
+              }
+            })
+            break
+          case 3: // '版本'
+            this.courseData.map(item => {
+              if (item.cateId == this.cateId) {
+                this.selectSort('course', item)
+              }
+            })
+            break
+          case 4: // '年级'
+            this.versionData.map(item => {
+              if (item.cateId == this.cateId) {
+                this.selectSort('version', item)
+              }
+            })
+            break
+        }
       },
 
       /**
@@ -717,9 +884,11 @@
               }
               this.getCategoryList(true)
               this.$message({
-                type: 'info',
+                type: 'success',
                 message: '添加成功'
               })
+              // type 1学段，2学科，3版本，4年级
+              this.addTagAfterUpdateSelectData(this.rowName2typeCode(this.rowName), res.data)
             } else {
               this.$message.error('添加失败')
             }
@@ -735,6 +904,8 @@
 
       /**
        * 获取分类列表
+       * @isReload 是否重新加载
+       * @type 1学段，2学科，3版本，4年级
        */
       getCategoryList (isReload, type) {
         if (isReload && type !== 0) return

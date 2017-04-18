@@ -94,16 +94,20 @@
             {{scope.row.conditions}}
           </template>
         </el-table-column>
-        <el-table-column prop="downloadTimes" label="下载" width="90"></el-table-column>
+        <el-table-column label="下载" width="90">
+          <template scope="scope">
+            {{scope.row.downloadTimes ? scope.row.downloadTimes : 0}}
+          </template>
+        </el-table-column>
         <el-table-column prop="userId" label="作者" width="150"></el-table-column>
         <el-table-column label="上架日期" width="120">
           <template scope="scope">
             {{scope.row.createTime ? jst.timestampFormat(Number(scope.row.createTime), 'Y-m-d') : ''}}
           </template>
         </el-table-column>
-        <el-table-column label="排序" width="80">
+        <el-table-column label="排序" width="100">
           <template scope="scope">
-            <input @blur="recommendRow(scope.$index, scope.row, tableData)" v-model="scope.row.recSort" style="width: 40px;">
+            <input @blur="recommendRow(scope.$index, scope.row, tableData)" maxlength="6" @keyup="scope.row.recSort = scope.row.recSort.replace(/[^0-9]/, '')" v-model="scope.row.recSort" style="width: 40px;">
           </template>
         </el-table-column>
       </el-table>
@@ -162,7 +166,7 @@
   import * as CONFIG from '../config/'
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp } from '../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../utils/'
   import GlobalService from '../services/GlobalService'
   export default {
     name: 'recommendList',
@@ -262,15 +266,15 @@
         this.hasSearched = true
         let {startTime, endTime, gradeCode, subjectCode, phase, phoneNo} = this.searchForm
         if (!gradeCode || !subjectCode || !phase) {
-          this.$message.error(MSG.SELECT_PHASE_GRADE_SUBJECT_2_SEARCH)
+          errorMessage(this, MSG.SELECT_PHASE_GRADE_SUBJECT_2_SEARCH)
           return
         }
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
-          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
+          errorMessage(this, MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -289,7 +293,7 @@
         let {startTime, endTime, phase} = this.searchForm
         let newParams = {
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           phase: phase.phaseCode,
           page: this.currentPage,
           pageSize: this.pageSize
@@ -305,6 +309,10 @@
               item.conditions += item.editionCateName ? ` ${item.editionCateName} >` : ''
               item.conditions += item.gradeCateName ? ` ${item.gradeCateName} >` : ''
               item.conditions = item.conditions.substr(0, item.conditions.length - 1)
+              // 1推荐 0未推荐
+              if (item.recommended === 0) {
+                item.recSort = null
+              }
               return item
             })
             this.tableData = newData
@@ -342,9 +350,16 @@
        */
       recommendRow (index, rowData, tableData) {
         let {resId, recSort} = rowData
+        if (isNaN(recSort)) {
+          errorMessage(this, '请输入数字')
+          return
+        } else if (recSort !== '' && recSort == 0) {
+          errorMessage(this, '请输入大于0的数字')
+          return
+        }
         let param = {
           resId: resId,
-          recommended: recSort ? 1 : 0, // 1推荐 0未推荐
+          recommended: Number(recSort) > 0 ? 1 : 0, // 1推荐 0未推荐
           recSort: recSort ? Number(recSort) : ''
         }
         let newParam = cleanFormEmptyValue(param)

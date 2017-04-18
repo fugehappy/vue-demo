@@ -180,7 +180,7 @@
   import * as CONFIG from '../../config/'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
 
   export default {
     props: {
@@ -264,7 +264,7 @@
        */
       choicePushContent () {
         if (jst.isNullOrEmpty(this.choiceContentData, true)) {
-          this.$message.error('请选择一条推送内容')
+          errorMessage(this, '请选择一条推送内容')
           return
         }
         // 将值传给父组件
@@ -293,11 +293,11 @@
       searchContentData () {
         let {startTime, endTime, phoneNo} = this.searchContentForm
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
-          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
+          errorMessage(this, MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -324,7 +324,7 @@
         let {startTime, endTime, status} = this.searchContentForm
         let newParm = {
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }

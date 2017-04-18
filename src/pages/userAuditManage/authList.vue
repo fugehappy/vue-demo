@@ -5,7 +5,7 @@
     <!-- 列表页面 begin -->
     <el-col v-show="!dialogFormVisible" :span="24">
       <el-row>
-        <h3 class="top-title">注册用户认证审核</h3>
+        <h3 class="top-title">用户认证</h3>
       </el-row>
       <v-divline></v-divline>
       <div class="fix-wrapper">
@@ -123,100 +123,103 @@
       <!--打开嵌入的表单-->
       <el-row>
         <h3 class="top-title">
-          <span>认证审核</span>
+          <span>认证审核页面</span>
           <el-button @click="dialogFormVisible = false" class="back-icon"><i></i>返回</el-button>
         </h3>
       </el-row>
       <v-divline></v-divline>
-      <el-form ref="layerForm" :model="layerForm" label-width="90px">
-        <div class="auth-block">
-          <el-col :span="12">
-            <el-form-item label="翰林账号:">
-              <label>{{layerForm.userId}}</label>
-            </el-form-item>
-            <el-form-item label="真实姓名:">
-              <label>{{layerForm.realname[0]}}</label>
-            </el-form-item>
-            <el-form-item label="认证类型:">
-              <span v-if="layerForm.type == 0">教师</span>
-              <span v-if="layerForm.type == 1">三方个人</span>
-              <span v-if="layerForm.type == 2">三方机构</span>
-            </el-form-item>
-            <el-form-item label="认证状态:">
-              <span v-if="layerForm.status == 0">等待审核</span>
-              <span v-if="layerForm.status == 1" class="pass-info">审核通过</span>
-              <span v-if="layerForm.status == 2" class="notpass-info">审核未通过</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="真实头像:" style="height: auto;">
-              <img :src="layerForm.avatar[0]" class="photo" alt="真实头像">
-            </el-form-item>
-            <el-form-item label="申请时间:">
-              <label>{{layerForm.createTime ? jst.timestampFormat(Number(layerForm.createTime), 'Y-m-d') : ''}}</label>
-            </el-form-item>
-          </el-col>
-        </div>
-        <v-divline></v-divline>
-        <div class="auth-block">
-          <el-col :span="12">
-            <div class="sub-title pading-b20">身份证正面</div>
-          </el-col>
-          <el-col :span="12">
-            <div class="sub-title pading-b20">身份证反面</div>
-          </el-col>
-          <el-col :span="12">
-            <img :src="layerForm.identity[0]" @click="eImgClick($event)" class="identity" alt="身份证正面">
-
-          </el-col>
-          <el-col :span="12">
-            <img :src="layerForm.identity[1]" class="identity" @click="eImgClick($event)" alt="身份证反面">
-          </el-col>
-          <el-col :span="24" class="pading-tb20">
-            1.请上传身份证正面带有头像的扫描件或清晰照片<br>
-            2. 照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过2M<br>
-            注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传
-          </el-col>
-        </div>
-
-        <v-divline></v-divline>
-        <div class="auth-block">
-          <el-col :span="24">
-            <div class="sub-title pading-b20">认证材料</div>
-          </el-col>
-          <el-col :span="8" v-for="item in layerForm.credentials">
-            <img :src="item" class="material" @click="eImgClick($event)" alt="身份证正面">
-          </el-col>
-          <el-col :span="24" class="pading-tb20">
-            1.请上传您的教师资格证、单位证明、资格证明等一切可证明专业身份的材料照片<br>
-            2. 照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过3M<br>
-            注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传
-          </el-col>
-        </div>
-
-        <div v-if="layerForm.status == 0">
-          <v-divline></v-divline>
+      <div class="fix-wrapper" style="padding: 0 110px">
+        <el-form label-width="72px">
           <div class="auth-block">
-            <el-col :span="4">&nbsp;</el-col>
-            <el-col :span="16">
-              <el-form-item label="* 审核操作:">
-                <el-select v-model="layerForm.identiStatus" placeholder="请选择" class="with100">
-                  <el-option label="审核通过" :value="1"></el-option>
-                  <el-option label="审核驳回" :value="2"></el-option>
-                </el-select>
+            <el-col :span="12">
+              <el-form-item label="翰林账号:">
+                <label>{{layerForm.userId}}</label>
               </el-form-item>
-              <el-form-item label="* 审核评论:">
-                <el-input type="textarea" v-model="layerForm.reason"></el-input>
+              <el-form-item label="真实姓名:">
+                <label>{{layerForm.realname[0]}}</label>
               </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="submit">提交审核</el-button>
-                <el-button @click="dialogFormVisible = false" type="primary">取消</el-button>
+              <el-form-item label="认证类型:">
+                <span v-if="layerForm.type == 0">教师</span>
+                <span v-if="layerForm.type == 1">三方个人</span>
+                <span v-if="layerForm.type == 2">三方机构</span>
+              </el-form-item>
+              <el-form-item label="认证状态:">
+                <span v-if="layerForm.status == 0">等待审核</span>
+                <span v-if="layerForm.status == 1" class="pass-info">审核通过</span>
+                <span v-if="layerForm.status == 2" class="notpass-info">审核未通过</span>
               </el-form-item>
             </el-col>
-            <el-col :span="4">&nbsp;</el-col>
+            <el-col :span="12">
+              <el-form-item label="真实头像:" style="height: auto;">
+                <img :src="layerForm.avatar[0]" class="photo" alt="真实头像">
+              </el-form-item>
+              <el-form-item label="申请时间:">
+                <label>{{layerForm.createTime ? jst.timestampFormat(Number(layerForm.createTime), 'Y-m-d') : ''}}</label>
+              </el-form-item>
+            </el-col>
           </div>
-        </div>
-      </el-form>
+          <v-divline></v-divline>
+          <div class="auth-block">
+            <el-col :span="12">
+              <div class="sub-title pading-b20">身份证正面</div>
+            </el-col>
+            <el-col :span="12">
+              <div class="sub-title pading-b20">身份证反面</div>
+            </el-col>
+            <el-col :span="12">
+              <img :src="layerForm.identity[0]" @click="eImgClick($event)" class="identity" alt="身份证正面">
+
+            </el-col>
+            <el-col :span="12">
+              <img :src="layerForm.identity[1]" class="identity" @click="eImgClick($event)" alt="身份证反面">
+            </el-col>
+            <el-col :span="24" class="pading-tb20">
+              1.请上传身份证正面带有头像的扫描件或清晰照片<br>
+              2.照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过2M<br>
+              注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传
+            </el-col>
+          </div>
+
+          <v-divline></v-divline>
+          <div class="auth-block">
+            <el-col :span="24">
+              <div class="sub-title pading-b20">认证材料</div>
+            </el-col>
+            <el-col :span="8" v-for="item in layerForm.credentials">
+              <img :src="item" class="material" @click="eImgClick($event)" v-if="item" alt="认证材料">
+            </el-col>
+            <el-col :span="24" class="pading-tb20">
+              1.请上传您的教师资格证、单位证明、资格证明等一切可证明专业身份的材料照片<br>
+              2.照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过3M<br>
+              注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传
+            </el-col>
+          </div>
+        </el-form>
+        <el-form label-width="90px">
+          <div v-if="layerForm.status == 0">
+            <v-divline></v-divline>
+            <div class="auth-block">
+              <el-col :span="4">&nbsp;</el-col>
+              <el-col :span="16">
+                <el-form-item label="* 审核操作:">
+                  <el-select v-model="layerForm.identiStatus" placeholder="请选择" class="text-mid-input">
+                    <el-option label="审核通过" :value="1"></el-option>
+                    <el-option label="审核驳回" :value="2"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="* 审核评论:">
+                  <el-input type="textarea" v-model="layerForm.reason"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="submit" class="large-btn">提交审核</el-button>
+                  <el-button @click="resetSubmitData" type="cancel" class="large-btn">重置</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">&nbsp;</el-col>
+            </div>
+          </div>
+        </el-form>
+      </div>
       <!--假设这里放的是views的组件-->
       <transition name="ts">
         <v-imgviews v-if="isImgViewsShow" :src="imgViewsSrc" @clickit="eImgViewClick"></v-imgviews>
@@ -238,7 +241,7 @@
   import * as CODE from '../../config/code'
   import * as CONFIG from '../../config/'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, date2secondsTimestamp } from '../../utils/'
+  import { cleanFormEmptyValue, date2secondsTimestamp, errorMessage } from '../../utils/'
   export default {
     name: 'authList',
     mounted () {
@@ -358,11 +361,11 @@
       searchData () {
         let {startTime, endTime, phoneNo} = this.searchForm
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
-          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
+          errorMessage(this, MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -376,7 +379,7 @@
         let {startTime, endTime} = this.searchForm
         let newParm = {
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }
@@ -405,11 +408,12 @@
       submit () {
         let {identificationId, identiStatus, reason, tableIndex} = this.layerForm
         if (!identiStatus) {
-          this.$message.error('请选择审核操作是否通过')
+          errorMessage(this, '请选择审核操作是否通过')
           return
         }
+        // 1 通过，2驳回
         if (identiStatus == 2 && !reason.trim()) {
-          this.$message.error('审核驳回，请填写原因')
+          errorMessage(this, '审核驳回，请填写原因')
           return
         }
         let params = {
@@ -431,6 +435,14 @@
           this.$message.error(MSG.UPDATE_FAIL_MSG)
           this.CHANGE_PENDING(false)
         })
+      },
+
+      /**
+       * 重置提交的内容
+       */
+      resetSubmitData () {
+        this.layerForm.identiStatus = ''
+        this.layerForm.reason = ''
       }
     }
   }

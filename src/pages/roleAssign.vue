@@ -64,8 +64,8 @@
           </ul>
         </div>
         <div class="ft-group">
-          <button class="el-button el-button--primary" @click="changeRoleAssign">提交变更</button>
-          <button class="el-button el-button--cancel" @click="dialogFormVisible = false">取消</button>
+          <button class="el-button el-button--primary large-btn" @click="changeRoleAssign">提交变更</button>
+          <button class="el-button el-button--cancel large-btn" @click="dialogFormVisible = false">取消</button>
         </div>
       </div>
     </el-dialog>
@@ -266,6 +266,10 @@
        * 普通用户升级管理员
        */
       updateroleAssign () {
+        // 没有任何选择,就不进行升级操作
+        if (!this.manager.userId && !this.manager.phoneNo) {
+          return false
+        }
         // 得到选中的角色
         let rids = []
         for (let i = 0, len = this.roleList.length; i < len; i++) {
@@ -370,17 +374,21 @@
               }).catch(() => {
                 // 异常错误处理
                 this.$message.error('异常错误')
+                this.resetUpgradeQueryManager()
               })
             } else {
               this.$message.error('查询管理员不存在')
+              this.resetUpgradeQueryManager()
             }
           } else {
             // 异常错误处理
             this.$message.error('查询管理员失败')
+            this.resetUpgradeQueryManager()
           }
         }).catch(() => {
           // 异常错误处理
           this.$message.error('异常错误')
+          this.resetUpgradeQueryManager()
         })
       },
 

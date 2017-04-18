@@ -49,17 +49,17 @@
         <tr>
           <td>
             <label>
-              <span>学校</span>
-              <el-select v-model="searchForm.schoolCode" :disabled="!searchForm.countyZip || !searchForm.phase" placeholder="请选择">
-                <el-option v-for="item in searchDatas.schoolData" :label="item.name" :value="item.scode"></el-option>
+              <span>学段</span>
+              <el-select v-model="searchForm.phase" @change="changeSelectStudySection($event)"  placeholder="请选择">
+                <el-option v-for="item in searchDatas.studySectionData" :label="item.name" :value="item"></el-option>
               </el-select>
             </label>
           </td>
           <td>
             <label>
-              <span>学段</span>
-              <el-select v-model="searchForm.phase" @change="changeSelectStudySection($event)"  placeholder="请选择">
-                <el-option v-for="item in searchDatas.studySectionData" :label="item.name" :value="item"></el-option>
+              <span>学校</span>
+              <el-select v-model="searchForm.schoolCode" :disabled="!searchForm.countyZip || !searchForm.phase || schoolLoading" placeholder="请选择">
+                <el-option v-for="item in searchDatas.schoolData" :label="item.name" :value="item.scode"></el-option>
               </el-select>
             </label>
           </td>
@@ -182,13 +182,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="学校选择" :label-width="formLabelWidth">
-              <el-select v-model="layerForm.schoolCode" :disabled="!layerForm.countyZip || !layerForm.phase" placeholder="请选择">
-                <el-option v-for="item in layerDatas.schoolData" :label="item.name" :value="item.scode"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="学段选择" :label-width="formLabelWidth">
               <el-select v-model="layerForm.phase" @change="changeSelectStudySection($event)" placeholder="请选择">
                 <el-option v-for="item in layerDatas.studySectionData" :label="item.name" :value="item"></el-option>
@@ -196,8 +189,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="学校选择" :label-width="formLabelWidth">
+              <el-select v-model="layerForm.schoolCode" :disabled="!layerForm.countyZip || !layerForm.phase" placeholder="请选择">
+                <el-option v-for="item in layerDatas.schoolData" :label="item.name" :value="item.scode"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="年级选择" :label-width="formLabelWidth">
-              <el-select v-model="layerForm.gradeCode" :disabled="!layerForm.phase"  placeholder="请选择">
+              <el-select v-model="layerForm.gradeCode" :disabled="!layerForm.schoolCode"  placeholder="请选择">
                 <el-option v-for="item in layerDatas.gradeData" :label="item.gradeName" :value="item.gradeCode"></el-option>
               </el-select>
             </el-form-item>
@@ -219,7 +219,7 @@
   import * as CODE from '../../config/code'
   import * as CONFIG from '../../config/'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
   export default {
     name: 'pushConditionList',
     mounted () {
@@ -285,6 +285,7 @@
           '1': '初中',
           '2': '高中'
         },
+        schoolLoading: false, // 是否正在加载学校
         formLabelWidth: '120px'
       }
     },
@@ -430,7 +431,7 @@
             this.CHANGE_PENDING(false)
           })
         } else {
-          this.$message.error('（条件名称/推送人群/省份选择/城市选择）都必须填写')
+          errorMessage(this, '（条件名称/推送人群/省份选择/城市选择）都必须填写')
         }
       },
 
@@ -449,7 +450,7 @@
       searchData () {
         let {startTime, endTime} = this.searchForm
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -468,7 +469,7 @@
           cityZip: cityZip && typeof cityZip === 'object' ? cityZip.zip : cityCode,
           phase: phase && typeof phase === 'object' ? phase.phaseCode : phaseCode,
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }
@@ -584,6 +585,7 @@
        */
       initCity (zip) {
         if (!zip) return
+        this.CHANGE_PENDING(true)
         this.BASIC_DATA_REGION_GET_LIST({zip: zip}).then(res => {
           if (res.code == CODE.SUCCESS) {
             this.dialogFormVisible ? this.layerDatas.cityData = res.data : this.searchDatas.cityData = res.data
@@ -593,11 +595,13 @@
               this.loadCount++
             }
           }
+          this.CHANGE_PENDING(false)
         }).catch(() => {
           if (this.loadCount < CONFIG.LOAD_DATA_COUNT) {
             this.initCity(zip)
             this.loadCount++
           }
+          this.CHANGE_PENDING(false)
         })
       },
 
@@ -606,6 +610,7 @@
        */
       initCounty (zip) {
         if (!zip) return
+        this.CHANGE_PENDING(true)
         this.BASIC_DATA_REGION_GET_LIST({zip: zip}).then(res => {
           if (res.code == CODE.SUCCESS) {
             this.dialogFormVisible ? this.layerDatas.countyData = res.data : this.searchDatas.countyData = res.data
@@ -615,11 +620,13 @@
               this.loadCount++
             }
           }
+          this.CHANGE_PENDING(false)
         }).catch(() => {
           if (this.loadCount < CONFIG.LOAD_DATA_COUNT) {
             this.initCounty(zip)
             this.loadCount++
           }
+          this.CHANGE_PENDING(false)
         })
       },
 
@@ -633,13 +640,17 @@
           if (!this.layerForm.phase || !this.layerForm.countyZip) return
           zip = this.layerForm.countyZip.zip
           phaseCode = this.layerForm.phase.phaseCode
+          this.layerForm.schoolCode = ''
         } else {
           if (!this.searchForm.phase || !this.searchForm.countyZip) return
           zip = this.searchForm.countyZip.zip
           phaseCode = this.searchForm.phase.phaseCode
+          this.searchForm.schoolCode = ''
         }
 
-        if (!zip || !phaseCode) return
+        if (!zip || phaseCode === '') return
+        this.schoolLoading = true
+        this.CHANGE_PENDING(true)
         // 请求接口获取数据
         this.BASIC_DATA_SCHOOL_GET_LIST({zip: zip, phase: phaseCode}).then(res => {
           if (res.code == CODE.SUCCESS) {
@@ -650,11 +661,15 @@
               this.loadCount++
             }
           }
+          this.schoolLoading = false
+          this.CHANGE_PENDING(false)
         }).catch(() => {
           if (this.loadCount < CONFIG.LOAD_DATA_COUNT) {
             this.getSchoolList()
             this.loadCount++
           }
+          this.schoolLoading = false
+          this.CHANGE_PENDING(false)
         })
       },
 

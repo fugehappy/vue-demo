@@ -33,10 +33,29 @@ const cleanFormEmptyValue = (formData) => {
 /**
  * 时间格式转时间戳（秒）
  * @param date 日期对象 Object
+ * @param isEndTime 是否为结束时间，是则加一天
  * @returns {number}
  */
-const date2secondsTimestamp = (date) => {
-  return new Date(date).getTime() / 1000
+const date2secondsTimestamp = (date, isEndTime = false) => {
+  let timestamp = new Date(date).getTime() / 1000
+  if (isEndTime) {
+    timestamp += 86400
+  }
+  return timestamp
+}
+
+/**
+ * 处理弹出错误消息，显示下一个message时移除上一个message
+ * @param obj 必须传入vue对象，this
+ * @param msg 显示的提示消息
+ */
+const errorMessage = (obj, msg) => {
+  if (typeof obj !== 'object' || !msg) return
+  let elMessage = document.getElementsByClassName('el-message')
+  if (elMessage.length) {
+    elMessage[0].remove()
+  }
+  obj.$message.error(msg)
 }
 
 /**
@@ -54,6 +73,7 @@ export {
   sleep,
   cleanFormEmptyValue,
   date2secondsTimestamp,
-  globalErrorPrint
+  globalErrorPrint,
+  errorMessage
 }
 

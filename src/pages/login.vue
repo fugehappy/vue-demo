@@ -56,8 +56,26 @@
         },
         validate: {
           errMsg: ''
+        },
+        loginDone: false
+      }
+    },
+    mounted () {
+      // 监听Enter键自动提交事件
+      let pressEnter = (event) => {
+        if (event.keyCode == 13) {
+          let ret = this.submit()
+          if (ret) {
+            ret.then(() => {
+              // 登录成功
+              if (this.loginDone) {
+                document.removeEventListener('keyup', pressEnter, false)
+              }
+            })
+          }
         }
       }
+      document.addEventListener('keyup', pressEnter, false)
     },
     methods: {
       ...mapActions([USER_SIGNIN, CHANGE_PENDING, MENU_GET_USER_MENU_KEYS]),
@@ -67,12 +85,11 @@
       checkLoginName () {
         this.validate.errMsg = ''
         let {loginName} = this.form
-        let len = loginName.toString().length
         if (!loginName) {
           this.loginNameTips = Messages.LOGIN_USERNAME_NOT_EMPTY
           return false
-        } else if (len < 4 || len > 32) {
-          this.loginNameTips = Messages.LOGIN_USERNAME_LENGTH_ERR_MSG
+        } else if (!CONFIG.USERNAME_PATTERN.test(loginName)) {
+          this.loginNameTips = Messages.LOGIN_USERNAME_PATTERN_ERR_MSG
           return false
         }
         this.loginNameTips = ''
@@ -84,12 +101,8 @@
       checkLoginPassword () {
         this.validate.errMsg = ''
         let {password} = this.form
-        let len = password.toString().length
         if (!password) {
           this.loginPasswordTips = Messages.LOGIN_PASSWORD_NOT_EMPTY
-          return false
-        } else if (len < 6 || len > 16) {
-          this.loginPasswordTips = Messages.LOGIN_PASSWORD_LENGTH_ERR_MSG
           return false
         } else if (!CONFIG.PASSWORD_PATTERN.test(password)) {
           this.loginPasswordTips = Messages.LOGIN_PASSWORD_PATTERN_ERR_MSG
@@ -105,7 +118,7 @@
           return
         }
         this.CHANGE_PENDING(true)
-        this.USER_SIGNIN(this.form).then(res => {
+        return this.USER_SIGNIN(this.form).then(res => {
           this.CHANGE_PENDING(false)
           if (res.code == CODE.SUCCESS) {
             // 获取已有的权限菜单，并跳转到第一个
@@ -116,6 +129,7 @@
               globalErrorPrint(err)
               this.$router.replace({path: '/index'})
             })
+            this.loginDone = true
           } else {
             this.validate.hasErr = true
             this.$message.error(Messages.LOGIN_PWDNAME_ERR_MSG)

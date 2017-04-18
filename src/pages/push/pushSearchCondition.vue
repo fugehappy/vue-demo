@@ -42,7 +42,7 @@
         <el-col :span="24">
           <el-col :span="12">
             <el-form-item label="学校">
-              <el-select v-model="searchConditionForm.schoolCode" :disabled="!searchConditionForm.countyZip || !searchConditionForm.phase" placeholder="请选择">
+              <el-select v-model="searchConditionForm.schoolCode" :disabled="!searchConditionForm.countyZip || !searchConditionForm.phase || schoolLoading" placeholder="请选择">
                 <el-option v-for="item in searchDatas.schoolData" :label="item.name" :value="item.scode"></el-option>
               </el-select>
             </el-form-item>
@@ -151,7 +151,7 @@
   import * as CODE from '../../config/code'
   import * as CONFIG from '../../config/'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
 
   export default {
     props: {
@@ -210,6 +210,7 @@
         pageSize: CONFIG.TINY_PAGE_SIZE,
         // 选择后的（推送条件）数据
         choiceConditionData: {},
+        schoolLoading: false, // 是否正在加载学校
         formLabelWidth: '120px'
       }
     },
@@ -227,7 +228,7 @@
        */
       choicePushCondition () {
         if (jst.isNullOrEmpty(this.choiceConditionData, true)) {
-          this.$message.error('请选择一条推送条件')
+          errorMessage(this, '请选择一条推送条件')
           return
         }
         // 将值传给父组件
@@ -269,7 +270,7 @@
           countyZip: countyZip ? countyZip.zip : null,
           phase: phase ? phase.phaseCode : null,
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }
@@ -281,6 +282,7 @@
         let newForm = cleanFormEmptyValue(this.searchConditionForm)
         let params = Object.assign({}, newForm, newParm)
         this.PUSH_CONDITION_GET_LIST(params).then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code == CODE.SUCCESS) {
             let newData = res.data.items.map((item) => {
               item.conditions = item.provinceName ? ` ${item.provinceName} >` : ''
@@ -297,11 +299,10 @@
           } else {
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
-          this.CHANGE_PENDING(false)
         }).catch((err) => {
+          this.CHANGE_PENDING(false)
           globalErrorPrint(err)
           this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
-          this.CHANGE_PENDING(false)
         })
       },
 
@@ -346,6 +347,7 @@
        * 初始化省份
        */
       initProvince () {
+        this.CHANGE_PENDING(true)
         this.BASIC_DATA_REGION_GET_LIST({zip: null}).then(res => {
           if (res.code == CODE.SUCCESS) {
             this.searchDatas.provinceData = res.data
@@ -355,12 +357,14 @@
               this.loadCount++
             }
           }
+          this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
           if (this.loadCount < CONFIG.LOAD_DATA_COUNT) {
             this.initProvince()
             this.loadCount++
           }
+          this.CHANGE_PENDING(false)
         })
       },
 
@@ -368,6 +372,7 @@
        * 初始化市
        */
       initCity (zip) {
+        this.CHANGE_PENDING(true)
         this.BASIC_DATA_REGION_GET_LIST({zip: zip}).then(res => {
           if (res.code == CODE.SUCCESS) {
             this.searchDatas.cityData = res.data
@@ -377,12 +382,14 @@
               this.loadCount++
             }
           }
+          this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
           if (this.loadCount < CONFIG.LOAD_DATA_COUNT) {
             this.initCity(zip)
             this.loadCount++
           }
+          this.CHANGE_PENDING(false)
         })
       },
 
@@ -418,6 +425,9 @@
         zip = this.searchConditionForm.countyZip.zip
         phaseCode = this.searchConditionForm.phase.phaseCode
 
+        this.schoolLoading = true
+        this.searchConditionForm.schoolCode = ''
+        this.CHANGE_PENDING(true)
         // 请求接口获取数据
         this.BASIC_DATA_SCHOOL_GET_LIST({zip: zip, phase: phaseCode}).then(res => {
           if (res.code == CODE.SUCCESS) {
@@ -428,12 +438,16 @@
               this.loadCount++
             }
           }
+          this.schoolLoading = false
+          this.CHANGE_PENDING(false)
         }).catch((err) => {
+          this.CHANGE_PENDING(false)
           globalErrorPrint(err)
           if (this.loadCount < CONFIG.LOAD_DATA_COUNT) {
             this.getSchoolList()
             this.loadCount++
           }
+          this.schoolLoading = false
         })
       },
 

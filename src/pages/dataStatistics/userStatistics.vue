@@ -52,7 +52,8 @@
   import { CHANGE_PENDING } from 'store/globalStore'
   import { USER_INFORMATION_STATISTICS } from 'store/modules/statisticsStore'
   import { SUCCESS } from '../../config/code'
-  import { globalErrorPrint } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import * as MSG from '../../config/messages'
   export default {
     name: 'userStatistics',
     props: {
@@ -135,8 +136,8 @@
 
         Object.assign(postData, {
           type: userType != '' ? userType : null,
-          startTime: startTime ? new Date(startTime).getTime() : null,
-          endTime: endTime ? new Date(endTime).getTime() : null
+          startTime: startTime ? date2secondsTimestamp(startTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null
         })
 
         this.CHANGE_PENDING(true) // 加载遮罩
@@ -281,7 +282,7 @@
         // 不同的条件
         if (this.searchForm.startTime && this.searchForm.endTime) {
           if (this.searchForm.startTime > this.searchForm.endTime) {
-            this.$message.error('请选择统计起时间小于统计止时间')
+            errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
             return
           }
         }

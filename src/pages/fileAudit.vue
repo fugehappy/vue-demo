@@ -184,6 +184,9 @@
             <el-form-item label="文件名称:" :label-width="formLabelWidth">
               <label>{{layerForm.fileName}}</label>
             </el-form-item>
+            <el-form-item label="内容名称:" :label-width="formLabelWidth">
+              <label>{{layerForm.title}}</label>
+            </el-form-item>
             <el-form-item label="内容简介:" :label-width="formLabelWidth">
               <label>{{layerForm.summary}}</label>
             </el-form-item>
@@ -225,7 +228,7 @@
   import * as CODE from '../config/code'
   import * as CONFIG from '../config/'
   import * as MSG from '../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp } from '../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../utils/'
   import GlobalService from '../services/GlobalService'
   export default {
     name: 'fileAuditList',
@@ -258,6 +261,7 @@
           fileKey: null,
           fileName: null,
           downloadLink: null,
+          title: null,
           summary: null,
           optionStatus: '', // 0 私有，1 审核中，2 审核未通过，3 审核通过已公开， 4 已删除到回收站
           rejectReason: ''
@@ -353,7 +357,7 @@
             this.CHANGE_PENDING(false)
           })
         } else {
-          this.$message.error('审核操作与评论必须填写')
+          errorMessage(this, '审核操作与评论必须填写')
         }
       },
 
@@ -378,11 +382,11 @@
       searchData () {
         let {startTime, endTime, phoneNo} = this.searchForm
         if (startTime > endTime) {
-          this.$message.error(MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
+          errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
           return
         }
         if (phoneNo && !CONFIG.PHONENO_PATTERN.test(phoneNo)) {
-          this.$message.error(MSG.PHONENO_PATTERN_ERR_MSG)
+          errorMessage(this, MSG.PHONENO_PATTERN_ERR_MSG)
           return
         }
         this.currentPage = 1 // 设置为第一页
@@ -399,8 +403,8 @@
         })
         let {startTime, endTime, status} = this.searchForm
         let newParm = {
-          startTime: startTime ? date2secondsTimestamp(startTime) / 1000 : null,
-          endTime: endTime ? date2secondsTimestamp(endTime) / 1000 : null,
+          startTime: startTime ? date2secondsTimestamp(startTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }

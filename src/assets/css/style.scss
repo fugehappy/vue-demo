@@ -471,28 +471,32 @@ $navHeight: 50px;
         .el-select {
           vertical-align: middle;
         }
-        .push-choice {
-          position: absolute;
-          margin-left: 10px;
-          line-height: 26px;
-          margin-top: 6px;
-          background-color: $baseColor3;
-          color: $CORLOR_WHITE;
-          border: none;
-          &:active {
-            background: $BASE_COLOR_N;
-            border-color: $BASE_COLOR_N;
-          }
-          &.is-disabled {
-            background-color: #eef1f6;
-            border-color: #d1dbe5;
-            color: #c5c5c5;
-          }
-        }
         .text-mid-input {
           max-width: 252px;
         }
       }
+    }
+  }
+  .push-choice {
+    position: absolute;
+    margin-left: 10px;
+    line-height: 26px;
+    margin-top: 6px;
+    background-color: $baseColor3;
+    color: $CORLOR_WHITE;
+    border: none;
+    &:active {
+      background: $BASE_COLOR_N;
+      border-color: $BASE_COLOR_N;
+    }
+    &:hover {
+       border-color: $BASE_COLOR;
+       color: $CORLOR_WHITE;
+     }
+    &.is-disabled {
+      background-color: #eef1f6;
+      border-color: #d1dbe5;
+      color: #c5c5c5;
     }
   }
   .v-modal{
@@ -704,6 +708,29 @@ body {
   // 加载中遮罩样式
   .el-loading-mask {
     background-color: rgba(255,255,255,.1);
+  }
+  // 下拉框的图标样式
+  .el-date-editor .el-input__icon {
+    background: url(../../assets/icons/bt_date.png) no-repeat;
+    width: 22px;
+  }
+  .el-select .el-input .el-input__icon {
+    background: url(../../assets/icons/bt_arrow_down.png) no-repeat;
+    width: 22px;
+    -webkit-transform: translateY(-50%) rotateZ(0deg);
+    -ms-transform: translateY(-50%) rotateZ(0deg);
+    transform: translateY(-50%) rotateZ(0deg);
+  }
+  .el-date-editor .el-icon-date:before,
+  .el-date-editor .el-icon-date:after,
+  .el-select .el-input__icon:before,
+  .el-select .el-input__icon:after {
+    display: none;
+  }
+  .el-select .el-input .el-input__icon.is-reverse {
+    -webkit-transform: translateY(-50%) rotateZ(180deg);
+    -ms-transform: translateY(-50%) rotateZ(180deg);
+    transform: translateY(-50%) rotateZ(180deg);
   }
 }
 // 覆写组件样式 end

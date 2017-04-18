@@ -61,7 +61,7 @@
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING } from 'store/globalStore'
   import { PAYMENT_GET_STATISTICS } from 'store/modules/statisticsStore'
-  import { globalErrorPrint } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
   import * as jst from 'js-common-tools'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
@@ -154,7 +154,7 @@
       searchData () {
         if (this.searchForm.startTime && this.searchForm.endTime) {
           if (this.searchForm.startTime > this.searchForm.endTime) {
-            this.$message.error('请选择统计起时间小于统计止时间')
+            errorMessage(this, MSG.STARTTIME_GREATER_THAN_ENDTIME_MSG)
             return
           }
         }
@@ -169,8 +169,8 @@
         let {originType, startTime, endTime} = this.searchForm
         Object.assign(postData, {
           type: originType != '' ? originType : 0,
-          startTime: startTime ? new Date(startTime).getTime() : null,
-          endTime: endTime ? new Date(endTime).getTime() : null
+          startTime: startTime ? date2secondsTimestamp(startTime) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime, true) : null
         })
         // select中有值了进行处理
         if (this.searchForm.payType != '') {

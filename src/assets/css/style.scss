@@ -16,16 +16,16 @@ $distance40: 40px;
 $distance32: 32px;
 $distance30: 30px;
 
-body{
+body {
   min-width: 1366px;
   overflow: auto;
 }
-.main{
+.main {
   position: relative;
   width: 100%;
   float: left;
 }
-.login-main{
+.login-main {
   min-height: 100vh;
 }
 /* 顶部 */
@@ -227,7 +227,6 @@ $navHeight: 50px;
 
 /* 内容部分 */
 .content-wrap {
-  /*max-height: calc(100vh - 130px);*/
   width: calc(100% - 211px);
   float: left;
   min-height: calc(100vh - #{$topHeight} - 160px);
@@ -269,6 +268,10 @@ $navHeight: 50px;
   }
   .text-input {
     max-width: 360px;
+    line-height: $distance32;
+    .el-input__inner {
+      height: $distance32 ;
+    }
   }
   .top-title {
     font-size: $fontSize18;
@@ -300,7 +303,7 @@ $navHeight: 50px;
     }
   }
   // 按钮占用整行
-  .buttons-wrap{
+  .buttons-wrap {
     padding: 10px;
     text-align: right;
   }
@@ -609,6 +612,11 @@ $navHeight: 50px;
     &:first-child td {
       border-top: 0;
     }
+    &.search-title{
+      font-size: $fontSize18;
+      color: $baseColor1;
+      text-indent: 10px;
+    }
   }
   label {
     padding: 0 10px;
@@ -618,36 +626,8 @@ $navHeight: 50px;
       display: inline-block;
     }
   }
-  /*下拉框样式*/
-  .el-form-item__content {
-    height: 22px;
-    line-height: 22px;
-    .el-input {
-      vertical-align: middle;
-    }
-  }
-  .el-form-item__label {
-    height: $distance32;
-    line-height: $distance32;
-    padding: 0 10px 0 0;
-  }
-  .el-form-item {
-    margin-bottom: 0;
-  }
-  .el-input__inner {
-    height: 22px;
-    border-radius: 0;
-  }
-  .el-select {
-    vertical-align: middle;
-  }
-  .el-date-editor.el-input {
-    width: 161px;
-  }
-  .el-input {
-    width: 161px;
-  }
 }
+.content-wrap .table-custom,
 .sort-table-bd {
   /*下拉框样式*/
   .el-form-item__content {
@@ -676,6 +656,17 @@ $navHeight: 50px;
     width: 161px;
   }
   .el-input {
+    width: 161px;
+  }
+  .el-date-editor .el-input__icon {
+    background: url(../../assets/icons/bt_date.png) no-repeat;
+    width: 22px;
+  }
+  .el-select .el-input .el-input__icon {
+    background: url(../../assets/icons/bt_arrow_down.png) no-repeat;
+    width: 22px;
+  }
+  .el-select {
     width: 161px;
   }
 }
@@ -711,12 +702,12 @@ body {
   }
   // 下拉框的图标样式
   .el-date-editor .el-input__icon {
-    background: url(../../assets/icons/bt_date.png) no-repeat;
-    width: 22px;
+    background: url(../../assets/icons/bt_date_big.png) no-repeat;
+    width: 32px;
   }
   .el-select .el-input .el-input__icon {
-    background: url(../../assets/icons/bt_arrow_down.png) no-repeat;
-    width: 22px;
+    background: url(../../assets/icons/bt_arrow_down_big.png) no-repeat;
+    width: 32px;
     -webkit-transform: translateY(-50%) rotateZ(0deg);
     -ms-transform: translateY(-50%) rotateZ(0deg);
     transform: translateY(-50%) rotateZ(0deg);
@@ -731,6 +722,29 @@ body {
     -webkit-transform: translateY(-50%) rotateZ(180deg);
     -ms-transform: translateY(-50%) rotateZ(180deg);
     transform: translateY(-50%) rotateZ(180deg);
+  }
+  .el-dialog {
+    &.el-dialog--small {
+      .el-select {
+        width: 252px;
+      }
+    }
+  }
+  .el-form .el-textarea {
+    width: 500px;
+  }
+  .el-date-editor.el-input {
+    max-width: 360px;
+    width: 100%;
+  }
+  .el-form-item__content {
+    line-height: 32px;
+    .el-input__inner {
+      height: 32px;
+    }
+  }
+  .el-select {
+    width: 360px;
   }
 }
 // 覆写组件样式 end

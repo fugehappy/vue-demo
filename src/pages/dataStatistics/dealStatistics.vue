@@ -42,8 +42,8 @@
           </table>
           <div class="buttons-wrap">
             <el-form-item>
+              <el-button type="cancel" class="clear-icon" @click="clearFormData"><i></i>清除</el-button>
               <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
-              <el-button type="primary" class="el-button--cancel clear-icon" @click="clearFormData"><i></i>清除</el-button>
             </el-form-item>
           </div>
         </el-form>

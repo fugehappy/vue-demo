@@ -32,8 +32,8 @@
             </tr>
           </table>
           <el-form-item class="btn-group">
+            <el-button type="cancel" class="clear-icon" @click="clearFormData"><i></i>清除</el-button>
             <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
-            <el-button type="primary" class="el-button--cancel clear-icon" @click="clearFormData"><i></i>清除</el-button>
           </el-form-item>
         </el-form>
       </div>

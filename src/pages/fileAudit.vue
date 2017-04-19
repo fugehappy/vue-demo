@@ -9,6 +9,11 @@
     <!-- 搜索条件组合 begin -->
     <div class="fix-wrapper">
       <table class="table-custom" width="100%">
+        <tr class="search-title">
+          <td colspan="4">
+            查询
+          </td>
+        </tr>
         <tr>
           <td>
             <label>
@@ -109,8 +114,8 @@
         </tr>
       </table>
       <div class="buttons-wrap">
-        <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
         <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+        <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
       </div>
     </div>
     <v-divline></v-divline>

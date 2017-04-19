@@ -74,8 +74,8 @@
         <el-col :span="24">
           <el-form-item>
             <el-col :span="24" class="t-l">
-              <el-button type="primary" @click="searchConditionData" class="search-icon"><i></i>搜索</el-button>
               <el-button type="cancel" @click="clearConditionFormData" class="clear-icon"><i></i>清除</el-button>
+              <el-button type="primary" @click="searchConditionData" class="search-icon"><i></i>搜索</el-button>
             </el-col>
           </el-form-item>
         </el-col>

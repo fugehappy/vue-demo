@@ -80,7 +80,7 @@
                   <td>
                     <label>
                       <span>翰林账号</span>
-                      <el-input v-model="manager.userId" placeholder="翰林账号" :maxlength="32"></el-input>
+                      <el-input v-model="manager.userId" :maxlength="32"></el-input>
                     </label>
                   </td>
                   <td>
@@ -88,7 +88,7 @@
                       <span>手机号码</span>
                       <div class="el-input text-input">
                         <input class="el-input__inner" v-model="manager.phoneNo" :maxlength="11"
-                               @keyup="manager.phoneNo = manager.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+                               @keyup="manager.phoneNo = manager.phoneNo.replace(/[^0-9]/, '')">
                       </div>
                     </label>
                   </td>

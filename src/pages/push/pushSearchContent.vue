@@ -93,8 +93,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" class="t-c">
-            <el-button type="primary" @click="searchContentData" class="search-icon"><i></i>搜索</el-button>
             <el-button type="cancel" @click="clearContentFormData" class="clear-icon"><i></i>清除</el-button>
+            <el-button type="primary" @click="searchContentData" class="search-icon"><i></i>搜索</el-button>
           </el-col>
         </el-col>
       </el-form>

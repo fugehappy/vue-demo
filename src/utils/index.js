@@ -59,6 +59,22 @@ const errorMessage = (obj, msg) => {
 }
 
 /**
+ * 判断断网情况处理
+ * @param obj 必须传入vue对象，this
+ * @param err 错误信息
+ * @returns {boolean}
+ */
+const judgeNotNetwork = (obj, err) => {
+  let {readyState} = err
+  if (readyState == 0) {
+    obj.$message.error('请求超时或您已断网，请检查网络！')
+    return true
+  } else {
+    return false
+  }
+}
+
+/**
  * 开发环境日志输出
  * @param err
  */
@@ -74,6 +90,7 @@ export {
   cleanFormEmptyValue,
   date2secondsTimestamp,
   globalErrorPrint,
-  errorMessage
+  errorMessage,
+  judgeNotNetwork
 }
 

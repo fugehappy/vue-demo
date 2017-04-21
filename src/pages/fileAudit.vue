@@ -45,9 +45,9 @@
           <td>
             <label>
               <span>学段</span>
-              <el-select v-model="selectsObj.courseValue" :disabled="selectsObj.sectionValue && selectsObj.courseData ? false : true"
-                         placeholder="请选择" @change="changeSelect('course', $event, selectsObj, cateRootObj)">
-                <el-option v-for="item in selectsObj.courseData" :label="item.name" :value="item"></el-option>
+              <el-select v-model="selectsObj.sectionValue" :disabled="selectsObj.categoryValue && selectsObj.sectionData ? false : true"
+                         placeholder="请选择" @change="changeSelect('section', $event, selectsObj, cateRootObj)">
+                <el-option v-for="item in selectsObj.sectionData" :label="item.name" :value="item"></el-option>
               </el-select>
             </label>
           </td>
@@ -83,7 +83,7 @@
           <td>
             <label>
               <span>用户名称</span>
-              <el-input v-model="searchForm.userId" placeholder="请输入" :maxlength="32" class="text-input"></el-input>
+              <el-input v-model="searchForm.userId" placeholder="" :maxlength="32" class="text-input"></el-input>
             </label>
           </td>
         </tr>
@@ -93,19 +93,19 @@
               <span>用户手机</span>
               <div class="el-input text-input">
                 <input class="el-input__inner" v-model="searchForm.phoneNo" :maxlength="11"
-                       @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+                       @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="">
               </div>
             </label>
           </td>
           <td>
             <label>
-              <span>上传时间</span>
+              <span>上传时间起</span>
               <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
             </label>
           </td>
           <td>
             <label>
-              <span>至</span>
+              <span>上传时间止</span>
               <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
             </label>
           </td>
@@ -114,7 +114,7 @@
         </tr>
       </table>
       <div class="buttons-wrap">
-        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清空</el-button>
         <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
       </div>
     </div>
@@ -233,7 +233,7 @@
   import * as CODE from '../config/code'
   import * as CONFIG from '../config/'
   import * as MSG from '../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../utils/'
   import GlobalService from '../services/GlobalService'
   export default {
     name: 'fileAuditList',
@@ -357,9 +357,12 @@
             }
             this.CHANGE_PENDING(false)
             this.dialogFormVisible = false
-          }).catch(() => {
-            this.$message.error(MSG.UPDATE_FAIL_MSG)
+          }).catch((err) => {
             this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
+            this.$message.error(MSG.UPDATE_FAIL_MSG)
           })
         } else {
           errorMessage(this, '审核操作与评论必须填写')
@@ -438,9 +441,12 @@
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 

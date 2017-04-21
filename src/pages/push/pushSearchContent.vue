@@ -60,14 +60,14 @@
         <el-col :span="24">
           <el-col :span="12">
             <el-form-item label="上传者">
-              <el-input v-model="searchContentForm.userId" placeholder="请输入" class="text-mid-input"></el-input>
+              <el-input v-model="searchContentForm.userId" placeholder="" class="text-mid-input"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="手机号">
               <div class="el-input text-mid-input">
                 <input class="el-input__inner" v-model="searchContentForm.phoneNo" :maxlength="11"
-                       @keyup="searchContentForm.phoneNo = searchContentForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+                       @keyup="searchContentForm.phoneNo = searchContentForm.phoneNo.replace(/[^0-9]/, '')" placeholder="">
               </div>
             </el-form-item>
           </el-col>
@@ -80,8 +80,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="标题名称">
-              <el-input v-model="searchContentForm.keyWord" placeholder="请输入" class="text-mid-input"></el-input>
+            <el-form-item label="关键字">
+              <div class="el-input text-mid-input">
+                <input class="el-input__inner" v-model="searchContentForm.keyWord" :maxlength="80" placeholder="标题名称、文件内容、内容简介等">
+              </div>
             </el-form-item>
           </el-col>
         </el-col>
@@ -93,7 +95,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" class="t-c">
-            <el-button type="cancel" @click="clearContentFormData" class="clear-icon"><i></i>清除</el-button>
+            <el-button type="cancel" @click="clearContentFormData" class="clear-icon"><i></i>清空</el-button>
             <el-button type="primary" @click="searchContentData" class="search-icon"><i></i>搜索</el-button>
           </el-col>
         </el-col>
@@ -102,7 +104,7 @@
       <v-divline></v-divline>
 
       <el-table :data="tableContentData" border style="width: 97%">
-        <el-table-column label="选择" width="60">
+        <el-table-column label="选择" width="70">
           <template scope="scope">
             <input type="radio" name="contentRadio" @click="choiceContentTableData(scope.row)" autocomplete="off"
                    value="scope.row.contentId">
@@ -117,6 +119,11 @@
         <el-table-column label="文件分类" min-width="180">
           <template scope="scope">
             {{scope.row.conditions}}
+          </template>
+        </el-table-column>
+        <el-table-column label="文件名" width="120">
+          <template scope="scope">
+            <a :href="scope.row.downloadLink" target="_blank">{{scope.row.files ? scope.row.files[0].fileName : ''}}</a>
           </template>
         </el-table-column>
         <el-table-column label="上传日期" width="120">
@@ -173,14 +180,14 @@
 <script>
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING, GET_CONTENT_CATEGORYS } from 'store/globalStore'
-  import { CONTENT_GET_LIST } from 'store/modules/contentStore'
+  import { CONTENT_GET_LIST, CONTENT_FILE_GET_URL } from 'store/modules/contentStore'
   import { USER_GET_PROFILE } from 'store/modules/userStore'
   import * as jst from 'js-common-tools'
   import GlobalService from '../../services/GlobalService'
   import * as CONFIG from '../../config/'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
 
   export default {
     props: {
@@ -234,7 +241,7 @@
       }
     },
     methods: {
-      ...mapActions([CHANGE_PENDING, GET_CONTENT_CATEGORYS, CONTENT_GET_LIST, USER_GET_PROFILE]),
+      ...mapActions([CHANGE_PENDING, GET_CONTENT_CATEGORYS, CONTENT_GET_LIST, USER_GET_PROFILE, CONTENT_FILE_GET_URL]),
       /**
        * 点击分页码
        */
@@ -349,9 +356,12 @@
             this.tableContentData = newData
             this.totalSize = res.data.totalSize
             this.currentPage = res.data.currentPage
-            // 循环列表获取用户相关信息
+
             this.tableContentData.map((item, index) => {
+              // 循环列表获取用户相关信息
               this.getUserProfile(index, item)
+              // 循环列表获取下载地址
+              this.getDownloadLink(index, item)
             })
           } else {
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
@@ -359,8 +369,11 @@
           this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 
@@ -390,6 +403,32 @@
             setTimeout(() => {
               this.forceUpdateTable()
             }, 100)
+          }
+        }).catch((err) => {
+          globalErrorPrint(err)
+          this.forceUpdateTable()
+        })
+      },
+
+      /**
+       * 获取下载地址
+       * @param index
+       * @param rowData
+       */
+      getDownloadLink (index, rowData) {
+        let {files, resId} = rowData
+        let params = {
+          resId: resId,
+          fileKey: files[0].fileKey
+        }
+        this.CONTENT_FILE_GET_URL(params).then(res => {
+          if (res.code == CODE.SUCCESS) {
+            this.tableContentData[index].downloadLink = res.data.url
+          }
+          if (index == this.tableContentData.length - 1) {
+            setTimeout(() => {
+              this.forceUpdateTable()
+            }, 120)
           }
         }).catch((err) => {
           globalErrorPrint(err)

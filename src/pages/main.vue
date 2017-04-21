@@ -8,11 +8,11 @@
         <img src="/static/images/logo.png" alt="LOGO">
         <span>乾坤翰林内容云平台</span>
       </router-link>
-      <a class="right-link">
-        <img src="../assets/icons/ic_user_navi.png">&nbsp;&nbsp;{{loginName}}
-      </a>
       <a @click="signout" class="right-link">
         <img src="../assets/icons/ic_out_title.png">&nbsp;&nbsp;退出
+      </a>
+      <a class="right-link">
+        <img src="../assets/icons/ic_user_title.png">&nbsp;&nbsp;{{loginName}}
       </a>
     </div>
     <!-- 左侧导航 -->

@@ -39,6 +39,7 @@
   import { WITHDRAW_PAYMENT_ACCOUNT_INFO } from 'store/modules/userStore'
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
+  import { judgeNotNetwork } from '../utils/'
   export default {
     name: 'account',
     data () {
@@ -79,9 +80,12 @@
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       }
     }

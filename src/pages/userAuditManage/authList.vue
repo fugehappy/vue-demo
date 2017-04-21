@@ -19,7 +19,7 @@
             <td>
               <label>
                 <span>认证状态</span>
-                <el-select v-model="searchForm.status" placeholder="请选择认证状态">
+                <el-select v-model="searchForm.status" placeholder="请选择">
                   <el-option label="等待审核" :value="0"></el-option>
                   <el-option label="审核通过" :value="1"></el-option>
                   <el-option label="审核未通过" :value="2"></el-option>
@@ -29,7 +29,7 @@
             <td>
               <label>
                 <span>认证类型</span>
-                <el-select v-model="searchForm.type" placeholder="请选择认证类型">
+                <el-select v-model="searchForm.type" placeholder="请选择">
                   <el-option label="教师" :value="0"></el-option>
                   <el-option label="三方个人" :value="1"></el-option>
                   <el-option label="三方机构" :value="2"></el-option>
@@ -39,7 +39,7 @@
             <td>
               <label>
                 <span>翰林账号</span>
-                <el-input v-model="searchForm.userId" placeholder="请输入" :maxlength="32" class="text-input"></el-input>
+                <el-input v-model="searchForm.userId" placeholder="" :maxlength="32" class="text-input"></el-input>
               </label>
             </td>
             <td>
@@ -47,7 +47,7 @@
                 <span>用户手机</span>
                 <div class="el-input text-input">
                   <input class="el-input__inner" v-model="searchForm.phoneNo" :maxlength="11"
-                         @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="请输入">
+                         @keyup="searchForm.phoneNo = searchForm.phoneNo.replace(/[^0-9]/, '')" placeholder="">
                 </div>
               </label>
             </td>
@@ -70,7 +70,7 @@
           </tr>
         </table>
         <div class="buttons-wrap">
-          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清空</el-button>
           <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
         </div>
       </div>
@@ -246,7 +246,7 @@
   import * as CODE from '../../config/code'
   import * as CONFIG from '../../config/'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { cleanFormEmptyValue, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   export default {
     name: 'authList',
     mounted () {
@@ -401,9 +401,12 @@
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 
@@ -436,9 +439,12 @@
             this.$message.error(MSG.UPDATE_FAIL_MSG)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
-          this.$message.error(MSG.UPDATE_FAIL_MSG)
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.UPDATE_FAIL_MSG)
         })
       },
 

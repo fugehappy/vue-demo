@@ -66,23 +66,25 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="条件名称">
-              <el-input v-model="searchConditionForm.title" placeholder="请输入" class="text-mid-input"></el-input>
+              <el-input v-model="searchConditionForm.title" placeholder="" class="text-mid-input"></el-input>
             </el-form-item>
           </el-col>
         </el-col>
 
         <el-col :span="24">
           <el-form-item>
-            <el-col :span="24" class="t-l">
-              <el-button type="cancel" @click="clearConditionFormData" class="clear-icon"><i></i>清除</el-button>
-              <el-button type="primary" @click="searchConditionData" class="search-icon"><i></i>搜索</el-button>
+            <el-col :span="24" class="t-r">
+              <div style="padding-right: 55px;">
+                <el-button type="cancel" @click="clearConditionFormData" class="clear-icon"><i></i>清空</el-button>
+                <el-button type="primary" @click="searchConditionData" class="search-icon"><i></i>搜索</el-button>
+              </div>
             </el-col>
           </el-form-item>
         </el-col>
       </el-form>
       <v-divline></v-divline>
       <el-table :data="tableConditionData" border  style="width: 97%">
-        <el-table-column label="选择" width="60">
+        <el-table-column label="选择" width="70">
           <template scope="scope">
             <input type="radio" name="conditonRadio" @click="choiceConditionTableData(scope.row)" value="scope.row.conditionId">
           </template>
@@ -151,7 +153,7 @@
   import * as CODE from '../../config/code'
   import * as CONFIG from '../../config/'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
 
   export default {
     props: {
@@ -289,6 +291,7 @@
               item.conditions += item.cityName ? ` ${item.cityName} >` : ''
               item.conditions += item.countyName ? ` ${item.countyName} >` : ''
               item.conditions += item.schoolName ? ` ${item.schoolName} >` : ''
+              item.conditions += item.phase !== null ? ` ${this.phaseMap[item.phase]} >` : ''
               item.conditions += item.gradeName ? ` ${item.gradeName} >` : ''
               item.conditions = item.conditions.substr(0, item.conditions.length - 1)
               return item
@@ -300,8 +303,11 @@
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
         }).catch((err) => {
-          this.CHANGE_PENDING(false)
           globalErrorPrint(err)
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },

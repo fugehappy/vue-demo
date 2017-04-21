@@ -79,7 +79,7 @@
           <td>
             <label>
               <span>条件名称</span>
-              <el-input v-model="searchForm.title" class="text-input" :maxlength="50" placeholder="请输入"></el-input>
+              <el-input v-model="searchForm.title" class="text-input" :maxlength="50" placeholder=""></el-input>
             </label>
           </td>
         </tr>
@@ -101,7 +101,7 @@
         </tr>
       </table>
       <div class="buttons-wrap">
-        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清空</el-button>
         <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
       </div>
     </div>
@@ -154,7 +154,7 @@
         <el-form ref="layerForm" :model="layerForm">
           <el-col :span="12">
             <el-form-item label="* 条件名称" :label-width="formLabelWidth" placeholder="请输入策略名称" >
-              <el-input v-model="layerForm.title" class="text-input" :maxlength="50" placeholder="请输入" style="width: 252px"></el-input>
+              <el-input v-model="layerForm.title" class="text-input" :maxlength="50" placeholder=""></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -224,7 +224,7 @@
   import * as CODE from '../../config/code'
   import * as CONFIG from '../../config/'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   export default {
     name: 'pushConditionList',
     mounted () {
@@ -321,8 +321,11 @@
             this.CHANGE_PENDING(false)
           }).catch(err => {
             globalErrorPrint(err)
-            this.$message.error(MSG.DELETE_FAIL_MSG)
             this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
+            this.$message.error(MSG.DELETE_FAIL_MSG)
           })
         }).catch(() => {
           // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
@@ -341,7 +344,7 @@
           this.layerForm.editLoading = true
           this.layerForm.isEdit = true
           this.layerForm.tableIndex = index
-          let {provinceZip, provinceName, cityZip, cityName, countyZip, countyName, schoolName, gradeCode, gradeName, phase} = rowData
+          let {provinceZip, provinceName, cityZip, cityName, countyZip, countyName, schoolCode, schoolName, gradeCode, gradeName, phase} = rowData
           let phaseText = this.phaseMap[phase]
           Object.assign(this.layerForm, rowData, {
             provinceCode: provinceZip,
@@ -351,6 +354,7 @@
             countyCode: countyZip,
             countyZip: countyName,
             schoolCode: schoolName,
+            schoolSubmitCode: schoolCode,
             phaseCode: phase,
             phase: phaseText,
             gradeSubmitCode: gradeCode
@@ -375,6 +379,7 @@
         await this.initCity(provinceZip)
         await this.initCounty(cityZip)
         await this.changeSelectStudySection(this.layerDatas.studySectionData[phase])
+        await this.getSchoolList()
         this.layerForm.gradeCode = gradeName
         setTimeout(() => {
           this.layerForm.editLoading = false
@@ -385,7 +390,8 @@
        * 提交新增，更新
        */
       submitPushCondition () {
-        let {receiverType, title, provinceZip, countyZip, cityZip, phase, provinceCode, cityCode, countyCode, phaseCode, gradeSubmitCode, gradeCode} = this.layerForm
+        let {receiverType, title, provinceZip, countyZip, cityZip, phase, provinceCode, cityCode, countyCode,
+                phaseCode, schoolCode, schoolSubmitCode, gradeSubmitCode, gradeCode} = this.layerForm
         let submitPhase = null
         if (typeof phase === 'number') {
           submitPhase = phase
@@ -401,7 +407,8 @@
           cityZip: cityZip && typeof cityZip === 'object' ? cityZip.zip : cityCode,
           phaseCode: submitPhase,
           // gradeCode存在且不包含中文则使用gradeCode，否则使用转换后的 gradeSubmitCode
-          gradeCode: gradeCode && !(/[\u4E00-\u9FA5\uF900-\uFA2D]/.test(gradeCode)) ? gradeCode : gradeSubmitCode
+          gradeCode: gradeCode && !(/[\u4E00-\u9FA5\uF900-\uFA2D]/.test(gradeCode)) ? gradeCode : gradeSubmitCode,
+          schoolCode: schoolCode && !(/[\u4E00-\u9FA5\uF900-\uFA2D]/.test(schoolCode)) ? schoolCode : schoolSubmitCode
         }
 
         // 接收人群，省份，城市，名称都不能为空
@@ -432,8 +439,11 @@
             }
           }).catch(err => {
             globalErrorPrint(err)
-            this.layerForm.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
             this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
+            this.layerForm.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
           })
         } else {
           errorMessage(this, '（条件名称/推送人群/省份选择/城市选择）都必须填写')
@@ -492,7 +502,7 @@
               item.conditions += item.cityName ? ` ${item.cityName} >` : ''
               item.conditions += item.countyName ? ` ${item.countyName} >` : ''
               item.conditions += item.schoolName ? ` ${item.schoolName} >` : ''
-              item.conditions += ` ${this.phaseMap[item.phase]} >`
+              item.conditions += item.phase !== null ? ` ${this.phaseMap[item.phase]} >` : ''
               item.conditions += item.gradeName ? ` ${item.gradeName} >` : ''
               item.conditions = item.conditions.substr(0, item.conditions.length - 1)
               return item
@@ -504,9 +514,12 @@
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 
@@ -554,11 +567,15 @@
       changeSelectStudySection (event) {
         if (!event || typeof event != 'object') return
         if (this.dialogFormVisible) {
-          this.layerForm.gradeCode = ''
           this.layerDatas.gradeData = event.grades
+          if (this.layerForm.editLoading) return
+          this.layerForm.gradeCode = ''
+          this.layerForm.schoolCode = ''
         } else {
-          this.searchForm.gradeCode = ''
           this.searchDatas.gradeData = event.grades
+          if (this.layerForm.editLoading) return
+          this.searchForm.gradeCode = ''
+          this.searchForm.schoolCode = ''
         }
         this.getSchoolList()
       },
@@ -640,24 +657,26 @@
        */
       getSchoolList () {
         let zip = null
-        let phaseCode = null
+        let paramPhaseCode = null
         if (this.dialogFormVisible) {
           if (!this.layerForm.phase || !this.layerForm.countyZip) return
-          zip = this.layerForm.countyZip.zip
-          phaseCode = this.layerForm.phase.phaseCode
-          this.layerForm.schoolCode = ''
+          let {countyZip, countyCode, phase, phaseCode} = this.layerForm
+          zip = countyZip && typeof countyZip === 'object' ? countyZip.zip : countyCode
+          paramPhaseCode = phase && typeof phase === 'object' ? phase.phaseCode : phaseCode
+          if (!this.layerForm.isEdit) this.layerForm.schoolCode = ''
         } else {
           if (!this.searchForm.phase || !this.searchForm.countyZip) return
-          zip = this.searchForm.countyZip.zip
-          phaseCode = this.searchForm.phase.phaseCode
+          let {countyZip, countyCode, phase, phaseCode} = this.searchForm
+          zip = countyZip && typeof countyZip === 'object' ? countyZip.zip : countyCode
+          paramPhaseCode = phase && typeof phase === 'object' ? phase.phaseCode : phaseCode
           this.searchForm.schoolCode = ''
         }
 
-        if (!zip || phaseCode === '') return
+        if (!zip || paramPhaseCode === '') return
         this.schoolLoading = true
         this.CHANGE_PENDING(true)
         // 请求接口获取数据
-        this.BASIC_DATA_SCHOOL_GET_LIST({zip: zip, phase: phaseCode}).then(res => {
+        this.BASIC_DATA_SCHOOL_GET_LIST({zip: zip, phase: paramPhaseCode}).then(res => {
           if (res.code == CODE.SUCCESS) {
             this.dialogFormVisible ? this.layerDatas.schoolData = res.data : this.searchDatas.schoolData = res.data
           } else {

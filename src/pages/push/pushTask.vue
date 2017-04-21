@@ -32,7 +32,7 @@
             <td>
               <label>
                 <span>任务名称</span>
-                <el-input v-model="searchForm.title" :maxlength="50" placeholder="请输入"></el-input>
+                <el-input v-model="searchForm.title" :maxlength="50" placeholder=""></el-input>
               </label>
             </td>
             <td>
@@ -50,7 +50,7 @@
           </tr>
         </table>
         <div class="buttons-wrap">
-          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清空</el-button>
           <el-button type="primary" @click="searchTaskData" class="search-icon"><i></i>搜索</el-button>
         </div>
       </div>
@@ -134,7 +134,7 @@
                 <el-table-column prop="conditions" label="文件分类" min-width="180"></el-table-column>
                 <el-table-column label="文件名" min-width="180">
                   <template scope="scope">
-                    {{scope.row.files[0].fileName}}
+                    <a :href="downloadLink" target="_blank">{{scope.row.files ? scope.row.files[0].fileName : ''}}</a>
                   </template>
                 </el-table-column>
                 <el-table-column label="上传日期" width="120">
@@ -196,7 +196,7 @@
             <el-table-column prop="conditions" label="文件分类" min-width="180"></el-table-column>
             <el-table-column label="文件名" min-width="180">
               <template scope="scope">
-                {{scope.row.files[0].fileName}}
+                <a :href="downloadLink" target="_blank">{{scope.row.files ? scope.row.files[0].fileName : ''}}</a>
               </template>
             </el-table-column>
             <el-table-column label="上传日期" width="120">
@@ -214,13 +214,13 @@
     </el-col>
 
     <!--推送条件查询-->
-    <el-dialog title="推送条件查询" v-model="dialogFormPushCondition" size="large" :close-on-click-modal="false">
+    <el-dialog title="推送条件查询" v-model="dialogFormPushCondition" :close-on-click-modal="false">
       <v-push-search-condition :visible="dialogFormPushCondition" @click-choice="changeChoiceCondition"></v-push-search-condition>
     </el-dialog>
 
     <!--推送内容查询-->
-    <el-dialog title="推送内容查询" v-model="dialogFormPushContent" size="large" :close-on-click-modal="false">
-      <v-push-search-content @click-choice="changeChoiceContent"></v-push-search-content>
+    <el-dialog title="推送内容查询" v-model="dialogFormPushContent" :close-on-click-modal="false">
+      <v-push-search-content :visible="dialogFormPushContent" @click-choice="changeChoiceContent"></v-push-search-content>
     </el-dialog>
   </div>
 </template>
@@ -231,11 +231,12 @@
   import pushSearchContent from './pushSearchContent.vue'
   import pushSearchCondition from './pushSearchCondition.vue'
   import { PUSH_TASK_GET_LIST, PUSH_TASK_ADD_UPDATE, PUSH_TASK_DELETE } from 'store/modules/pushStore'
+  import { CONTENT_FILE_GET_URL } from 'store/modules/contentStore'
   import * as jst from 'js-common-tools'
   import * as CONFIG from '../../config/'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
-  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { cleanFormEmptyValue, globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   export default {
     name: 'pushTaskList',
     components: {
@@ -277,6 +278,7 @@
           isEdit: false, // 是否是编辑框 true编辑 false新增
           isExec: false // 是否已经执行 true已执行 false未执行
         },
+        downloadLink: '',
         phaseMap: {
           0: '小学',
           1: '初中',
@@ -290,7 +292,7 @@
       this.getTaskLit()
     },
     methods: {
-      ...mapActions([CHANGE_PENDING, PUSH_TASK_GET_LIST, PUSH_TASK_ADD_UPDATE, PUSH_TASK_DELETE]),
+      ...mapActions([CHANGE_PENDING, PUSH_TASK_GET_LIST, PUSH_TASK_ADD_UPDATE, PUSH_TASK_DELETE, CONTENT_FILE_GET_URL]),
       /**
        * 删除任务数据
        */
@@ -314,8 +316,11 @@
             this.CHANGE_PENDING(false)
           }).catch(err => {
             globalErrorPrint(err)
-            this.$message.error(MSG.DELETE_FAIL_MSG)
             this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
+            this.$message.error(MSG.DELETE_FAIL_MSG)
           })
         }).catch(() => {
           // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
@@ -331,6 +336,7 @@
           this.layerTaskForm.tableIndex = index
           let conditions = ''
           let contents = rowData.contents[0]
+          this.downloadFile(contents)
           conditions = contents.cateName ? ` ${contents.cateName} >` : ''
           conditions += contents.phaseCateName ? ` ${contents.phaseCateName} >` : ''
           conditions += contents.subjectCateName ? ` ${contents.subjectCateName} >` : ''
@@ -396,13 +402,17 @@
               }
               this.CHANGE_PENDING(false)
               this.dialogFormVisible = false
+              this.listPageVisible = true
             } else {
               this.layerTaskForm.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
             }
           }).catch(err => {
             globalErrorPrint(err)
-            this.layerTaskForm.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
             this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
+            this.layerTaskForm.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
           })
         } else {
           errorMessage(this, '（任务名称/推送条件/推送内容/执行时间/推送显示内容）都必须填写')
@@ -430,7 +440,7 @@
         let {startTime, endTime} = this.searchForm
         let newParm = {
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime, true) : null,
+          endTime: endTime ? date2secondsTimestamp(endTime) : null,
           page: this.currentPage,
           pageSize: this.pageSize
         }
@@ -457,8 +467,33 @@
           this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
+        })
+      },
+
+      /**
+       * 下载文件
+       * @param rowData
+       */
+      downloadFile (rowData) {
+        let {files, resId} = rowData
+        let params = {
+          resId: resId,
+          fileKey: files[0].fileKey
+        }
+        this.CONTENT_FILE_GET_URL(params).then(res => {
+          if (res.code == CODE.SUCCESS) {
+            this.downloadLink = res.data.url
+          }
+        }).catch((err) => {
+          globalErrorPrint(err)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
         })
       },
 
@@ -486,6 +521,7 @@
       changeChoiceContent (parms) {
         this.layerTaskForm.resName = parms.choiceData.title
         this.layerTaskForm.resIds = parms.choiceData.resId
+        this.downloadFile(parms.choiceData)
         this.addUpdateTableData = []
         this.addUpdateTableData.push(parms.choiceData)
         this.dialogFormPushContent = parms.dialogVisible

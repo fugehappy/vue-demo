@@ -40,7 +40,7 @@
   import * as Messages from '../config/messages'
   import * as CODE from '../config/code'
   import * as CONFIG from '../config/'
-  import { globalErrorPrint } from '../utils/'
+  import { globalErrorPrint, judgeNotNetwork } from '../utils/'
 
   export default {
     data () {
@@ -135,8 +135,11 @@
             this.$message.error(Messages.LOGIN_PWDNAME_ERR_MSG)
           }
         }).catch((err) => {
-          globalErrorPrint(err)
           this.CHANGE_PENDING(false)
+          globalErrorPrint(err)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           if (err.responseJSON) {
             let {responseJSON} = err
             if (responseJSON.code == CODE.PASSWORD_ERROR) {

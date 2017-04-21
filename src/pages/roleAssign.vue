@@ -137,10 +137,12 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import { CHANGE_PENDING } from 'store/globalStore'
   import { GET_ALL_MANAGER_LIST, GET_ALL_ROLE, GET_USER_INFO, GET_USER_ROLE, UPGRADE_ONE_ROLE, CHANGE_ROLE_ONE } from '../store/modules/roleAssignStore'
   import { SUCCESS } from '../config/code'
   import * as CONFIG from '../config/'
   import * as jst from 'js-common-tools'
+  import { judgeNotNetwork } from '../utils/'
   export default {
     name: 'roleAssign',
     mounted () {
@@ -159,7 +161,10 @@
           // 异常错误处理
           this.$message.error('获取所有角色失败')
         }
-      }).catch(() => {
+      }).catch((err) => {
+        if (judgeNotNetwork(this, err)) {
+          return
+        }
         // 异常错误处理
         this.$message.error('异常错误')
       })
@@ -192,7 +197,7 @@
       }
     },
     methods: {
-      ...mapActions([GET_ALL_MANAGER_LIST, GET_ALL_ROLE, GET_USER_INFO, GET_USER_ROLE, UPGRADE_ONE_ROLE, CHANGE_ROLE_ONE]),
+      ...mapActions([GET_ALL_MANAGER_LIST, GET_ALL_ROLE, GET_USER_INFO, GET_USER_ROLE, UPGRADE_ONE_ROLE, CHANGE_ROLE_ONE, CHANGE_PENDING]),
 
       /**
        * 分页函数
@@ -207,10 +212,12 @@
        * 获取所有管理员列表
        */
       getAllManagerList () {
+        this.CHANGE_PENDING(true)
         this.GET_ALL_MANAGER_LIST({
           page: this.currentPage,
           pageSize: this.pageSize
         }).then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code === SUCCESS) {
             // 分页数据
             this.currentPage = res.data.currentPage
@@ -238,7 +245,11 @@
             // 异常错误处理
             this.$message.error('获取所有管理员列表失败')
           }
-        }).catch(() => {
+        }).catch((err) => {
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           // 异常错误处理
           this.$message.error('异常错误')
         })
@@ -284,8 +295,10 @@
           rids: rids
         }
 
+        this.CHANGE_PENDING(true)
         // 升级
         this.UPGRADE_ONE_ROLE(data).then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code === SUCCESS) {
             // 升级成功
             this.dialogFormVisibleUpgrade = false
@@ -302,7 +315,11 @@
             // 异常错误处理
             this.$message.error('升级管理员失败')
           }
-        }).catch(() => {
+        }).catch((err) => {
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           // 异常错误处理
           this.$message.error('异常错误')
         })
@@ -329,7 +346,9 @@
           this.$message.error('手机号码格式错误')
           return false
         }
+        this.CHANGE_PENDING(true)
         this.GET_USER_INFO(this.manager).then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code === SUCCESS) {
             if (res.data) {
               // 数据性别转换处理
@@ -385,7 +404,11 @@
             this.$message.error('查询管理员失败')
             this.resetUpgradeQueryManager()
           }
-        }).catch(() => {
+        }).catch((err) => {
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           // 异常错误处理
           this.$message.error('异常错误')
           this.resetUpgradeQueryManager()
@@ -465,8 +488,10 @@
           rids: rids
         }
 
+        this.CHANGE_PENDING(true)
         // 变更角色
         this.CHANGE_ROLE_ONE(data).then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code === SUCCESS) {
             // 关闭对话框
             this.dialogFormVisible = false
@@ -480,7 +505,11 @@
             // 异常错误处理
             this.$message.error('变更角色失败')
           }
-        }).catch(() => {
+        }).catch((err) => {
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           // 异常错误处理
           this.$message.error('异常错误')
         })

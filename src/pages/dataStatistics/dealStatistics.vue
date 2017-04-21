@@ -42,7 +42,7 @@
           </table>
           <div class="buttons-wrap">
             <el-form-item>
-              <el-button type="cancel" class="clear-icon" @click="clearFormData"><i></i>清除</el-button>
+              <el-button type="cancel" class="clear-icon" @click="clearFormData"><i></i>清空</el-button>
               <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
             </el-form-item>
           </div>
@@ -61,7 +61,7 @@
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING } from 'store/globalStore'
   import { PAYMENT_GET_STATISTICS } from 'store/modules/statisticsStore'
-  import { globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   import * as jst from 'js-common-tools'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
@@ -233,8 +233,11 @@
           this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 

@@ -133,7 +133,7 @@
           DEL_CATEGORY_TAG
   } from '../store/modules/subjectStore'
   import {SUCCESS} from '../config/code'
-  import {globalErrorPrint} from '../utils/'
+  import {globalErrorPrint, judgeNotNetwork} from '../utils/'
   import * as jst from 'js-common-tools'
   export default {
     name: 'subjectCategory',
@@ -236,6 +236,9 @@
             }).catch((err) => {
               globalErrorPrint(err)
               this.CHANGE_PENDING(false)
+              if (judgeNotNetwork(this, err)) {
+                return
+              }
               this.$message.error('异常错误')
             })
           }
@@ -415,6 +418,10 @@
             break
           case 'grade':
             this.filterTableNameCellIsVisible = false
+            // 选择该年级的cateId
+            if (evt.cateId) {
+              this.cateId = evt.cateId
+            }
             this.rowName = this.categoryLabel.tag
             if (!jst.isNullOrEmpty(evt.tags, true)) {
               // 如果年级的tags存在, 标签下拉可用,筛选的表格数据呈现序号,标签,变更,删除
@@ -567,7 +574,9 @@
       update () {
         // 判断是更新的是标签还是类别
         this.dataSortUpdate.name = this.dataUpdate.name
+        this.CHANGE_PENDING(true)
         this.UPDATE_CATEGORY(this.dataSortUpdate).then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code === SUCCESS) {
             this.getCategoryList(true, this.dataUpdate.type)
             this.dialogFormVisible = false
@@ -586,6 +595,10 @@
           }
         }).catch((err) => {
           globalErrorPrint(err)
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           // 异常错误处理
           this.$message.error('异常错误')
         })
@@ -613,6 +626,9 @@
           case this.categoryLabel.grade: // 年级
             type = 4
             break
+          case this.categoryLabel.tag: // 标签
+            type = 5
+            break
         }
         return type
       },
@@ -633,7 +649,9 @@
             name: value,
             type: type
           }
+          this.CHANGE_PENDING(true)
           this.ADD_CATEGORY(data).then((res) => {
+            this.CHANGE_PENDING(false)
             if (res.code === SUCCESS) {
               // 添加分类成功
               Object.assign(data, res.data)
@@ -663,6 +681,10 @@
             }
           }).catch((err) => {
             globalErrorPrint(err)
+            this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
             // 异常错误处理
             this.$message.error('异常错误')
           })
@@ -814,6 +836,18 @@
               return item
             })
             break
+          case 5: // '标签'
+            this.gradeData.map(item => {
+              if (item.cateId == this.cateId) {
+                item.tags = item.tags ? item.tags : []
+                if (!item.tags.length) {
+                  item.tags.push(data)
+                }
+                this.selectSort('grade', item)
+              }
+              return item
+            })
+            break
         }
         this.tagValue = '' // 标签下拉显示‘请选择’
         this.disabledTagFlag = false // 标签下拉启用
@@ -871,7 +905,9 @@
             cateId: this.cateId,
             name: value
           }
+          this.CHANGE_PENDING(true)
           this.ADD_TAGS(data).then((res) => {
+            this.CHANGE_PENDING(false)
             if (res.code === SUCCESS) {
               // 添加标签成功
               Object.assign(data, res.data)
@@ -894,6 +930,10 @@
             }
           }).catch((err) => {
             globalErrorPrint(err)
+            this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
             // 异常错误处理
             this.$message.error('异常错误')
           })
@@ -909,7 +949,9 @@
        */
       getCategoryList (isReload, type) {
         if (isReload && type !== 0) return
+        this.CHANGE_PENDING(true)
         this.GET_CATEGORY_LIST().then((res) => {
+          this.CHANGE_PENDING(false)
           if (res.code === SUCCESS) {
             this.categoryData = res.data
             for (let i = 0, len = this.categoryData.length; i < len; i++) {
@@ -923,6 +965,10 @@
           }
         }).catch((err) => {
           globalErrorPrint(err)
+          this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           // 异常错误处理
           this.$message.error('异常错误')
         })

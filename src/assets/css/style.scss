@@ -273,6 +273,11 @@ $navHeight: 50px;
       height: $distance32 ;
     }
   }
+  .el-dialog--small {
+    .text-input {
+      max-width: 252px;
+    }
+  }
   .top-title {
     font-size: $fontSize18;
     margin-top: $distance40;
@@ -422,6 +427,12 @@ $navHeight: 50px;
   /*弹出层样式*/
   .el-dialog__wrapper {
     .el-dialog {
+      &.el-dialog--large {
+        .el-dialog__body .el-form-item__label {
+          margin-right: 34px;
+          padding-right: 0;
+        }
+      }
       width: 870px;
       padding-bottom: 20px;
       overflow-x: hidden;
@@ -552,6 +563,10 @@ $navHeight: 50px;
   }
   .el-input {
     vertical-align: middle;
+  }
+  .el-form-item__label {
+    padding-right: 0;
+    margin-right: 34px;
   }
 }
 
@@ -728,6 +743,9 @@ body {
       .el-select {
         width: 252px;
       }
+      .el-date-editor.el-input {
+        width: 252px;
+      }
     }
   }
   .el-form .el-textarea {
@@ -745,6 +763,9 @@ body {
   }
   .el-select {
     width: 360px;
+  }
+  .el-dialog--small .el-form-item__label {
+    margin-right: 0px;
   }
 }
 // 覆写组件样式 end

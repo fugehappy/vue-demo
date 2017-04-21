@@ -32,7 +32,7 @@
             <td>
               <label>
                 <span>广告名称</span>
-                <el-input v-model="searchForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
+                <el-input v-model="searchForm.title" class="text-input" placeholder="" :maxlength="100"></el-input>
               </label>
             </td>
             <td>
@@ -50,7 +50,7 @@
           </tr>
         </table>
         <div class="buttons-wrap">
-          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+          <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清空</el-button>
           <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
         </div>
       </div>
@@ -94,7 +94,7 @@
       <el-dialog :title="(layerForm.isEdit ? '更新' : '新增') + '广告信息'" v-model="dialogFormVisible" top="10%" class="middle-dialog" :close-on-click-modal="false">
         <el-form :model="layerForm">
           <el-form-item label="* 广告名称" :label-width="formLabelWidth">
-            <el-input v-model="layerForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
+            <el-input v-model="layerForm.title" class="text-input" placeholder="" :maxlength="100"></el-input>
           </el-form-item>
           <el-form-item label="* 广告类型" :label-width="formLabelWidth">
             <el-select v-model="layerForm.type" @change="changeAdvType" :disabled="layerForm.isEdit" placeholder="请选择">
@@ -155,7 +155,7 @@
       <div class="fix-wrapper">
         <el-form :model="layerForm" style="width: 800px;margin: 0 auto;">
           <el-form-item label="* 广告名称" :label-width="formLabelWidth">
-            <el-input v-model="layerForm.title" class="text-input" placeholder="请输入" :maxlength="100"></el-input>
+            <el-input v-model="layerForm.title" class="text-input" placeholder="" :maxlength="100"></el-input>
           </el-form-item>
           <el-form-item label="* 广告类型" :label-width="formLabelWidth">
             <el-select v-model="layerForm.type" @change="changeAdvType" :disabled="layerForm.isEdit" placeholder="请选择">
@@ -206,8 +206,8 @@
     </el-col>
 
     <!--推送内容查询-->
-    <el-dialog title="推送内容查询" v-model="dialogFormPushContent" size="large" :close-on-click-modal="false">
-      <v-push-search-content @click-choice="changeChoiceContent"></v-push-search-content>
+    <el-dialog title="推送内容查询" v-model="dialogFormPushContent" :close-on-click-modal="false">
+      <v-push-search-content :visible="dialogFormPushContent" @click-choice="changeChoiceContent"></v-push-search-content>
     </el-dialog>
     <!-- 文件上传进度条 -->
     <v-uprogress :value="progressValue" v-if="progressVisible"></v-uprogress>
@@ -223,7 +223,7 @@
   import * as CONFIG from '../config/'
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
-  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage } from '../utils/'
+  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../utils/'
   export default {
     name: 'pushConditionList',
     components: {
@@ -293,9 +293,12 @@
             }
             this.CHANGE_PENDING(false)
           }).catch(err => {
+            this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
             globalErrorPrint(err)
             this.$message.error(MSG.DELETE_FAIL_MSG)
-            this.CHANGE_PENDING(false)
           })
         }).catch(() => {
           // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错
@@ -321,9 +324,12 @@
             this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 
@@ -335,6 +341,7 @@
       choiceAdvBgFile (event, type) {
         if (!event.target.files) return
         let file = event.target.files[0]
+        console.log(file)
         var formData = new FormData()
         formData.append('token', this.uploadtoken)
         formData.append('file', file)
@@ -381,6 +388,9 @@
           }, 500)
         }).catch((err) => {
           globalErrorPrint(err)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           this.$message.error(MSG.UPLOAD_FILE_FAIL_MSG)
           this.progressVisible = false
         })
@@ -438,9 +448,11 @@
         }
         let newParam = cleanFormEmptyValue(this.layerForm)
         this.CHANGE_PENDING(true)
+        if (newParam.remark === null) newParam.remark = ''
         this.ADV_ADD_UPDATE(newParam).then((res) => {
           if (res.code == CODE.SUCCESS) {
             this.dialogFormVisible = false
+            this.listPageVisible = true
             if (this.isEdit) {
               Object.assign(this.tableData[this.layerForm.tableIndex], this.layerForm)
             } else {
@@ -450,8 +462,11 @@
             this.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
           }
           this.CHANGE_PENDING(false)
-        }).catch(() => {
+        }).catch((err) => {
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
           this.isEdit ? this.$message.error(MSG.UPDATE_FAIL_MSG) : this.$message.error(MSG.ADD_FAIL_MSG)
         })
       },

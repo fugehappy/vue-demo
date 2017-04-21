@@ -64,7 +64,7 @@
         </tr>
       </table>
       <div class="buttons-wrap">
-        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清除</el-button>
+        <el-button type="cancel" @click="clearFormData" class="clear-icon"><i></i>清空</el-button>
         <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
       </div>
     </div>
@@ -77,7 +77,7 @@
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="userId" label="登陆账户" min-width="120"></el-table-column>
+        <el-table-column prop="userId" label="登录账户" min-width="120"></el-table-column>
         <el-table-column prop="tdUsername" label="收款人名" min-width="120"></el-table-column>
         <el-table-column prop="tdPlatform" label="提现方式" min-width="100">
           <template scope="scope">
@@ -117,7 +117,7 @@
     <!-- Form -->
     <el-dialog title="提现审核" v-model="dialogFormVisible"  :close-on-click-modal="false">
       <el-form :model="layerForm">
-        <el-form-item label="登陆账号:" :label-width="formLabelWidth">
+        <el-form-item label="登录账号:" :label-width="formLabelWidth">
           <label>{{layerForm.userId}}</label>
         </el-form-item>
         <el-form-item label="收款人名:" :label-width="formLabelWidth">
@@ -182,7 +182,7 @@
   import * as CONFIG from '../config/'
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
-  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage } from '../utils/'
+  import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../utils/'
   export default {
     name: 'cashAuditList',
     mounted () {
@@ -245,6 +245,10 @@
        */
       showLayer (index, rowData) {
         Object.assign(this.layerForm, rowData)
+        if (!this.layerForm.status) {
+          this.layerForm.auditOptionType = ''
+          this.layerForm.defaultComments = ''
+        }
         this.layerForm.tableIndex = index
         this.dialogFormVisible = true
       },
@@ -284,8 +288,11 @@
               this.$message.error('处理失败，请重新尝试')
             }
             this.CHANGE_PENDING(false)
-          }).catch(() => {
+          }).catch((err) => {
             this.CHANGE_PENDING(false)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
             this.$message.error('处理失败，请重新尝试')
           })
         } else {
@@ -345,8 +352,11 @@
           this.CHANGE_PENDING(false)
         }).catch((err) => {
           globalErrorPrint(err)
-          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       }
     }

@@ -33,7 +33,7 @@
             </tr>
           </table>
           <el-form-item class="btn-group">
-            <el-button type="cancel" class="clear-icon" @click="clearFormData"><i></i>清除</el-button>
+            <el-button type="cancel" class="clear-icon" @click="clearFormData"><i></i>清空</el-button>
             <el-button type="primary" @click="searchData" class="search-icon"><i></i>搜索</el-button>
           </el-form-item>
         </el-form>
@@ -52,7 +52,7 @@
   import { CHANGE_PENDING } from 'store/globalStore'
   import { USER_INFORMATION_STATISTICS } from 'store/modules/statisticsStore'
   import { SUCCESS } from '../../config/code'
-  import { globalErrorPrint, date2secondsTimestamp, errorMessage } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   import * as MSG from '../../config/messages'
   export default {
     name: 'userStatistics',
@@ -207,13 +207,16 @@
             }
           } else {
             // 异常错误处理
-            this.$message.error('获取用户数据失败,请尝试刷新')
+            this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
           }
         }).catch((err) => {
           // 异常错误处理
           globalErrorPrint(err)
-          this.$message.error('异常错误')
           this.CHANGE_PENDING(false)
+          if (judgeNotNetwork(this, err)) {
+            return
+          }
+          this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
       },
 

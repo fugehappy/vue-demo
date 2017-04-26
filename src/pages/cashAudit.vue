@@ -153,8 +153,8 @@
             <el-input type="textarea" v-model="layerForm.defaultComments" placeholder="请备注审批评论"></el-input>
           </el-form-item>
           <el-form-item :label-width="formLabelWidth">
-            <el-button @click="submitAudit(layerForm.tableIndex)" type="primary">提交审核</el-button>
-            <el-button @click="dialogFormVisible = false">取消</el-button>
+            <el-button @click="submitAudit(layerForm.tableIndex)" type="primary" class="large-btn">提交审核</el-button>
+            <el-button @click="dialogFormVisible = false" type="cancel" class="large-btn">取消</el-button>
           </el-form-item>
         </div>
         <!--已打款状态-->

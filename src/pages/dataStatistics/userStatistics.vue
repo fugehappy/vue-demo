@@ -52,7 +52,7 @@
   import { CHANGE_PENDING } from 'store/globalStore'
   import { USER_INFORMATION_STATISTICS } from 'store/modules/statisticsStore'
   import { SUCCESS } from '../../config/code'
-  import { globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, monthLastTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   import * as MSG from '../../config/messages'
   export default {
     name: 'userStatistics',
@@ -137,7 +137,7 @@
         Object.assign(postData, {
           type: userType != '' ? userType : null,
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime, true) : null
+          endTime: endTime ? monthLastTimestamp(endTime) : null
         })
 
         this.CHANGE_PENDING(true) // 加载遮罩

@@ -50,7 +50,7 @@
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING } from 'store/globalStore'
   import { CONTENT_GET_STATISTICS } from 'store/modules/statisticsStore'
-  import { globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, monthLastTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   import * as jst from 'js-common-tools'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
@@ -155,7 +155,7 @@
         Object.assign(postData, {
           type: type != '' ? type : 0,
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime, true) : null
+          endTime: endTime ? monthLastTimestamp(endTime) : null
         })
 
         this.CHANGE_PENDING(true)

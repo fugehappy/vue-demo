@@ -211,7 +211,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="* 审核评论:" :label-width="formLabelWidth">
-              <el-input type="textarea" v-model="layerForm.rejectReason" placeholder="请备注审批评论"></el-input>
+              <el-input type="textarea" v-model="layerForm.rejectReason" maxlength="250" placeholder="请备注审批评论"></el-input>
             </el-form-item>
           </div>
         </el-form>

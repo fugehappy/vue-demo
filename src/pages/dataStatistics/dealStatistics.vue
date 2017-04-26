@@ -61,7 +61,7 @@
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING } from 'store/globalStore'
   import { PAYMENT_GET_STATISTICS } from 'store/modules/statisticsStore'
-  import { globalErrorPrint, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
+  import { globalErrorPrint, date2secondsTimestamp, monthLastTimestamp, errorMessage, judgeNotNetwork } from '../../utils/'
   import * as jst from 'js-common-tools'
   import * as CODE from '../../config/code'
   import * as MSG from '../../config/messages'
@@ -170,7 +170,7 @@
         Object.assign(postData, {
           type: originType != '' ? originType : 0,
           startTime: startTime ? date2secondsTimestamp(startTime) : null,
-          endTime: endTime ? date2secondsTimestamp(endTime, true) : null
+          endTime: endTime ? monthLastTimestamp(endTime) : null
         })
         // select中有值了进行处理
         if (this.searchForm.payType != '') {

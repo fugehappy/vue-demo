@@ -341,7 +341,6 @@
       choiceAdvBgFile (event, type) {
         if (!event.target.files) return
         let file = event.target.files[0]
-        console.log(file)
         var formData = new FormData()
         formData.append('token', this.uploadtoken)
         formData.append('file', file)

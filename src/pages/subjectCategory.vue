@@ -642,7 +642,9 @@
         let parentCateId = this.cateId
         this.$prompt('添加类别', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消'
+          cancelButtonText: '取消',
+          inputPattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{1,12}$/,
+          inputErrorMessage: '只能输入1-12个数字、字母或中文'
         }).then(({value}) => {
           let data = {
             parentCateId: parentCateId,
@@ -899,7 +901,9 @@
       addTag () {
         this.$prompt('添加标签', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消'
+          cancelButtonText: '取消',
+          inputPattern: /^[a-zA-Z0-9\u4e00-\u9fa5]{1,12}$/,
+          inputErrorMessage: '只能输入1-12个数字、字母或中文'
         }).then(({value}) => {
           let data = {
             cateId: this.cateId,

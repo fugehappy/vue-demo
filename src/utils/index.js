@@ -45,6 +45,19 @@ const date2secondsTimestamp = (date, isEndTime = false) => {
 }
 
 /**
+ * 当月最后一天时间戳（秒）
+ * @param time 日期对象 Object
+ * @returns {number} 时间戳
+ */
+const monthLastTimestamp = (time) => {
+  let date = new Date(time)
+  let year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let daycount = new Date(year, month, 0).getDate()
+  return date.getTime() / 1000 + daycount * 24 * 3600
+}
+
+/**
  * 处理弹出错误消息，显示下一个message时移除上一个message
  * @param obj 必须传入vue对象，this
  * @param msg 显示的提示消息
@@ -89,6 +102,7 @@ export {
   sleep,
   cleanFormEmptyValue,
   date2secondsTimestamp,
+  monthLastTimestamp,
   globalErrorPrint,
   errorMessage,
   judgeNotNetwork

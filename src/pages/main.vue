@@ -30,6 +30,8 @@
   import { mapActions } from 'vuex'
   import { USER_SIGNOUT, MENU_GET_USER_MENU_KEYS } from '../store/modules/userStore'
   import {CHANGE_PENDING} from 'store/globalStore'
+  import * as MSG from '../config/messages'
+  import { globalErrorPrint, judgeNotNetwork } from '../utils/'
   import * as jst from 'js-common-tools'
   export default {
     name: 'main',
@@ -71,6 +73,13 @@
             })
             this.CHANGE_PENDING(false)
             this.$router.replace({path: 'login'})
+          }).catch((err) => {
+            this.CHANGE_PENDING(false)
+            globalErrorPrint(err)
+            if (judgeNotNetwork(this, err)) {
+              return
+            }
+            this.$message.error(MSG.SERVER_ERROR_MSG)
           })
         }).catch(() => {
           // 此处是取消回调，但不需要做任何处理。必须加上catch否则会报错

@@ -25,7 +25,8 @@
         <el-table-column prop="user.phoneNo" label="手机号码" width="150"></el-table-column>
         <el-table-column label="角色说明" min-width="180">
           <template scope="scope">
-            <span v-for="item in scope.row.roles">{{item.name}} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span v-for="(item, index) in scope.row.roles">
+              {{index != scope.row.roles.length - 1 ? item.name + '，' : item.name}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="user.createTime" label="分配日期" width="180"></el-table-column>

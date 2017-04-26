@@ -195,7 +195,7 @@
             </el-col>
             <el-col :span="24" class="pading-tb20">
               1.请上传您的教师资格证、单位证明、资格证明等一切可证明专业身份的材料照片<br>
-              2.照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过3M<br>
+              2.照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过2M<br>
               注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传
             </el-col>
           </div>

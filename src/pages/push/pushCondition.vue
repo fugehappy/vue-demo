@@ -87,13 +87,13 @@
           <td>
             <label>
               <span>创建日期起</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.startTime"></el-date-picker>
             </label>
           </td>
           <td>
             <label>
               <span>创建日期止</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.endTime"></el-date-picker>
             </label>
           </td>
           <td></td>

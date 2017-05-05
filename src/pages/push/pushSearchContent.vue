@@ -76,7 +76,7 @@
         <el-col :span="24">
           <el-col :span="12">
             <el-form-item label="上传时间起">
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchContentForm.startTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchContentForm.startTime"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -91,7 +91,7 @@
         <el-col :span="24">
           <el-col :span="12">
             <el-form-item label="上传时间止">
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchContentForm.endTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchContentForm.endTime"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="12" class="t-c">
@@ -423,7 +423,7 @@
         }
         this.CONTENT_FILE_GET_URL(params).then(res => {
           if (res.code == CODE.SUCCESS) {
-            this.tableContentData[index].downloadLink = res.data.url
+            this.tableContentData[index].downloadLink = `${res.data.url}&d=true`
           }
           if (index == this.tableContentData.length - 1) {
             setTimeout(() => {

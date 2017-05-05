@@ -19,7 +19,7 @@
         <el-table-column prop="user.userId" label="翰林账号" width="120"></el-table-column>
         <el-table-column label="性别" width="90">
           <template scope="scope">
-            {{scope.row.user.gender ? '男' : '女'}}
+            {{scope.row.user && scope.row.user.gender ? '男' : '女'}}
           </template>
         </el-table-column>
         <el-table-column prop="user.phoneNo" label="手机号码" width="150"></el-table-column>
@@ -448,6 +448,9 @@
        * param roles 用户角色
        */
       openChangeRoleDialog (user, roles) {
+        if (!user.userId) {
+          return false
+        }
         this.userOneInfo = {
           userId: user.userId,
           phoneNo: user.phoneNo,

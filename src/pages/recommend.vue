@@ -58,13 +58,13 @@
           <td>
             <label>
               <span>上传时间起</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.startTime"></el-date-picker>
             </label>
           </td>
           <td>
             <label>
               <span>上传时间止</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.endTime"></el-date-picker>
             </label>
           </td>
           <td>
@@ -112,7 +112,7 @@
         </el-table-column>
         <el-table-column label="排序" width="100">
           <template scope="scope">
-            <input @blur="recommendRow(scope.$index, scope.row, tableData)" maxlength="6" @keyup="scope.row.recSort = scope.row.recSort.replace(/[^0-9]/, '')" v-model="scope.row.recSort" style="width: 40px;">
+            <input @blur="recommendRow(scope.$index, scope.row, tableData)" :maxlength="6" @keyup="scope.row.recSort = scope.row.recSort.replace(/[^0-9]/, '')" v-model="scope.row.recSort" style="width: 40px;">
           </template>
         </el-table-column>
       </el-table>
@@ -403,7 +403,7 @@
         }
         this.CONTENT_FILE_GET_URL(params).then(res => {
           if (res.code == CODE.SUCCESS) {
-            this.layerForm.downloadLink = res.data.url
+            this.layerForm.downloadLink = `${res.data.url}&d=true`
           }
         }).catch((err) => {
           globalErrorPrint(err)

@@ -38,13 +38,13 @@
             <td>
               <label>
                 <span>创建日期起</span>
-                <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.startTime"></el-date-picker>
               </label>
             </td>
             <td>
               <label>
                 <span>创建日期止</span>
-                <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.endTime"></el-date-picker>
               </label>
             </td>
           </tr>
@@ -107,8 +107,8 @@
           <div v-if="!isVideo">
             <el-form-item label="* 展示内容" :label-width="formLabelWidth">
               <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
-              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
-                <input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''" id="imagePicker">
+                <!--<input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>-->
                 选择</label>
             </el-form-item>
           </div>
@@ -116,14 +116,15 @@
           <div v-else>
             <el-form-item label="* 展示内容" :label-width="formLabelWidth">
               <el-input v-model="layerForm.videoUrl" class="text-input" placeholder="请输入视频地址或选择视频":disabled="layerForm.isEdit"></el-input>
-              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
-                <input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''" id="vadeoPicker">
+                <!--<input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>-->
                 选择</label>
             </el-form-item>
             <el-form-item label="* 视频背景" :label-width="formLabelWidth">
               <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
-              <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''">
-                <input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>选择
+              <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''" id="imagePicker">
+                <!--<input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>-->
+                选择
               </label>
             </el-form-item>
           </div>
@@ -153,7 +154,7 @@
       </el-row>
       <v-divline></v-divline>
       <div class="fix-wrapper">
-        <el-form :model="layerForm" style="width: 800px;margin: 0 auto;">
+        <el-form :model="layerForm" style="width: 800px;margin: 0 auto;" method="post" id="uploadForm" role="form" enctype="multipart/form-data">
           <el-form-item label="* 广告名称" :label-width="formLabelWidth">
             <el-input v-model="layerForm.title" class="text-input" placeholder="" :maxlength="100"></el-input>
           </el-form-item>
@@ -168,8 +169,8 @@
           <div v-if="!isVideo">
             <el-form-item label="* 展示内容" :label-width="formLabelWidth">
               <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
-              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
-                <input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''" id="imagePicker">
+                <!--<input type="file" @change="choiceAdvBgFile($event, 1)" accept="image/png,image/gif,image/jpeg" :disabled="layerForm.isEdit" style="display: none"/>-->
                 选择</label>
             </el-form-item>
           </div>
@@ -177,14 +178,15 @@
           <div v-else>
             <el-form-item label="* 展示内容" :label-width="formLabelWidth">
               <el-input v-model="layerForm.videoUrl" class="text-input" placeholder="请输入视频地址或选择视频":disabled="layerForm.isEdit"></el-input>
-              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''">
-                <input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>
+              <label class="el-button el-button--default push-choice " :class="layerForm.isEdit ? 'is-disabled' : ''" id="vadeoPicker">
+                <!--<input type="file" @change="choiceAdvBgFile($event, 2)" accept="video/mp4"  :disabled="layerForm.isEdit" style="display: none"/>-->
                 选择</label>
             </el-form-item>
             <el-form-item label="* 视频背景" :label-width="formLabelWidth">
               <el-input v-model="layerForm.bgImage" class="text-input" placeholder="请输入图片地址或选择图片" :disabled="layerForm.isEdit"></el-input>
-              <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''">
-                <input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>选择
+              <label class="el-button el-button--default push-choice" :class="layerForm.isEdit ? 'is-disabled' : ''" id="imagePicker">
+                <!--<input type="file" @change="choiceAdvBgFile($event, 1)" :disabled="layerForm.isEdit" accept="image/png,image/gif,image/jpeg" style="display: none"/>-->
+                选择
               </label>
             </el-form-item>
           </div>
@@ -211,9 +213,25 @@
     </el-dialog>
     <!-- 文件上传进度条 -->
     <v-uprogress :value="progressValue" v-if="progressVisible"></v-uprogress>
+    <!-- 未安装flash提示 -->
+    <el-dialog title="提示" v-model="installFlashVisible" size="tiny" class="" :close-on-click-modal="false">
+      <br>
+      <div class="flash-prompt">
+        您尚未安装flash player或版本过低，将不能上传文件<br><br>
+        <a class="log-xsend" href="https://get.adobe.com/cn/flashplayer/?no_redirect" target="_blank">点击此处</a>
+        下载安装最新版本flash player
+        <br><br>
+        ps: 安装成功后刷新页面重试
+      </div>
+    </el-dialog>
   </div>
 </template>
-
+<style lang="scss" scoped>
+  .flash-prompt{
+    font-size: 16px;
+    text-align: center;
+  }
+</style>
 <script>
   import { mapActions } from 'vuex'
   import { CHANGE_PENDING, PLATFORM_UPLOAD_TOKEN_CREATE, STORAGE_UPLOAD } from 'store/globalStore'
@@ -224,6 +242,8 @@
   import * as CODE from '../config/code'
   import * as MSG from '../config/messages'
   import { globalErrorPrint, cleanFormEmptyValue, date2secondsTimestamp, errorMessage, judgeNotNetwork } from '../utils/'
+  import { FlashUploadFile } from '../utils/flashupload'
+  import { apiUrlConfig } from '../config/ApiConfig'
   export default {
     name: 'pushConditionList',
     components: {
@@ -265,6 +285,7 @@
           remark: null,
           tableIndex: 0
         },
+        installFlashVisible: false, // 是否显示安装flash提示
         formLabelWidth: '120px'
       }
     },
@@ -331,6 +352,95 @@
           }
           this.$message.error(MSG.GET_DATA_FAIL_MESSATE)
         })
+      },
+
+      /**
+       * 选择文件错误
+       * @param type 1 图片；2 视频
+       * @notInstallFlash 未安装flash判断
+       */
+      selectFileErr (type, notInstallFlash) {
+        if (notInstallFlash) {
+          this.installFlashVisible = true
+          document.getElementById('imagePicker').addEventListener('click', () => {
+            this.installFlashVisible = true
+          })
+          return
+        }
+        if (type == 2) {
+          this.$message.error(MSG.UPLOAD_VIDEO_FORMAT_ERR_MSG)
+        } else {
+          this.$message.error(MSG.UPLOAD_IMAGES_FORMAT_ERR_MSG)
+        }
+      },
+
+      /**
+       * 上传开始
+       */
+      startUpload () {
+        this.progressValue = 0
+        this.progressVisible = true // 上传进度条
+      },
+
+      /**
+       * 上传进行中
+       * @param file 上传的文件
+       * @param percentage 上传中的进度
+       */
+      uploadProgress (file, percentage) {
+        // 上传进度回调
+        this.progressValue = Math.round(percentage * 100, 2) - 1 // 已经上传的百分比
+      },
+
+      /**
+       * 上传成功
+       * @param type 1图片， 2视频
+       * @param file 上传成功的文件
+       * @param res 返回结果
+       */
+      uploadSuccess (type, file, res) {
+        if (res.code == CODE.SUCCESS) {
+          let {bucketHost, fileKey} = res.data
+          let url = `http://${bucketHost}/${fileKey}`
+          if (type == 1) {
+            this.layerForm.bgImage = url
+          } else {
+            this.layerForm.videoUrl = url
+          }
+        } else {
+          this.$message.error(MSG.UPLOAD_FILE_FAIL_MSG)
+        }
+        setTimeout(() => {
+          this.progressVisible = false
+        }, 1000)
+      },
+
+      /**
+       * 上传失败
+       * @param err 错误信息
+       */
+      uploadError (err) {
+        this.progressVisible = false
+        globalErrorPrint(err)
+        this.$message.error(MSG.UPLOAD_FILE_FAIL_MSG)
+      },
+
+      /**
+       * 上传文件
+       */
+      initUploadAdvFile () {
+        let uploadUrl = apiUrlConfig().storageUpload
+        let imagePicker = document.getElementById('imagePicker')
+        let vadeoPicker = document.getElementById('vadeoPicker')
+        if (imagePicker) {
+          imagePicker.innerHTML = '选择'
+        }
+        if (vadeoPicker) {
+          vadeoPicker.innerHTML = '选择'
+        }
+        // 1图片， 2视频
+        new FlashUploadFile().startUpload(1, uploadUrl, 'imagePicker', this.uploadtoken, this.selectFileErr, this.startUpload, this.uploadProgress, this.uploadSuccess, this.uploadError)
+        new FlashUploadFile().startUpload(2, uploadUrl, 'vadeoPicker', this.uploadtoken, this.selectFileErr, this.startUpload, this.uploadProgress, this.uploadSuccess, this.uploadError)
       },
 
       /**
@@ -411,6 +521,9 @@
           this.layerForm.type = 0
           this.layerForm.isEdit = false
           this.listPageVisible = false
+          setTimeout(() => {
+            this.initUploadAdvFile()
+          }, 300)
         }
       },
 
@@ -481,6 +594,9 @@
           this.isVideo = false
         }
         if (!this.layerForm.isEdit) this.layerForm.bgImage = ''
+        setTimeout(() => {
+          this.initUploadAdvFile()
+        }, 300)
       },
 
       /**

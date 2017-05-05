@@ -82,24 +82,28 @@
         </dd>
       </dl>
     </div>
-    <div class="category-table fix-wrapper">
-      <div class="hd">
-        <dl>
-          <dd>序号</dd>
-          <dd v-if="filterTableNameCellIsVisible" @click="addCategory(rowName)">{{rowName}}&nbsp;&nbsp;<img src="../assets/icons/ic_add.png"></dd>
-          <dd v-if="filterTableTagCellIsVisible" @click="addTag">标签&nbsp;&nbsp;<img src="../assets/icons/ic_add.png"></dd>
-          <dd>变更</dd>
-          <dd>删除</dd>
-        </dl>
-      </div>
-      <div v-for="(item, index) in filterTableData" class="bd">
-        <dl>
-          <dd>{{index + 1}}</dd>
-          <dd v-if="filterTableNameCellIsVisible">{{item.name}}</dd>
-          <dd v-if="filterTableTagCellIsVisible">{{item.tagName}}</dd>
-          <dd><a @click="openUpdateDialog(index, item)">变更</a></dd>
-          <dd><a @click="delSubject(index, item)">删除</a></dd>
-        </dl>
+    <div class="fix-wrapper">
+      <div class="category-table">
+        <table  cellspacing="0" cellpadding="0" border="0" width="100%">
+          <thead>
+            <tr>
+              <th class="is-leaf">序号</th>
+              <th class="is-leaf" v-if="filterTableNameCellIsVisible" @click="addCategory(rowName)">{{rowName}}&nbsp;&nbsp;<img src="../assets/icons/ic_add.png"></th>
+              <th class="is-leaf" v-if="filterTableTagCellIsVisible" @click="addTag">标签&nbsp;&nbsp;<img src="../assets/icons/ic_add.png"></th>
+              <th class="is-leaf">变更</th>
+              <th>删除</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in filterTableData">
+              <td>{{index + 1}}</td>
+              <td v-if="filterTableNameCellIsVisible">{{item.name}}</td>
+              <td v-if="filterTableTagCellIsVisible">{{item.tagName}}</td>
+              <td><a @click="openUpdateDialog(index, item)">变更</a></td>
+              <td><a @click="delSubject(index, item)">删除</a></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <!--打开嵌入的表单-->

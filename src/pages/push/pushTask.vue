@@ -38,13 +38,13 @@
             <td>
               <label>
                 <span>执行时间起</span>
-                <el-date-picker type="datetime" placeholder="选择时间" v-model="searchForm.startTime" ></el-date-picker>
+                <el-date-picker type="datetime" placeholder="选择时间" :editable="false" v-model="searchForm.startTime" ></el-date-picker>
               </label>
             </td>
             <td>
               <label>
                 <span>执行时间止</span>
-                <el-date-picker type="datetime" placeholder="选择时间" v-model="searchForm.endTime" ></el-date-picker>
+                <el-date-picker type="datetime" placeholder="选择时间" :editable="false" v-model="searchForm.endTime" ></el-date-picker>
               </label>
             </td>
           </tr>
@@ -452,8 +452,9 @@
               item.taskConditions = item.strategies[0] && item.strategies[0].provinceName ? ` ${item.strategies[0].provinceName} >` : ''
               item.taskConditions += item.strategies[0] && item.strategies[0].cityName ? ` ${item.strategies[0].cityName} >` : ''
               item.taskConditions += item.strategies[0] && item.strategies[0].countyName ? ` ${item.strategies[0].countyName} >` : ''
-              item.taskConditions += item.contents[0] && item.contents[0].phase !== null ? ` ${this.phaseMap[item.contents[0].phase]} >` : ''
-              item.taskConditions += item.contents[0] && item.contents[0].gradeCateName ? ` ${item.contents[0].gradeCateName} >` : ''
+              item.taskConditions += item.strategies[0] && item.strategies[0].schoolName ? ` ${item.strategies[0].schoolName} >` : ''
+              item.taskConditions += item.strategies[0] && item.strategies[0].phase !== null ? ` ${this.phaseMap[item.strategies[0].phase]} >` : ''
+              item.taskConditions += item.strategies[0] && item.strategies[0].gradeName ? ` ${item.strategies[0].gradeName} >` : ''
               item.taskConditions = item.taskConditions.substr(0, item.taskConditions.length - 1)
               return item
             })
@@ -487,7 +488,7 @@
         }
         this.CONTENT_FILE_GET_URL(params).then(res => {
           if (res.code == CODE.SUCCESS) {
-            this.downloadLink = res.data.url
+            this.downloadLink = `${res.data.url}&d=true`
           }
         }).catch((err) => {
           globalErrorPrint(err)
@@ -540,8 +541,13 @@
       showPushContentLayer () {
         this.dialogFormPushContent = true
       },
+      /**
+       * 点击分页码
+       * @param val 页码
+       */
       handleCurrentChange (val) {
         this.currentPage = val
+        this.getTaskLit()
       }
     }
   }

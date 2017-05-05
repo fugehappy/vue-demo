@@ -29,13 +29,13 @@
               <td>
                 <label>
                   <span>统计区间起</span>
-                  <el-date-picker type="month" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
+                  <el-date-picker type="month" placeholder="选择日期" :editable="false" v-model="searchForm.startTime"></el-date-picker>
                 </label>
               </td>
               <td>
                 <label>
                   <span>统计区间止</span>
-                  <el-date-picker type="month" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
+                  <el-date-picker type="month" placeholder="选择日期" :editable="false" v-model="searchForm.endTime"></el-date-picker>
                 </label>
               </td>
             </tr>
@@ -107,8 +107,7 @@
             data: []
           },
           grid: {
-            x: 40,
-            y: 20
+            y: 10
           },
           toolbox: {
             feature: {

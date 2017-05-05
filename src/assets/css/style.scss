@@ -178,8 +178,9 @@ $navHeight: 50px;
   margin: 0 auto;
   padding: 25px 0;
   z-index: 999;
+  font-size: 14px;
+  color: $BASE_FONT_COLOR;
   .footer-title {
-    font-size: 14px;
     font-weight: bold;
   }
 }

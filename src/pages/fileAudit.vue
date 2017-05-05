@@ -100,13 +100,13 @@
           <td>
             <label>
               <span>上传时间起</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.startTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.startTime"></el-date-picker>
             </label>
           </td>
           <td>
             <label>
               <span>上传时间止</span>
-              <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.endTime"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" :editable="false" v-model="searchForm.endTime"></el-date-picker>
             </label>
           </td>
           <td>
@@ -211,7 +211,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="* 审核评论:" :label-width="formLabelWidth">
-              <el-input type="textarea" v-model="layerForm.rejectReason" maxlength="250" placeholder="请备注审批评论"></el-input>
+              <el-input type="textarea" v-model="layerForm.rejectReason" :maxlength="250" placeholder="请备注审批评论"></el-input>
             </el-form-item>
           </div>
         </el-form>
@@ -460,7 +460,7 @@
         }
         this.CONTENT_FILE_GET_URL(params).then(res => {
           if (res.code == CODE.SUCCESS) {
-            this.layerForm.downloadLink = res.data.url
+            this.layerForm.downloadLink = `${res.data.url}&d=true`
           }
         }).catch((err) => {
           globalErrorPrint(err)

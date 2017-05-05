@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * Copyright (C) 2017
  *
  * 开发环境定义文件
  */

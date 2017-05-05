@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * Copyright (C) 2017
  *
  * 开发时使用webpack针对client热加载
  */

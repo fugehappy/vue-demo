@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * Copyright (C) 2017
  *
  * 代码构建所使用的工具函数，主要对css做相关编译
  */

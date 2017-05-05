@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * Copyright (C) 2017
  *
  * webpack 针对生产环境的配置
  */

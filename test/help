@@ -1,0 +1,307 @@
+Axure RP原型设计，生成的HTML代码直接打开index.html会跳转到resources/chrome/chrome.html页面，修改index.html中的代码不让跳转即可查看
+
+查看ip
+ifconfig
+ping ip
+
+第一次拉取代码
+git clone ssh://luoxf0320@192.168.87.197:29418/ISD-EDU/resources-cloud -b ISD-EDU_DEV
+提交地址
+git push origin HEAD:refs/for/ISD-EDU_DEV
+拉取代码
+git pull --rebase
+
+还没入库前已经提交了一次，再次修改提交修补，用amend
+git commit --amend
+第一次提交
+git commit
+
+提交代码注释模板：（必须空行）
+[Feature][Cloud][内容中心后台管理]静态页面
+
+[FeatureID]:
+[BugID]:
+[Info]:
+
+Ctrl + O 写入
+回车
+Ctrl + X 保存退出
+
+git reset HEAD <文件>... 以取消暂存
+git checkout -- <文件>... 丢弃工作区的改动
+
+
+地址
+http://i.thundersoft.com/thundersoft
+svn:
+http://192.168.9.128:8000/svn/ISD-EDU/
+gerrit：
+http://192.168.87.197/gerrit/#/dashboard/self
+文档：
+http://10.10.40.2/mediawiki/index.php
+
+
+1.sublime 中文输入法
+https://www.sinosky.org/linux-sublime-text-fcitx.html
+2.进入root模式，可修改文件权限和下载安转
+$ su root
+输入密码（root123）
+root@thundersoft:/home/user# sudo apt-get
+3.修改文件为可写
+su root
+输入密码
+sudo chmod 777 /usr/share/applications/sublime_text.desktop
+exit（退出root模式）
+4. 修改目录权限
+sudo chmod -R 777 /opt/
+5.拷贝
+cp ~/project/libsublime-imfix.so /opt/sublime_text/
+6.项目
+安装svn
+sudo apt-get install subversion
+检出文件
+svn checkout http://192.168.9.128:8000/svn/ISD-EDU/
+提交文件
+svn commit -m path-to-commit
+更新文件
+svn update
+查看日志
+svn log path
+
+sublime 
+http://www.kancloud.cn/digest/sublime-text-complete-guide/61425
+全局替换
+保存全部
+
+
+安装node
+下载Linux版本，然后解压
+
+切换目录：
+cd ~
+cd /usr/local/
+cd /etc/
+
+删除  rm -rf *
+删除文件命令： rm -rf 文件名
+删除 rm 文件名
+显示当前目录 pwd
+
+快捷方法
+切换窗口 = ALT + Tab 
+浏览器快速切换窗口 = Ctrl + Tab
+锁屏 = Ctrl + Alt + L
+
+显示地址栏 = Ctrl + L
+打开终端 =  Ctrl + Alt + T
+终端tab = Ctrl + Shift + T
+
+
+
+安装：
+升级node
+1、sudo npm i n -g
+2、sudo n 6.10.0
+
+编译前提：
+npm install babel-cli --save-dev 
+
+
+phpstorm设置
+
+代码格式化
+editor设置缩进
+keymap快捷键绑定
+快捷键 = Ctrl + H
+格式化： format = Ctrl + Shift + F
+查看历史记录,版本回退：右键 -> local history -> show history - revert
+多栏操作
+
+
+vue.js2.0 + ElementUI
+http://element.eleme.io/#/zh-CN
+https://cn.vuejs.org/v2/api/
+
+http://www.jianshu.com/p/0a7aef90d0e8
+https://github.com/liu-zhuang/Eleme
+http://www.cnblogs.com/guokun/p/6068652.html
+http://jingyan.baidu.com/article/7f41ececec6c47593d095cf4.html
+https://github.com/liuyunzhuge/blog
+
+
+vim的使用
+vim 文件名
+然后i键盘即可进入编辑
+按ESC退出编辑
+再输入：
+再输入q（退出）或者 wq(保存并退出)
+
+查看文件内容：
+cat 文件名
+gedit 文件名
+
+使用gitk跟踪git项目源码
+插入gitk:  sudo apt-get install gitk
+gitk &
+
+关闭gedit自动保存功能：
+编辑下的首选项
+
+
+
+
+// 冲突
+
+ ssh -p 29418 luoxf0320@192.168.87.197
+  889  history 
+  890  git push origin HEAD:refs/for/ISD-EDU_DEV
+  891  gitdir=$(git rev-parse --git-dir); scp -p -P 29418 luoxf0320@192.168.87.197:hooks/commit-msg ${gitdir}/hooks/
+  892  git commit --amend 
+  893  git log
+  894  git push origin HEAD:refs/for/ISD-EDU_DEV
+  895  git log
+  896  git fetch origin 
+  897  git rebase origin/ISD-EDU_DEV 
+  898  git status
+  899  git stash
+  900  git rebase origin/ISD-EDU_DEV 
+  901  git push origin HEAD:refs/for/ISD-EDU_DEV
+  902  git stash pop
+  903  git status
+  904  git branch
+  905  history 
+
+ 845  git stash 
+  846  git status
+  847  git pull
+  848  git status
+  849  git stash pop 
+  850  git status
+  851  git stash pop 
+  852  git checkout -- ../../../../.gitignore
+  853  git status
+  854  git stash pop 
+  855  git checkout -- webadmin/src/main/webpages/src/config/ApiConfig.js
+  856  git status
+
+
+git stash 
+
+git pull 拉取代码
+
+git stash pop
+
+git stash 对当前的暂存区和工作区状态进行保存。
+
+git stash list 列出所有保存的进度列表。
+
+git stash pop [--index] [<stash>]恢复工作进度
+
+git checkout --<文件名>
+
+
+版本领先的处理
+git checkout origin/分支名
+
+http://zhyq0826.iteye.com/blog/1671638
+找到需要回退的那次commit的 哈希值，
+ 
+git reset --hard commit_id 
+
+版本落后的处理
+git pull
+查询提交的记录
+git log -1
+
+
+
+一个仓库推送到多个远程库中
+git remote add origin <url1>
+git remote set-url --add origin <url2>
+git remote set-url --add origin <url3>
+显示当前所有远程库的详细信息
+git remote -v
+
+在git账户中上配置公钥
+在本地建立：git/vue-demo
+在git上建立vue-demo
+1.cd git/vue-demo
+2.git init
+3.echo "# vue-demo" >> README.md
+4.git status
+5.git add README.md
+6.git commmit -m 'readme'
+7.git remote add my git@github.com:fugehappy/vue-demo.git(关联远程库)
+8.git push -u my master(推送到远程库)
+9.git remote -v(显示当前所有远程库的详细信息)
+
+git remote add my git@github.com:fugehappy/vue-demo.git
+git push -u my master
+
+
+
+刚刚入了库但是用了git commit --amend进行提交
+还没有入库，但是使用了git commit
+解决分支领先提交
+git log
+git diff HEAD^ HEAD
+git stash
+git reset HEAD^
+git stash
+git fetch origin
+git reset origin/ISD-EDU_DEV
+git status
+git checkout -f
+git pull --rebase
+git log
+git stash pop
+git status
+git add src/*
+
+
+git pull --rebase
+git fetch origin
+git checkout origin ISD-EDU_DEV
+
+
+gerrit代码模板
+1，注释review符合规范 
+2，代码逻辑OK 
+3，异常处理考虑OK 
+4，提交模板符合规范
+
+输入法问题解决方案：
+删除配置文件，重启搜狗
+ubuntu下搜狗的配置文件在 ~/.config下的3个文件夹里：
+SogouPY、SogouPY.users、sogou-qimpanel
+删除这3个文件夹，然后重启搜狗。
+
+thunderbird
+1.一直发送邮件
+左边菜单树中local folder-账户设置-副本和文件夹-当发送消息时自动-保留副本到-取消勾选
+2.标注文件夹为已读
+在文件夹上右键-标记文件夹为已读
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

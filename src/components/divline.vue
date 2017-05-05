@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!-- 分割线组件 -->
 <template>
   <div class="divline"></div>

@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!--vue实例挂载的app节点-->
 <template>
   <div id="app">

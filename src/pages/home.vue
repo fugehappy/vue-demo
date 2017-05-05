@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!--主页-->
 <template>
     <div class="fix-wrapper">

@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!--登录页面-->
 <template>
   <div class="main login-main" v-loading.fullscreen.lock="this.$store.state._global.pending" :element-loading-text="this.$store.state._global.loadingText">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * Copyright (C) 2017
  *
  * 路由的入口文件，包含所有的路由，其中部分路由是通过require加载进来
  */

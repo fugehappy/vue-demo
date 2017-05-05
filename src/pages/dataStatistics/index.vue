@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!--数据统计总页面-->
 <template>
   <div class="statistics-wrap fix-wrapper">

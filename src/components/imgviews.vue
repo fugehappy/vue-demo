@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!-- 图片预览组件 -->
 <template id="img_view">
   <div class="m-img-view" @click="eClick">

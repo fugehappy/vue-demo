@@ -1,4 +1,4 @@
-<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--Copyright (C) 2017 -->
 <!-- 文件上传进度组件 -->
 <template>
   <div class="progress-wrap">

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ * Copyright (C) 2017
  *
  * 整个应用的入口文件
  */
@@ -49,4 +49,3 @@ new Vue({
   template: '<App/>',
   components: {App}
 })
-

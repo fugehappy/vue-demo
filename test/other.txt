@@ -200,5 +200,17 @@ content Type：application/json
 Content 填写(注意使用双引号)
 {"username": "admin", "password": "admin"}
 最后一步操作：submit
+8.postman
+插件下载及安装 http://chromecj.com/web-development/2014-09/60.html
+
+
+
+
+
+
+
+
+
+
 
 

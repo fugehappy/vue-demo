@@ -282,6 +282,33 @@ thunderbird
 2.标注文件夹为已读
 在文件夹上右键-标记文件夹为已读
 
+https://github.com/lobinroromens/antd-dva-admin-starter
+
+https://github.com/myqianlan/antd-admin-boilerplate
+
+https://github.com/nicolaszs/antd-admin
+
+https://github.com/purocean/yii2-template
+
+git config --global user.email "luoxf0320@thundersoft.com"
+git config --global user.name "luoxf0320"
+
+sudo reboot
+export  LC_CTYPE=en_US.UTF-8 
+
+git reset HEAD
+git checkout --
+history 
+git rebase origin/ISD-EDU_DEV
+
+apt-get install subversion 
+sudo passwd user
+
+http协议调试代理工具介绍 http://www.cnblogs.com/workmore/p/6101028.html
+1.HttpRequester
+2.Postman
+3.Fiddler
+
 
 
 

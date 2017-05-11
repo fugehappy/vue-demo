@@ -1,0 +1,311 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--用户资料认证页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewpoint" content="width=device-width, initial-scale=1">
+<title>账号认证</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="content-wrap">
+        <!-- table-wrap开始 -->
+        <div class="table-wrap">
+          <div>
+            <!-- content-head开始 -->
+            <div class="content-head">
+              <div>
+                <label class="lable-lg">认证信息</label> <label class="text-indentify lable-lg text-sub-title" id="authLabel"></label> <label id="indentify-reason" class="text-danger text-sub-title"></label>
+              </div>
+            </div>
+            <!-- content-head结束 -->
+            <!-- content-body开始 -->
+            <div class="content-body">
+              <!-- form开始 -->
+              <div role="form" class="identify-body">
+                <fieldset class="content-wrap-left" id="identify-info">
+                  <div class="form-group">
+                    <label class="control-labe operation-left">* 翰林账号：</label> <label class="" id="hlAccount">${loginUser.userId}</label>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-labe operation-left lable-name">* 真实姓名：(账号接口人)</label>
+                    <div class="operation-left">
+                      <input type="text" maxlength="20" id="realName" class="form-control" value="" />
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-labe operation-left">* 认证类型：</label>
+                    <div class="operation-left">
+                      <select class="form-control" id="authType">
+                        <option value="0">学校教师</option>
+                        <option value="1">三方个人</option>
+                        <option value="2">三方机构</option>
+                      </select>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                </fieldset>
+                <fieldset class="content-wrap-left">
+                  <div class="form-group">
+                    <label class="control-labe operation-left lable-name">*真实头像 ：(仅审核使用)</label>
+                    <div class="operation-left">
+                      <img src="${resourcesBaseUrl}/images/ic_head.png" data-type="0" id="identifyImage" alt="修改头像" />
+                    </div>
+                    <div class="operation-left">
+                      <div id="indetifyPhotoPicker">上传图片</div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <!-- form结束 -->
+            </div>
+            <!-- content-body结束 -->
+          </div>
+          <div>
+            <div class="content-head"></div>
+            <div class="content-body">
+              <div role="form" class="identify-body">
+                <fieldset class="content-wrap-left" id="identify-card">
+                  <form>
+                    <div class="lable-id-card">身份证正面</div>
+                    <div id="idCard01" class="id-card">
+                      <div id="id_card_front"></div>
+                    </div>
+                  </form>
+                </fieldset>
+                <fieldset class="content-wrap-left">
+                  <form>
+                    <div class="lable-id-card">身份证反面</div>
+                    <div id="idCard02" class="id-card">
+                      <div id="id_card_back"></div>
+                    </div>
+                  </form>
+                </fieldset>
+                <div class="clearfix"></div>
+                <div class="intro-wrap">
+                  <p>1.请上传身份证正面带有头像的扫描件或清晰照片</p>
+                  <p>2. 照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过2M</p>
+                  <p>注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="content-head"></div>
+            <div class="content-body">
+              <div role="form" class="identify-body">
+                <fieldset class="content-wrap-left">
+                  <form>
+                    <div class="lable-id-card">认证材料</div>
+                    <div id="otherCard01" class="other-card">
+                      <div id="other_card_first"></div>
+                      <span class="mention">
+                        <font>认证材料一</font>
+                        <font>点击添加</font>
+                      </span>
+                    </div>
+                  </form>
+                </fieldset>
+                <fieldset class="content-wrap-left">
+                  <form>
+                    <div id="otherCard02" class="other-card no-title">
+                      <div id="other_card_second"></div>
+                      <span class="mention">
+                        <font>认证材料二</font>
+                        <font>点击添加</font>
+                      </span>
+                    </div>
+                  </form>
+                </fieldset>
+                <fieldset class="content-wrap-left">
+                  <form>
+                    <div id="otherCard03" class="other-card no-title">
+                      <div id="other_card_third"></div>
+                      <span class="mention">
+                        <font>认证材料三</font>
+                        <font>点击添加</font>
+                      </span>
+                    </div>
+                  </form>
+                </fieldset>
+                <div class="clearfix"></div>
+                <div class="intro-wrap">
+                  <p>1.请上传您的教师资格证、单位证明、资格证明等一切可证明专业身份的材料照片</p>
+                  <p>2. 照片要求格式为JPG/JPEG/GIF/PNG，大小不要超过2M</p>
+                  <p>注：您的证件信息不会被其他网友看到，我们将严格保密，请放心上传</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="operation-bottom">
+            <div class="text-center">
+              <button type="button" class="btn-wrap" id="btn-authetication">确认提交</button>
+            </div>
+          </div>
+        </div>
+        <!-- table-wrap结束 -->
+      </div>
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <script>
+      $(function() {
+          // 获取用户认证信息
+          $.post(apiUrlConfig().identifydetail, null, function(data) {
+            var authLabel = $('#authLabel');
+            var identification = data.data.identification;
+            if (identification) {
+              var status = identification.status; // 认证状态，0 等待认证；1 认证成功； 2 认证失败
+              if (status == 0) {
+                authLabel.text('(等待认证)');
+                $('.text-center').html('');
+                disabledForm();
+                $('.operation-bottom').css('border', 'none');
+              } else if (status == 1) {
+                authLabel.text('(已认证)');
+                $('.text-center').html('');
+                disabledForm();
+                $('.operation-bottom').css('border', 'none');
+              } else if (status == 2) {
+                authLabel.text('(认证失败)');
+                initUpload();
+                $('#indentify-reason').text(identification.reason);
+              }
+              $('#hlAccount').text(identification.user.userId);
+              $('#authType > option').each(function() {
+                if ($(this).val() == identification.type) {
+                  $(this).attr('selected', true);
+                }
+              });
+              if (identification.detail[0].values[0]) {
+                $('#realName').val(identification.detail[0].values[0]);
+              }
+              if (identification.detail[1].values[0]) {
+                $('#identifyImage').attr('src',
+                    identification.detail[1].values[0]);
+                $('#identifyImage').attr('data-type', "1"); // 头像是否上传,0 未上传;1 已上传
+              }
+              if (identification.detail[2].values[0]) {
+                $('#idCard01')
+                    .append(
+                        '<img alt="身份证正面" src="' + identification.detail[2].values[0] + '"/>');
+              }
+              if (identification.detail[2].values[1]) {
+                $('#idCard02')
+                    .append(
+                        '<img alt="身份证反面" src="' + identification.detail[2].values[1] + '"/>');
+              }
+              if (identification.detail[3].values[0]) {
+                $('#otherCard01')
+                    .append(
+                        '<img alt="认证材料一" src="' + identification.detail[3].values[0] + '"/>');
+              }
+              if (identification.detail[3].values[1]) {
+                $('#otherCard02')
+                    .append(
+                        '<img alt="认证材料二" src="' + identification.detail[3].values[1] + '"/>');
+              }
+              if (identification.detail[3].values[2]) {
+                $('#otherCard03')
+                    .append(
+                        '<img alt="认证材料三" src="' + identification.detail[3].values[2] + '"/>');
+              }
+            } else {
+              authLabel.text('(未认证)');
+              initUpload();
+            }
+            debugInfo(data);
+          }, function(e) {
+            layer_server_err();
+            debugInfo(e);
+          });
+
+        function initUpload() {
+          $('#indetifyPhotoPicker').css('display', 'block');
+          // 上传认证真实头像
+          createUploadObject('indetifyPhotoPicker');
+          // 上传身份证正面
+          createUploadObject('id_card_front');
+          // 上传身份证反面
+          createUploadObject('id_card_back');
+          // 上传其他材料（第一张）
+          createUploadObject('other_card_first');
+          // 上传其他材料（第二张）
+          createUploadObject('other_card_second');
+          // 上传其他材料（第三张）
+          createUploadObject('other_card_third');
+        }
+
+        // 创建上传对象
+        function createUploadObject(pickname) {
+          new flashUpload().startUpload('AVATAR_TYPE', pickname, function(data){
+            var imageUrl = 'http://' + data.data.bucketHost + '/' + data.data.fileKey;
+            if (pickname == 'indetifyPhotoPicker') {
+              $('#identifyImage').attr('src', imageUrl);
+              // data-type 0 未上传; 1 已上传
+              $('#identifyImage').attr('data-type', '1');
+            } else {
+              var currentImage = $('#' + pickname).parent().find('img');
+              if (currentImage.length > 0) {
+                currentImage.attr('src', imageUrl);
+              } else {
+                $('#' + pickname).parent().append('<img src="' + imageUrl + '"/>');
+              }
+            }
+            debugInfo(data);
+          }, function(data) {
+            layer_server_err();
+            debugInfo(data);
+          }, function(data){
+            $('#' + pickname).parent().find('.formtips').remove();
+            switch (data) {
+            // 超过上传文件限制
+            case 'Q_EXCEED_SIZE_LIMIT': {
+              var errorMsg = '图片不能大于2M';
+              $('#' + pickname).parent().append('<span class="formtips onError">'
+                  + errorMsg + '</span>');
+              break;
+            };
+            // 选择文件类型不满足
+            case 'Q_TYPE_DENIED': {
+              var errorMsg = '不支持的文件格式';
+              $('#' + pickname).parent().append('<span class="formtips onError">'
+                              + errorMsg + '</span>');
+              break;
+            };
+            default: {
+              var flashPrompt = '<div id="flash-prompt">您尚未安装flash player或版本过低，<br><a class="log-xsend" href="https://get.adobe.com/cn/flashplayer/?no_redirect" target="_blank">点击此处</a>下载安装最新版本flash player</div>';
+              if (pickname == 'indetifyPhotoPicker') {
+                $('#' + pickname).parent().append(flashPrompt);
+              } else {
+                $('#' + pickname).parent().parent().append(flashPrompt);
+              }
+              break;
+            }
+            }
+          }, function() {
+            $('#' + pickname).parent().find('.formtips').remove();
+          });
+        }
+
+        // 禁用页面元素
+        function disabledForm() {
+          $('#realName').attr('disabled', true);
+          $('#authType').attr('disabled', true);
+          $('#indetifyPhotoPicker').css('display', 'none');
+          $('.id-card').css('cursor', 'default');
+          $('.other-card').css('cursor', 'default');
+        }
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+ES6
+1.promise有两个特点
+对象的状态不受外界影响。Promise对象代表一个异步操作，有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。这也是Promise这个名字的由来，它的英语意思就是“承诺”，表示其他手段无法改变。
+
+一旦状态改变，就不会再变，任何时候都可以得到这个结果。Promise对象的状态改变，只有两种可能：从Pending变为Resolved和从Pending变为Rejected。只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果。就算改变已经发生了，你再对Promise对象添加回调函数，也会立即得到这个结果。这与事件（Event）完全不同，事件的特点是，如果你错过了它，再去监听，是得不到结果的。
+
+2.async，await
+await 表示在这里等待promise返回结果了，再继续执行。
+
+
+数组的翻转
+pop删除数组中最后一个元素
+<script>
+    var arr=[1,2,3,4];
+    function reverse(arr) {
+        var arr2=[];
+        while(arr.length) {
+            var num=arr.pop();
+            arr2.push(num);
+        }
+        return arr2;
+    }
+    
+    console.log(reverse(arr))
+</script>
+
+
+快速排序
+采用二分法，取出中间数，数组每次和中间数比较，小的放到左边，大的放到右边。
+<script>
+    var arr = [3, 1, 4, 6, 5, 7, 2];
+
+    function quickSort(arr) {
+        if(arr.length == 0) {
+            return [];    // 返回空数组
+        }
+
+        var cIndex = Math.floor(arr.length / 2);
+        var c = arr.splice(cIndex, 1);
+        var l = [];
+        var r = [];
+
+        for (var i = 0; i < arr.length; i++) {
+            if(arr[i] < c) {
+                l.push(arr[i]);
+            } else {
+                r.push(arr[i]);
+            }
+        }
+
+        return quickSort(l).concat(c, quickSort(r));
+    }
+
+    console.log(quickSort(arr));
+</script>
+
+
+冒泡排序
+每次比较相邻的两个数，如果后一个比前一个小，换位置
+
+<script>
+    var arr = [3, 1, 4, 6, 5, 7, 2];
+
+    function bubbleSort(arr) {
+        for (var i = 0; i < arr.length - 1; i++) {
+            for(var j = 0; j < arr.length - 1; j++) {
+                if(arr[j + 1] < arr[j]) {
+                    var temp;
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+        return arr
+    }
+
+    console.log(bubbleSort(arr));
+</script>
+
+
+
+ajax过程
+
+获得ajax: new XMLHttpResquest
+打开地址: open
+发送数据: send
+接收数据: onreadystatechange  readyState  status
+
+
+dva是进一步封装
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

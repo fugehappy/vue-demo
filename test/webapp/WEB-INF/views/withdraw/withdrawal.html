@@ -1,0 +1,228 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--提现申请页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>提现申请</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="navbar operation-wrap" id="with-title">
+        <div class="content-title operation-left">
+          <p>提现申请</p>
+        </div>
+        <!-- 右侧操作栏开始 -->
+        <div>
+          <a id="withdraw-return" class="btnwrap operation-right" href="/documents/sales">
+            <span class="menu-icon" id="operation-icon-return"></span>返回
+          </a>
+        </div>
+        <!-- 右侧操作栏结束 -->
+      </div>
+      <!-- table-wrap开始 -->
+      <div class="table-wrap">
+        <!-- form开始 -->
+        <form role="form" class="identify-body" id="with-form">
+          <fieldset>
+            <div class="form-group">
+              <label class="control-label operation-left">* 我的收益:</label> <label class="text-money"></label>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label operation-left">* 提现方式:</label>
+              <div class="operation-left">
+                <select class="form-control" id="platform" disabled="disabled">
+                  <option value="1" data-account="">支付宝</option>
+                  <option value="2" data-account="">微信</option>
+                </select>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label operation-left">* 收款账号:</label> <label id="withAccount"></label>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label operation-left">* 提现金额:</label>
+              <div class="operation-left">
+                <input type="text" maxlength="10" class="form-control" id="withAmount">
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label operation-left">* 手机号:</label>
+              <div class="operation-left">
+                <label id="withdrawPhone"></label>
+                <input type="hidden" id="phoneNo">
+              </div>
+              <div class="operation-left">
+                <button type="button" id="btn-code" class="btn btn-with-code">发送验证码</button>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label class="control-label operation-left">* 验证码:</label>
+              <div class="operation-left">
+                <input id="valiCode" maxlength="10" type="text" class="form-control" placeholder="请输入验证码">
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </fieldset>
+          <div class="form-group">
+            <label class="control-label operation-left"></label>
+            <div>
+              <label id="withdrawcheck" class="pull-left checkboxLabel" for="withcheck">
+              <input type="checkbox" id="withcheck"></label>
+              <div class="mobile-text pull-left">
+                <label>阅读并接受
+                  <a href="https://accounts.hle.com.tw/login/privacy-policy/" target="_blank">《翰林用户协议》</a>
+                </label>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div id="save-image-wrap">
+              <button type="button" id="appForWith" class="btn-wrap" disabled="disabled">提现申请</button>
+            </div>
+          </div>
+        </form>
+        <!-- form结束 -->
+      </div>
+      <!-- table-wrap结束 -->
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <script>
+    $(function(){
+      $('.menu li a').eq(7).addClass('active');
+      // 获取我的收益-获取账号信息
+      $.post(apiUrlConfig().getpayinfo, null, function(data) {
+        debugInfo(data);
+        $('.text-money').text(data.data.balance + '元');
+        $('#withdrawPhone').text(data.data.phoneNo);
+        $('#phoneNo').val(data.data.phoneNo);
+        var platforms = $('#platform > option');
+        // 支付账户信息 0 支付宝支付账户信息 1 微信支付账户信息
+        if (data.data.accounts && data.data.accounts.length > 0) {
+          platforms.eq(0).attr('data-account', data.data.accounts[0].tdAccount);
+          platforms.eq(1).attr('data-account', data.data.accounts[1].tdAccount);
+          $.each(data.data.accounts, function(k, v) {
+            // tdPlatform 支付平台  1 支付宝 2 微信
+            if (v.tdPlatform == 1) {
+              if (v.tdAccount != '') {
+                $('#withAccount').text(v.tdAccount);
+              } else {
+                $('#withAccount').append('<a href="/user/personal">您还没有填写收款账号，赶快去完善信息吧</a>');
+              }
+            }
+          })
+        } else {
+          $('#withAccount').append('<a href="/user/personal">您还没有填写收款账号，赶快去完善信息吧</a>');
+        }
+      }, function(err) {
+        layer_server_err();
+        debugInfo(err);
+      });
+
+      // 支付方式改变
+      $('#platform').change(function(){
+        var account = $(this).find('option:selected').attr('data-account');
+        $('#withAccount').text(account);
+      });
+
+      // 点击提现按钮
+      $('#appForWith').click(function() {
+        var amount = $('#withAmount');
+        amount.parent().find('.formtips').remove();
+        if (!/^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/.test(amount.val())) {
+          var errorMsg = '提现金额输入有误';
+          amount.parent().append(
+                  '<span class="formtips onError">'
+                          + errorMsg + '</span>');
+          return false;
+        }
+        if (Number(amount.val()) > $('.text-money').text().replace('元','')) {
+          var errorMsg = '提现金额需小于等于收益';
+          amount.parent().append(
+                  '<span class="formtips onError">'
+                          + errorMsg + '</span>');
+          return false;
+        }
+        if (Number(amount.val()) < 0.1) {
+          var errorMsg = '提现金额需大于0.1元';
+          amount.parent().append(
+                  '<span class="formtips onError">'
+                          + errorMsg + '</span>');
+          return false;
+        }
+        var valiCode = $('#valiCode');
+        valiCode.parent().find('.formtips').remove();
+        if (valiCode.val() == '') {
+          var errorMsg = '验证码不能为空';
+          valiCode.parent().append(
+                  '<span class="formtips onError">'
+                          + errorMsg + '</span>');
+          return false;
+        }
+        var data = {
+          'amount' : $('#withAmount').val(),
+          'tdPlatform' : $('#platform').val(),
+          'verifyCode' : $('#valiCode').val()
+        }
+        $.post(apiUrlConfig().applypay, data, function(data) {
+          layer.msg('提现申请已提交', {
+            time: 2000,
+            skin: 'layui-layer-alarm',
+            icon: 1,
+          });
+          setTimeout(function() {
+            window.location.href = '/withdraw/withdraw-record';
+          }, 2000);
+          debugInfo(data);
+        }, function(err) {
+          debugInfo(err);
+          $('#appForWith').removeAttr('disabled');
+          $('#appForWith').text('提现申请');
+          if (err.responseJSON && err.responseJSON.message == 'Error amount') {
+            var withAmount = $('#withAmount');
+            withAmount.parent().find('.formtips').remove();
+            var errorMsg = '提现金额有误，请仔细核对';
+            withAmount.parent().append(
+                '<span class="formtips onError">'
+                        + errorMsg + '</span>');
+            return false;
+          } else if(err.responseJSON && err.responseJSON.message == 'Error verifyCode') {
+            var errorMsg = '验证码错误';
+            valiCode.parent().append(
+                    '<span class="formtips onError">'
+                            + errorMsg + '</span>');
+            return false;
+          }
+          layer_server_err();
+        }, function() {
+          $('#appForWith').attr('disabled', 'true');
+          $('#appForWith').text('提现中...');
+        });
+      });
+
+      $('#withcheck').change(function(){
+        if (!$(this).is(':checked')) {
+          $('.checkboxLabel').css('background-position', '0 0%');
+          $('#appForWith').attr('disabled', true);
+        } else {
+          $('.checkboxLabel').css('background-position', '0 100%');
+          if ($('#withAccount').find('a').length == 0) {
+            $('#appForWith').removeAttr('disabled');
+          }
+        }
+      })
+    });
+    </script>
+</body>
+</html>

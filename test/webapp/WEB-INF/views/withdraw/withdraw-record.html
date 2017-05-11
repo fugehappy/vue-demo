@@ -1,0 +1,166 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--提现记录页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>提现记录</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="navbar operation-wrap" id="with-title">
+        <div class="content-title operation-left">
+          <p>提现记录</p>
+        </div>
+        <!-- 右侧操作栏开始 -->
+        <div>
+          <a id="withdraw-return" class="btnwrap operation-right" href="/documents/sales">
+            <span class="menu-icon" id="operation-icon-return"></span>返回
+          </a>
+        </div>
+        <!-- 右侧操作栏结束 -->
+      </div>
+      <!-- table-wrap开始 -->
+      <div class="table-wrap">
+        <div class="box">
+          <div class="box-header"></div>
+          <!-- box-header结束 -->
+          <!-- box-body开始 -->
+          <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <div>
+                <div class="col-sm-12">
+                  <!-- table开始 -->
+                  <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                    <!-- table-thead开始 -->
+                    <thead>
+                      <tr role="row">
+                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">序号</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">支付方式</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">提现账号</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">金额</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">状态</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">提现日期</th>
+                      </tr>
+                    </thead>
+                    <!-- table-thead结束 -->
+                    <!-- table-tbody开始 -->
+                    <tbody id="tableBody">
+                    </tbody>
+                    <!-- table-tbody结束 -->
+                    <tfoot>
+                    </tfoot>
+                  </table>
+                  <!-- table开始 -->
+                </div>
+              </div>
+              <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination"></ul>
+              </div>
+            </div>
+          </div>
+          <!-- box-body结束 -->
+        </div>
+      </div>
+      <!-- table-wrap结束 -->
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <!-- 提现记录开始 -->
+  <script id="withrecord" type="text/html">
+    {{if items && items.length > 0}}
+    // status提现状态 0 等待处理 1 提现成功 2 提现失败
+    {{each items as value i}}
+      <tr role="row" class="odd files {{if value.status == 2}}file-fails{{/if}}">
+        <td class="sorting_1">{{(currentPage -1) * pageSize + (i+1)}}</td>
+        <td>{{if value.tdPlatform == 1}}支付宝{{else}}微信{{/if}}</td>
+        <td>{{value.tdAccount}}</td>
+        <td>{{value.amount}}</td>
+        <td>{{if value.status == 0}}等待处理{{else if value.status == 1}}提现成功
+        {{else if value.status == 2}}提现失败{{/if}}</td>
+        <td>{{value.createTime | dateFormat:'yyyy-MM-dd'}}</td>
+      </tr>
+      {{if value.status == 2}}
+        <tr style="display: none;"></tr>
+        <tr class="comment-fails"><td></td><td colspan="5">{{value.reason}}</td></tr>
+      {{/if}}
+    {{/each}}
+    {{else}}
+      <tr role="row" class="odd">
+        <td class="sorting_1" colspan="6" style="text-align:center">暂无相关记录!</td>
+      </tr>
+    {{/if}}
+  </script>
+  <!-- 提现记录开始 -->
+  <script>
+      $(function() {
+        $('.menu li a').eq(7).addClass('active');
+        var data = {
+          'page' : 1,
+          'pageSize' : 30
+        }
+        var i;
+        $.post(apiUrlConfig().getpaylist, data, function(data) {
+          templateDateParse();
+          $('#tableBody').html(template('withrecord', data.data));
+          widthInitPagination(data.data)
+          debugInfo(data);
+          setTimeout(function() {
+            close_load_layer(i);
+            pageScrollTop();
+          }, 200);
+        }, function(err) {
+          layer_server_err();
+          debugInfo(err);
+        }, function() {
+          i = show_load_layer();
+        });
+
+        /**
+         * 提现记录初始化分页
+         * @param d 进行分页的数据data
+         */
+        widthInitPagination = function(d) {
+            var num_entries = d.totalSize;
+            $(".pagination").pagination(num_entries, {
+                callback : withdrawPageselectCallback,
+                items_per_page : 30,
+                prev_text: ' ',
+                next_text: ' ',
+                load_first_page:false,
+            });
+        };
+
+        /**
+         * 提现记录分页回调函数
+         * @param page_index 回调当前页
+         * @param jq jQuery
+         */
+        withdrawPageselectCallback = function(page_index, jq) {
+            var data = {
+              'page' : page_index +1,
+              'pageSize' : 30
+            }
+            $.post(apiUrlConfig().getpaylist, data, function(data) {
+              $('#tableBody').html(template('withrecord', data.data));
+              debugInfo(data);
+              setTimeout(function() {
+                close_load_layer(i);
+                pageScrollTop();
+              }, 200);
+            }, function(err) {
+              layer_server_err();
+              debugInfo(err);
+            }, function() {
+                i = show_load_layer();
+            });
+            return false;
+        };
+      })
+    </script>
+</body>
+</html>

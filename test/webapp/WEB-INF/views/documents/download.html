@@ -1,0 +1,177 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--我的下载页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>我的下载</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="navbar operation-wrap">
+        <div class="content-title">
+          <p>我的下载</p>
+        </div>
+        <div class="operation-left">
+          <ul>
+            <li id="backFolder" class="enabled"><a href="javascript:void(0);"><span class="glyphicon glyphicon-arrow-left"></span>后退</a></li>
+            <li id="deleteFolderModal"><a href="javascript:void(0);"><span class="menu-icon" id="delete-folder"></span>删除</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- table-wrap开始 -->
+      <div class="table-wrap">
+        <div class="box">
+          <div class="box-header"></div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <div>
+                <div class="col-sm-12">
+                  <!-- table开始 -->
+                  <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                    <!-- table-thead开始 -->
+                    <thead>
+                      <tr role="row">
+                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">选择</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">名称</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">文件所属分类</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">上传用户</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">下载时间</th>
+                      </tr>
+                    </thead>
+                    <!-- table-thead结束 -->
+                    <!-- table-body开始 -->
+                    <tbody id="tableBody">
+                    </tbody>
+                    <!-- table-body结束 -->
+                    <tfoot>
+                    </tfoot>
+                  </table>
+                  <!-- table结束 -->
+                </div>
+              </div>
+              <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination"></ul>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+          <!-- 模态框（Modal） -->
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">确认删除文件</h4>
+                </div>
+                <div class="modal-body">
+                  <div>确认要删除文件吗？</div>
+                  <p></p>
+                </div>
+                <div class="modal-footer">
+                  <a class="btn-wrap" id="completeRemove">确认</a> <a class="btn-wrap btn-wrap-cancle" data-dismiss="modal">取消</a>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+          </div>
+        </div>
+      </div>
+      <!-- table-wrap结束 -->
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <!-- 内容模板开始 -->
+  <script id="docs" type="text/html">
+    {{if items.length > 0}}
+    {{each items as value i}}
+        <tr role="row" class="odd files">
+            <td class="sorting_1"><input type="checkbox" name="checkbox" onclick="contentSelect(this);"></td>
+            <td><img alt="file" src="{{value.coverImage+'?w=60'}}" /> <a class="res-item" data-id={{value.resId}}>{{value.title}}</a></td>
+            <td>{{value.cateName}}{{if value.phaseCateName}}-&gt{{value.phaseCateName}}{{/if}}
+            {{if value.subjectCateName}}-&gt{{value.subjectCateName}}{{/if}}{{if value.editionCateName}}
+            -&gt{{value.editionCateName}}{{/if}}{{if value.gradeCateName}}-&gt{{value.gradeCateName}}{{/if}}</td>
+            <td>{{value.extData.uploadUserId}}</td>
+            <td>{{value.createTime | dateFormat:'yyyy-MM-dd'}}</td>
+        </tr>
+    {{/each}}
+    {{else }}
+        <tr role="row" class="odd">
+            <td class="sorting_1" colspan="6" style="text-align:center">暂无相关记录!</td>
+        </tr>
+    {{/if}}
+  </script>
+  <!-- 内容模板结束 -->
+  <script>
+    $(function() {
+        paginationDone(5, 1);
+        /**
+         * 显示确认删除文件夹弹框
+         */
+        $('#deleteFolderModal').click(function(){
+            var folderCheck = $("#tableBody input[name='checkbox']:checkbox:checked");
+            if (folderCheck.length == 0) {
+                layer.msg('请先选择文件', {
+                  time: 2000,
+                  skin: 'layui-layer-alarm',
+                  icon: 9,
+                });
+                return;
+            }
+            $('#deleteModal').modal();
+        });
+        /**
+         * 点击删除文件
+         */
+        $('#completeRemove').click(function(){
+            var folderCheck = $("#tableBody input[name='checkbox']:checkbox:checked")
+            if (folderCheck.length == 0) {
+                layer.msg('请先选择文件', {
+                  time: 2000,
+                  skin: 'layui-layer-alarm',
+                  icon: 9,
+                });
+                return;
+            }
+            var folder = folderCheck.parent().parent().find('a');
+            deleteContent(folder);
+            $('#deleteModal').modal('hide');
+        });
+        /**
+         * 确认删除内容
+         * @param folder 删除的内容
+         */
+        function deleteContent(folder) {
+            var i;
+            var data = {
+                'resId': folder.attr('data-id')
+            }
+            $.post(apiUrlConfig().deletetorecyclebin, data, function(data) {
+                debugInfo(data);
+                $('#tableBody').html('');
+                paginationDone(5, 1);
+                setTimeout(function() {
+                  close_load_layer(i);
+                }, 200);
+            }, function(err) {
+                layer_server_err();
+                debugInfo(err);
+            }, function() {
+                i = show_load_layer();
+            });
+        }
+
+        // 分页后退
+        $('#backFolder').click(function(){
+          pageHistoryBack();
+        });
+    });
+  </script>
+</body>
+</html>

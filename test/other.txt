@@ -1,0 +1,79 @@
+1.ubuntu（linux）命令行模式下如何挂载U盘
+
+图形化界面进入命令模式 Ctrl+Alt+F1
+命令模式进入图形化界面 Ctrl+Alt+F7
+
+1.日历组件
+https://github.com/jinzhe/vue-calendar
+2.虚拟键盘
+https://github.com/icebob/vue-touch-keyboard
+
+sublime设置
+SublimeCodeIntel（代码提示和补全插件）
+FileDiffs（文件比较）
+Doc​Blockr: 代码块注释
+javascript sinppets（以模板方式编程）
+// 设置tab的大小为2
+"tab_size": 2,
+// 使用空格代替tab
+"translate_tabs_to_spaces": true,
+// 添加行宽标尺
+"rulers": [80, 100],
+// 显示空白字符
+"draw_white_space": "all",
+// 保存时自动去除行末空白
+"trim_trailing_white_space_on_save": true,
+// 保存时自动增加文件末尾换行
+"ensure_newline_at_eof_on_save": true,
+
+http://es6.ruanyifeng.com/#docs/function
+
+
+
+npm 相关
+npm init初始化
+npm install的安装过程： 去寻找package.json文件，向 registry 查询dependencies和devDependencies中定义的模块的压缩包的网址，下载压缩包存放到~/.npm目录，然后解压到当前目录的node_modules中
+npm install --production，只是安装package.json的【dependencies】中的模块
+
+在开发过程中需要安装模块：npm install <packageName>,不会写入package.json文件中
+安装指定版本：npm install node-sass@4.0.0
+npm install node-sass@4.0.0 --save，会写入package.json的dependencies中
+npm install node-sass@4.0.0 --save-dev，会写入package.json的devDependencies中
+
+安装到全局：npm install --global babel-cli
+使用原则：运行时需要用到的包使用--save，否则使用--save-dev。
+dependencies中的模块是：生产环境中的依赖
+devDependencies中的模块是：开发时用的，比如grunt-contrib-uglify, 我们用它来混淆js文件，它们不会被部署到生成环境，以及其他方便我们开发的工具，比如angular, vue, sass等都只需要安装到devDependencies。
+
+
+
+1.devDependencies和dependencies的区别
+--save-dev
+--save
+
+使用 --save-dev 安装的 插件，被写入到 devDependencies 对象里面去，而使用 --save 安装的插件，则被写入到 dependencies 对象里面去。
+
+devDependencies  里面的插件只用于【开发环境】，不用于生产环境，而 dependencies  是需要发布到【生产环境的】。
+2.代码库
+# install dependencies
+3.未满足的依赖问题
+peerDependencies（前置依赖定义）
+问题浮现：
+在项目的package中定义
+"dependencies": {
+    "element-ui": "^1.2.8"
+}
+npm install
+出现提示UNMET DEPENDENCY vue@^2.1.6（未满足的依赖）
+因为element-ui中定义了peerDependencies
+"peerDependencies": {
+    "vue": "^2.1.6"
+}
+3.组件版本修饰符
+npm install element-ui@1.2.8
+然后会在package的dependencies字段中插入"element-ui": "^1.2.8"
+1.2.8是主版本号 + 次版本号 + 修订号
+前边的^表示主版本号不变，～表示主版本号和次版本号都不变
+所以这个项目被使用到，npm install的时候就会下载element-ui包，面对^的时候会'尽可能新的且能够保持兼容性的版本
+
+

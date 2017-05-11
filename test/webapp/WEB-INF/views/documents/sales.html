@@ -1,0 +1,103 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--销售信息页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>销售信息</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="navbar operation-wrap">
+        <div class="content-title">
+          <p>文件售卖</p>
+        </div>
+        <div class="operation-left">
+          <ul>
+            <li><a href="/withdraw/withdrawal"><span class="menu-icon" id="withdraw-apply"></span>提现申请</a></li>
+            <li><a href="/withdraw/withdraw-record"><span class="menu-icon" id="withdraw-details"></span>提现记录</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- table-wrap开始 -->
+      <div class="table-wrap">
+        <div class="box">
+          <div class="box-header"></div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <div>
+                <div class="col-sm-12">
+                  <!-- table开始 -->
+                  <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                    <!-- table-thead开始 -->
+                    <thead>
+                      <tr role="row">
+                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">序号</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">名称</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">分类</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">学段</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">学科</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">版本</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">年级</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">售价</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">销售日期</th>
+                      </tr>
+                    </thead>
+                    <!-- table-thead结束 -->
+                    <!-- table-body开始 -->
+                    <tbody id="tableBody">
+                    </tbody>
+                    <!-- table-body结束 -->
+                    <tfoot>
+                    </tfoot>
+                  </table>
+                  <!-- table结束 -->
+                </div>
+              </div>
+              <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination"></ul>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+      </div>
+      <!-- table-wrap结束 -->
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <!-- 内容模板开始 -->
+  <script id="docs" type="text/html">
+    {{if items.length > 0}}
+    {{each items as value i}}
+        <tr role="row" class="odd">
+            <td class="sorting_1">{{(currentPage -1) * pageSize + (i+1)}}</td>
+            <td><img alt="file" src="{{value.coverImage+'?w=60'}}" /> {{value.title}}</td>
+            <td>{{value.cateName}}</td>
+            <td>{{value.phaseCateName}}</td>
+            <td>{{value.subjectCateName}}</td>
+            <td>{{value.editionCateName}}</td>
+            <td>{{value.gradeCateName}}</td>
+            <td>{{value.price}}元</td>
+            <td>{{value.extData.saleTime | dateFormat:'yyyy-MM-dd'}}</td>
+        </tr>
+    {{/each}}
+    {{else }}
+        <tr role="row" class="odd">
+            <td class="sorting_1" colspan="9" style="text-align:center">暂无相关记录!</td>
+        </tr>
+    {{/if}}
+  </script>
+  <!-- 内容模板结束 -->
+  <script>
+    $(function() {
+        paginationDone(6, 1);
+    });
+  </script>
+</body>
+</html>

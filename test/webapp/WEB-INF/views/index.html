@@ -1,0 +1,80 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--登录页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>翰林三方上传平台登录</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html")
+    <!-- container开始 -->
+    <div class="container">
+      <div class="form-list form-main-list">
+        <!-- form开始 -->
+        <form method="post" action="" id="loginForm">
+          <div class="form-group">
+            <div class="form-item">
+              <div id="login-title">请登录</div>
+            </div>
+            <div class="form-item">
+              <span class="form-label">登录名</span>
+              <div class="mobile-text">
+                <input autocomplete="off" maxlength="35" class="form-text err-input form-control required" id="username" type="text" value="" placeholder="请输入手机号/用户名">
+                #if(${loginUser.userId})
+                <input id="user" type="hidden" value="${loginUser.userId}">
+                #end
+              </div>
+            </div>
+            <div class="form-item form-pwd">
+              <span class="form-label">登录密码</span>
+              <div class="mobile-text">
+                <input autocomplete="off" maxlength="20" class="form-text err-input form-control required" id="password" type="password" value="" placeholder="请输入密码">
+              </div>
+              <div class="form-item-right">
+                <a href="user/forget-password" style="text-decoration:underline">忘记密码</a>
+              </div>
+            </div>
+            <div class="form-item">
+              <span class="form-label"><label class="checkboxLabel" for="agreement"><input type="checkbox" checked="checked" id="agreement"></label></span>
+              <div class="mobile-text">
+                <label>阅读并接受 <a href="https://accounts.hle.com.tw/login/privacy-policy/" target="_blank">《翰林用户协议》</a> <a href="user/register" id="signup">立即注册</a>
+                </label>
+              </div>
+            </div>
+            <div class="form-item">
+              <span class="form-label"></span>
+              <div class="mobile-text">
+                <div>
+                  <button type="button" class="btn-wrap" id="login">登录</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- form结束 -->
+      </div>
+    </div>
+    <!-- container结束 -->
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <script>
+    var user = $('#user');
+    if (typeof (user.val()) != "undefined" && user.val() != ''
+        || sessionStorage.getItem('user-cache') != null) {
+      sessionStorage.setItem('user-cache', 'current-cache');
+      window.location.href = '/documents/documents';
+    }
+
+    //监听Enter键自动提交事件
+    $(document).keyup(function(event){
+      if (event.keyCode == 13) {
+        $('#login').click();
+      }
+    });
+  </script>
+</body>
+</html>

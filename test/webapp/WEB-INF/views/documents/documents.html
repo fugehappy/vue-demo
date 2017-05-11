@@ -1,0 +1,197 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--我的文档页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<link rel="stylesheet" href="${resourcesBaseUrl}/css/commons/modal.css">
+<title>我的文档</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="navbar operation-wrap">
+        <!-- content-title开始 -->
+        <div class="content-title">
+          <p>我的文档</p>
+        </div>
+        <!-- content-title结束 -->
+        <div>
+          <!-- 左侧操作栏开始 -->
+          <div class="operation-left">
+            <ul>
+              <li id="backFolder" class="enabled"><a href="javascript:void(0);"><span class="glyphicon glyphicon-arrow-left"></span>后退</a></li>
+              <li id="newFolder"><a href="javascript:void(0);"><span class="menu-icon" id="add-folder"></span>新建文件夹</a></li>
+              <li id="moveFolder"><a href="javascript:void(0);"><span class="glyphicon glyphicon-folder-open"></span>移动</a></li>
+              <li id="updateFolder"><a href="javascript:void(0);"><span class="glyphicon glyphicon-edit"></span>编辑</a></li>
+              <li id="deleteFolderModal"><a href="javascript:void(0);"><span class="menu-icon" id="delete-folder"></span>删除</a></li>
+            </ul>
+          </div>
+          <!-- 左侧操作栏结束 -->
+          <!-- 右侧操作栏开始 -->
+          <div>
+            <div>
+              <a id="recycle" class="btnwrap operation-right" href="/documents/recycle"> <span class="menu-icon" id="operation-icon-recycle"></span>回收站
+              </a>
+            </div>
+          </div>
+          <!-- 右侧操作栏结束 -->
+        </div>
+      </div>
+      <!-- 内容表格开始 -->
+      <div class="table-wrap">
+        <div class="box">
+          <div class="box-header"></div>
+          <!-- box-header结束 -->
+          <!-- box-body开始 -->
+          <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <div>
+                <div class="col-sm-12">
+                  <table id="example2" class="table table-hover dataTable" role="grid" aria-describedby="example2_info">
+                    <!-- table-thead开始 -->
+                    <thead>
+                      <tr role="row">
+                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">选择</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">名称</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">文件分类</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">文档状态</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">来源</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">上传日期</th>
+                      </tr>
+                    </thead>
+                    <!-- table-thead结束 -->
+                    <tbody id="tableBody">
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+              <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination"></ul>
+              </div>
+            </div>
+          </div>
+          <!-- box-body结束 -->
+        </div>
+        <!-- 删除模态框（Modal） -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">确认删除文件</h4>
+              </div>
+              <div class="modal-body">
+                <div>确认要删除选中的文件吗？</div>
+                <p></p>
+              </div>
+              <div class="modal-footer">
+                <a id="deleteFolder" class="btn-wrap">确认</a> <a class="btn-wrap btn-wrap-cancle" data-dismiss="modal">取消</a>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal -->
+        </div>
+        <!-- 文件夹模态框（Modal） -->
+        <div class="modal fade" id="folderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="btn-group">移动文档到</div>
+              </div>
+              <div class="modal-body">
+                <div>
+                  <ul class="historylistmanager-history">
+                    <li id="mvBackFolder"><a data-deep="-1" href="javascript:;">返回上一级</a> <span class="historylistmanager-separator">|</span></li>
+                  </ul>
+                </div>
+                <div class="body-content"></div>
+              </div>
+              <div class="modal-footer">
+                <a class="btn-wrap" id="mvConfirm">确认</a>
+                <a class="btn-wrap btn-wrap-cancle" data-dismiss="modal">取消</a>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal -->
+        </div>
+      </div>
+      <!-- 内容表格结束 -->
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <script src="${resourcesBaseUrl}/js/modules/documents/folder.js"></script>
+  <!-- 内容模板开始 -->
+  <script id="docs" type="text/html">
+    {{each items as value i}}
+        <tr role="row" class="odd files">
+            <td class="sorting_1"><input type="checkbox" name="checkbox" onclick="contentSelect(this);"></td>
+            <td>{{if value.coverImage}}<img alt="file" src="{{value.coverImage+'?w=60'}}" />{{else}}
+            <span class="file-image file-{{value.files[0].fileExt}}"></span>{{/if}} <a class="res-item"
+            data-id={{value.resId}} data-paid={{value.paid}} data-status={{value.status}}>{{value.title}}</a></td>
+            <td>{{value.cateName}}{{if value.phaseCateName}}-&gt{{value.phaseCateName}}{{/if}}
+            {{if value.subjectCateName}}-&gt{{value.subjectCateName}}{{/if}}{{if value.editionCateName}}
+            -&gt{{value.editionCateName}}{{/if}}{{if value.gradeCateName}}-&gt{{value.gradeCateName}}{{/if}}</td>
+            <td>{{if value.status == 0}}私有{{else if value.status == 1}}审核中{{else if value.status == 2}}审核未通过
+            {{else if value.status == 3}}{{if value.paid == 0}}公开免费{{else if value.paid ==1}}公开付费{{/if}}
+            {{else if value.status ==4}}已删除到回收站{{/if}}</td>
+            <td>{{if value.fromType == 0}}上传{{else if value.fromType == 1}}下载{{else if value.fromType == 2}}购买{{/if}}</td>
+            <td>{{value.createTime | dateFormat:'yyyy-MM-dd'}}</td>
+        </tr>
+    {{/each}}
+  </script>
+  <!-- 内容模板结束 -->
+  <!-- 文件夹模板开始 -->
+  <script id="folders" type="text/html">
+    {{each $data}}
+    {{if $index == 'data' || $index == 'subFolders'}}
+    {{if $value && $value.length > 0}}
+    {{each $value as value i}}
+        <tr role="row" class="odd folders">
+            <td class="sorting_1"><input type="checkbox" name="checkbox" {{if !value.parentFolderId && value.type == 3}}
+            disabled="disabled"{{/if}} onclick="contentSelect(this);"></td>
+            <td><img alt="file" src="${resourcesBaseUrl}/images/folder-01.png" />
+            <a href="javascript:void(0);" data-id={{value.folderId}} {{if value.parentFolderId}}
+            data-parent={{value.parentFolderId}}{{/if}}
+            data-sub="{{value.resourceCount}}" title="{{value.name}}" data-type="{{value.type}}"
+             onclick="floderHierarchy(this, 'folder');">{{value.name}}</a></td>
+            <td></td>
+            <td>{{if value.type == 1}}公开免费{{else if value.type == 2}}公开付费{{else if value.type == 3}}班级私有{{/if}}</td>
+            <td>新建</td>
+            <td>{{value.resourceUpdateTime | dateFormat:'yyyy-MM-dd'}}</td>
+        </tr>
+    {{/each}}
+    {{/if}}
+    {{/if}}
+    {{/each}}
+  </script>
+  <!-- 文件夹模板结束 -->
+  <!-- 移动文件夹模板开始 -->
+  <script id="mvfolder" type="text/html">
+    {{each $data}}
+    {{if $index == 'data' || $index == 'subFolders'}}
+    {{if $value && $value.length > 0}}
+    {{each $value as value i}}
+        <div role="row" class="odd">
+            <div class="sorting_1"><input type="checkbox" name="checkbox" onclick="folderSelect(this)"></div>
+            <div><img alt="file" src="${resourcesBaseUrl}/images/folder-01.png" />
+            <a href="javascript:void(0);" data-id={{value.folderId}} data-parent="{{value.parentFolderId}}"
+            data-sub="{{value.resourceCount}}" title="{{value.name}}" data-type="{{value.type}}"
+             onclick="floderHierarchy(this, 'mvfolder');">{{value.name}}</a></div>
+        </div>
+    {{/each}}
+    {{/if}}
+    {{/if}}
+    {{/each}}
+  </script>
+  <!-- 移动文件夹模板结束 -->
+</body>
+</html>

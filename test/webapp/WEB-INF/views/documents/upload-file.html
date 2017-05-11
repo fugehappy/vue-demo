@@ -1,0 +1,423 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--上传文件页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>上传文档</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div id="file-widget">
+        <div id="upload-widget">
+          <!-- upload-steps开始 -->
+          <div class="upload-steps clearfix">
+            <ul>
+              <li class="step-num active">1<span class="tips">选中文件</span>
+              </li>
+              <li class="step-bar"></li>
+              <li class="step-num">2<span class="tips">补充信息</span>
+              </li>
+              <li class="step-bar"></li>
+              <li class="step-num">3<span class="tips">完成上传</span>
+              </li>
+            </ul>
+          </div>
+          <!-- upload-steps结束 -->
+        </div>
+        <!-- upload-content开始 -->
+        <div id="forgetContent" class="tab-content">
+          <!-- myfile开始 -->
+          <div id="myFile" class="tab-pane fade active in">
+            <form method="post" id="uploadForm" role="form" enctype="multipart/form-data">
+              <fieldset>
+                <div id="selectFile">
+                  <img id="fileUpImage" src="${resourcesBaseUrl}/images/ic_file_up.png" alt="上传图片logo">
+                  <div id="filePicker">选择我的文件</div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <!-- myfile结束 -->
+          <!-- information开始 -->
+          <div id="information" class="tab-pane fade">
+            <ul class="upFileTable">
+              <li id="file_num_1" class="fileList loadingBg cf"><strong style="width: 100%;">&nbsp;</strong> <span class="col1"></span> <span class="col2"></span></li>
+            </ul>
+            <div role="form" class="info">
+              <div>
+                <label class="title-tips file-title-tips">① 选择文件的上传位置</label>
+              </div>
+              <fieldset class="content-wrap-left" id="catefield">
+                <div class="form-group">
+                  <label class="sub-title-tips">归属分类</label>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" id="cate">
+                    <option value="">请选择分类</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" id="phaseCate">
+                    <option value="">请选择学段</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" id="subjectCate">
+                    <option value="">请选择学科</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" id="versionCate">
+                    <option value="">请选择版本</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" id="gradeCate">
+                    <option value="">请选择年级</option>
+                  </select>
+                </div>
+                <div></div>
+              </fieldset>
+              <fieldset class="content-wrap-left">
+                <div class="form-group">
+                  <label class="sub-title-tips">文件权限</label>
+                </div>
+                <div class="radio">
+                  <label class="btn-radio upload-radio" for="publicpay">
+                    <input id="publicpay" type="radio" name="paymentMethod" value="1">
+                  </label>
+                  <p class="sub-title-subtitle">公共付费</p>
+                  <p id="identifyStatus">认证用户可上传</p>
+                  <div class="col-sm-1">
+                    <input type="text" maxlength="8" id="input-price" class="form-control" placeholder="收费金额">
+                    <div id="pricetag">(元)</div>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="radio">
+                  <label class="btn-radio upload-radio" for="publicfree" style="background-position:0 100%">
+                    <input id="publicfree" type="radio" name="paymentMethod" value="2" checked>
+                  </label>
+                  <p class="sub-title-subtitle">公共免费</p>
+                  <p>任何人可以检索和阅读</p>
+                </div>
+                <div class="clearfix"></div>
+                <div class="radio">
+                  <label class="btn-radio upload-radio" for="classprivate">
+                    <input id="classprivate" type="radio" name="paymentMethod" value="3">
+                  </label>
+                  <p class="sub-title-subtitle">班级私有</p>
+                  <p>仅自己班级学生可见</p>
+                  <div class="clearfix"></div>
+                </div>
+                <div id="folder">
+                  <div class="folder-type">
+                    <div class="folder-title">公共付费
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                    <div id="noFreeFolder" class="folder-body active"></div>
+                  </div>
+                  <div class="folder-type active">
+                    <div class="folder-title">公共免费
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                    <div class="folder-body" id="freeFolder"></div>
+                  </div>
+                  <div class="folder-type">
+                    <div class="folder-title">班级私有
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                    <div class="folder-body" id="privateFolder"></div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </fieldset>
+              <div class="clearfix"></div>
+              <div class="form-group" id="file-describute">
+                <div>
+                  <label class="title-tips file-title-tips">② 文件信息描述</label>
+                </div>
+              </div>
+              <fieldset class="info-introduction">
+                <div class="form-group">
+                  <label class="control-labe operation-left">* 标题: </label>
+                  <div class="operation-left">
+                    <input type="text" maxlength="50" class="form-control col-sm-2" placeholder="为本次上传的内容资料命名" id="content-title">
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label operation-left">* 封面: </label>
+                  <div class="operation-left">
+                    <input id="coverImage" type="text" class="form-control" disabled="disabled" />
+                  </div>
+                  <div id="coverPicker">封面上传</div>
+                  <small class="control-label operation-left">规格：800像素X600像素</small>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label operation-left">* 简介: </label>
+                  <div class="operation-left">
+                    <textarea id="introduction" maxlength="300" placeholder="填写内容简介，能帮助内容传播更广~" class="form-control" rows="3"></textarea>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                  <label id="label-title" class="control-labe operation-left">标签: </label>
+                  <div class="operation-left">
+                    <div class="input-label"></div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="form-group" id="lable-group"></div>
+              </fieldset>
+            </div>
+            <div class="col-sm-12 confirmUploadBox">
+              <div class="text-center">
+                <a id="confirmUpload" class="">确认上传</a> <a href="/documents/upload-file" class="btn-cancle">取消上传</a>
+              </div>
+            </div>
+          </div>
+          <!-- information结束 -->
+          <!-- uploadSuccess开始 -->
+          <div id="uploadSuccess" class="tab-pane fade">
+            <div>
+              <div class="form-group">
+                <div class="success-wrap">恭喜!&nbsp上传文件成功</div>
+                <div id="exresult">您还可以：
+                <a style="text-decoration: underline" href="/documents/donation-submit">查看审核结果</a>
+                </div>
+                <div id="success-operation">
+                  <a href="/documents/documents" class="btn-wrap btn-wrap-cancle">返回列表</a> <a href="/documents/upload-file" class="btn-wrap">继续上传</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- uploadSuccess结束 -->
+        </div>
+        <!-- upload-content结束 -->
+      </div>
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <script src="${resourcesBaseUrl}/js/modules/documents/linkage.js"></script>
+  <script>
+    $(function(){
+      new flashUpload().startUpload('CONTENT_TYPE', 'filePicker',function(data){
+        showSupplyInfo(data)
+      }, function(data) {
+        layer_server_err();
+        debugInfo(data);
+      }, function(data){
+        $('#filePicker').find('.formtips').remove();
+        switch (data) {
+        // 超过上传文件限制
+        case 'Q_EXCEED_SIZE_LIMIT': {
+          var errorMsg = '文件不能大于200M';
+          $('#filePicker').append('<span class="formtips onError">'
+              + errorMsg + '</span>');
+          break;
+        };
+        // 选择文件类型不满足
+        case 'Q_TYPE_DENIED': {
+          var errorMsg = '不支持的文件格式';
+          $('#filePicker').append('<span class="formtips onError">'
+                          + errorMsg + '</span>');
+          break;
+        };
+        default: {
+          $('#filePicker').html('<div id="flash-prompt">您尚未安装flash player或版本过低，<br><a class="log-xsend" href="https://get.adobe.com/cn/flashplayer/?no_redirect" target="_blank">点击此处</a>下载安装最新版本flash player</div>');
+          break;
+        }
+        }
+      }, function() {
+        $('#filePicker').find('.formtips').remove();
+      });
+    });
+
+    // 上传文件之后显示补充信息页面
+    function showSupplyInfo(data) {
+      new flashUpload().startUpload('IMAGE_TYPE', 'coverPicker',function(data){
+          var imageUrl = 'http://' + data.data.bucketHost + '/'
+          + data.data.fileKey;
+          $('#coverPicker').attr('data-url', imageUrl);
+        }, function(data) {
+          layer_server_err();
+          debugInfo(data);
+        }, function(data){
+          $('#coverPicker').parent().find('.formtips').remove();
+          switch (data) {
+          // 超过上传文件限制
+          case 'Q_EXCEED_SIZE_LIMIT': {
+            var errorMsg = '封面不能大于2M';
+            $('#coverPicker').parent().find('div.operation-left').append('<span class="formtips onError">'
+                            + errorMsg + '</span>');
+            break;
+          };
+          // 选择文件类型不满足
+          case 'Q_TYPE_DENIED': {
+            var errorMsg = '不支持的文件格式';
+            $('#coverPicker').parent().find('div.operation-left').append('<span class="formtips onError">'
+                + errorMsg + '</span>');
+            break;
+          };
+          }
+        }, function(data) {
+          $('#coverImage').val(data.name)
+          $('#coverPicker').parent().find('.formtips').remove();
+        });
+        var uploadFile = $('#filePicker');
+        getContentType();
+        getFolderType();
+        getIdentification();
+        $('#myFile').removeClass('active').removeClass('in');
+        $('#information').addClass('active').addClass('in');
+        var stepList = $(".upload-steps > ul > li");
+        $(stepList[1]).addClass("active");
+        $(stepList[2]).addClass("active");
+        $('.col1').text(data.data.fileName);
+        $('.col2').text(data.data.fileSize / 1000 + ' KB');
+        uploadFile.attr('data-fileKey', data.data.fileKey);
+        uploadFile.attr('data-fileName', data.data.fileName);
+        uploadFile.attr('data-fileSize', data.data.fileSize);
+        uploadFile.attr('data-fileExt', data.data.fileExt);
+        uploadFile.attr('data-fileType', data.data.fileType);
+    }
+
+    // 获得上传内容类型
+    function getContentType() {
+        $.post(apiUrlConfig().getlisttype, null, function(data) {
+            linkage.init(data.data, $('#cate'), $('#phaseCate'),
+                    $('#subjectCate'), $('#versionCate'), $('#gradeCate'));
+            debugInfo(data);
+        }, function(err) {
+            layer_server_err();
+            debugInfo(err);
+        });
+    }
+
+    // 获得用户认证类型
+    function getIdentification() {
+        $.post(apiUrlConfig().identifydetail, null, function(data) {
+          debugInfo(data);
+            var hasData = data.data.hasData;
+            var status = data.data.identification?data.data.identification.status:-1;
+            if(hasData == 0 || status != 1) {
+                var publicpay = $('input:radio[name="paymentMethod"]').eq(0);
+                publicpay.attr('disabled', true);
+                publicpay.parent().attr('disabled', true);
+                $('#input-price').css('display', 'none');
+                $('#folder .folder-type').eq(0).removeClass('active');
+                $('#folder .folder-type').eq(1).addClass('active');
+                if (hasData == 0) {
+                    $('#identifyStatus').append('<a style="color: #61BC71" href="/user/identification">申请认证</a>');
+                }
+                if (status == 0) {
+                    $('#identifyStatus').append('<font style="color: teal">已提交申请，请等待审核</font>');
+                } else if (status == 2) {
+                    $('#identifyStatus').append('<a style="color: #f87924" href="/user/identification">认证失败</font>');
+                }
+            } else {
+              $('#pricetag').css('display', 'block');
+              $('#identifyStatus').append('<font style="color: green">已认证</font>');
+            }
+        }, function(err) {
+            layer_server_err();
+            debugInfo(err);
+        });
+    }
+
+    // 获得文件夹类型
+    function getFolderType() {
+        $.post(apiUrlConfig().gettypelist, null, function(data) {
+            debugInfo(data);
+            // 文件夹类型 1 公开免费 2 公开付费 3 班级私有
+            if (data.data['2'] == null || (data.data['2'] && data.data['2'].length == 0)) {
+              $('#noFreeFolder').parent().css('display', 'none');
+            } else {
+              $('#noFreeFolder').html(folderTypeRender(data.data['2']));
+            }
+            if (data.data['1'] == null || (data.data['1'] && data.data['1'].length == 0)) {
+              $('#freeFolder').parent().css('display', 'none');
+            } else {
+              $('#freeFolder').html(folderTypeRender(data.data['1']));
+            }
+            if (data.data['3'] == null || (data.data['3'] && data.data['3'].length == 0)) {
+              $('#privateFolder').parent().css('display', 'none');
+              $('#classprivate').attr('disabled', 'true');
+              $('#classprivate').parent().attr('disabled', 'true');
+            } else {
+              $('#privateFolder').html(folderTypeRender(data.data['3']));
+            }
+            $('#folder ul li').click(function(){
+                $('#folder ul li').removeClass('folder-wrap');
+                $(this).addClass('folder-wrap');
+                $(this).next('ul').toggleClass('active');
+            });
+        }, function(err) {
+            layer_server_err();
+            debugInfo(err);
+        });
+    }
+
+    // 查询根结点文件夹节点
+    function folderTypeRender(d) {
+        var folderTypeNode = '<ul>';
+        $.each(d, function(k, v) {
+            var item = $(this)[0];
+            folderTypeNode += '<li data-id="' + item.folderId + '"><p>' + item.name + '</p></li>';
+        });
+        folderTypeNode += '</ul>';
+        return folderTypeNode;
+    }
+
+    // 标签显示与隐藏
+    function labelToggle(obj) {
+        var labelId = obj.id;
+        var hasSelected = false;
+        $(".input-label > div").each(function() {
+            if ($(this)[0].id == labelId) {
+                hasSelected = true;
+                $(this).remove();
+            }
+        });
+        if (!hasSelected) {
+            $(".input-label").append(
+                    '<div id=' + obj.id + ' onclick="labelRemove(this);">'
+                            + $(obj).text() + '</div>');
+        }
+    }
+
+    // 删除标签
+    function labelRemove(obj) {
+        $(obj).remove();
+    }
+
+    // 文件夹选择样式
+    $('input:radio[name="paymentMethod"]').change(function(){
+        var checkValue = $(this).val();
+        $('#folder > .folder-type').each(function(index){
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $('#folder ul li').removeClass('folder-wrap');
+            }
+            if (checkValue == index+1) {
+                $(this).addClass('active');
+            }
+        });
+    });
+
+    // 离开时弹出询问框
+    window.onbeforeunload = function(){
+        if ($('#file_num_1 .col1').text() != '') {
+            return "您的内容尚未保存";
+        }
+    }
+  </script>
+</body>
+</html>

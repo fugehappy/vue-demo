@@ -1,0 +1,61 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--header页面-->
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="${resourcesBaseUrl}/vendors/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="${resourcesBaseUrl}/css/commons/upload.css">
+<link rel="stylesheet" href="${resourcesBaseUrl}/css/commons/modal.css">
+<link rel="stylesheet" href="${resourcesBaseUrl}/css/commons/pagination.css">
+<link rel="stylesheet" href="${resourcesBaseUrl}/vendors/webuploader/webuploader.css">
+<!-- header开始 -->
+<div class="header">
+  <div class="pull-left">
+    <div>
+      <img alt="翰林内容中心logo" src="${resourcesBaseUrl}/images/logo.png">
+      <input id="baseUrl" type="hidden" value="${resourcesBaseUrl}">
+    </div>
+    <div class="head-title">
+      <p>翰林内容中心</p>
+    </div>
+  </div>
+  <div class="pull-right">
+    <div>
+      #if(${loginUser.userId})
+      <div class="header-right">
+        <div id="userName"><span></span>${loginUser.userId}</div>
+        <div id="logout"><span></span>退出</div>
+      </div>
+      #else
+      <font>我已注册，现在就</font><a href="/index" class="btn-wrap">登录</a>
+      #end
+      <img id="layerIcon" src="${resourcesBaseUrl}/vendors/layer/skin/default/icon.png" alt="预加载layer图片"/>
+    </div>
+  </div>
+</div>
+<!-- header结束 -->
+<script src="${resourcesBaseUrl}/vendors/jquery/jquery-3.1.1.min.js"></script>
+<script src="${resourcesBaseUrl}/vendors/arcTemplate/template.js"></script>
+<script>
+    window.baseUrl = $('#baseUrl').val();
+    $("#logout").click(function() {
+      var close_index = layer.confirm('您确定要退出？', {
+        btn: ['取消','确认'], //按钮
+        skin: 'layui-layer-prompt',
+        icon: 7,
+      }, function(){
+        layer.close(close_index);
+      }, function(){
+        $.post(apiUrlConfig().logout, null, function(data) {
+            sessionStorage.removeItem('user-cache');
+            window.location.href = '/index';
+            debugInfo(data);
+        }, function(err) {
+            layer_server_err();
+            debugInfo(err);
+        });
+      });
+    });
+
+    $('#userName').click(function() {
+      window.location.href = '/user/personal';
+    });
+</script>

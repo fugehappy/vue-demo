@@ -1,0 +1,412 @@
+/*
+ * Copyright (C) 2017 QIANKUN HANLIN Corporation Limited
+ *
+ * 弹出层整体样式
+ */
+#folderModal .modal-dialog {
+  min-width: 800px;
+  transform: translate(0, 25%);
+}
+
+#folderModal .modal-dialog .modal-content {
+    height: 400px;
+    width: 350px;
+}
+
+.modal {
+  margin-left: 185px;
+}
+
+.open-enable .fileicon {
+  cursor: pointer;
+}
+
+.fileicon {
+  position: relative;
+  margin: 9px auto 0;
+  width: 84px;
+  height: 84px;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.breadcrumb {
+  margin-bottom: 0 !important;
+  display: inline-block;
+}
+
+.no-result-file-bottom {
+  padding-top: 146px;
+  width: 488px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  text-align: center;
+  margin: 90px 0 0 -244px;
+}
+
+.new-dir-item {
+  color: #3b8cff;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.new-dir-item.update-dir-item {
+  position: absolute;
+  top: 18px;
+  left: 53px;
+  width: 380px;
+}
+
+.new-dir-item .cancel {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: -2px 0px 0px 2px;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgba(58, 140, 255, .3);
+  line-height: 24px;
+  text-align: center;
+}
+
+.new-dir-item .sure {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: -2px 0px 0px 4px;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgba(58, 140, 255, .3);
+  line-height: 24px;
+  text-align: center;
+}
+
+.boxfolder {
+  border: 1px solid rgba(58, 140, 255, .3);
+}
+
+#new-folder-type {
+  border: 1px solid rgba(58, 140, 255, .3);
+  height: 26px;
+  margin: 0 10px
+}
+
+.modal-content {
+  width: 500px;
+  margin: 0 auto;
+  height: 200px;
+  padding: 0 40px;
+}
+
+#folderModal img {
+  width: 20px;
+  height: 20px;
+}
+
+#folderModal .odd div {
+  display: inline-block;
+}
+
+#folderModal .modal-body {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.modal-body ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.operation-left ul li.enabled a {
+  color: #707785;
+  cursor: default;
+  text-decoration: none;
+}
+
+#tableBody tr td:nth-child(2) {
+  position: relative;
+  max-width: 500px;
+}
+
+#tableBody tr td:nth-child(2) a {
+  display: inline-block;
+  word-wrap: normal;
+  white-space: nowrap;
+  width: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: -20px;
+  vertical-align: middle;
+}
+
+.progress-wrap {
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 999;
+}
+
+.progress-wrap .progress-content {
+  width: 300px;
+  height: 150px;
+  background-color: #FFFFFF;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -75px;
+  margin-left: -150px;
+  -webkit-background-clip: content;
+  box-shadow: 1px 1px 50px rgba(0, 0, 0, .3);
+  border-radius: 2px 2px 0 0;
+}
+
+.progress-wrap .progress-title {
+  background: #5CB85C;
+  color: #fff;
+  border: none;
+  padding: 0 80px 0 20px;
+  height: 42px;
+  line-height: 42px;
+  font-size: 14px;
+  overflow: hidden;
+  border-radius: 2px 2px 0 0;
+}
+
+.progress-wrap .progress {
+  width: 250px;
+  margin: 40px auto;
+}
+
+#processInfo {
+  position: absolute;
+  left: 37%;
+}
+
+.modal-header {
+  border-bottom: 1px solid #63bd70;
+  height: 50px
+}
+
+.modal-footer {
+  border-top: none;
+  text-align: center;
+}
+
+#deleteFolder, #completeRemove {
+  margin-right: 60px;
+}
+
+.modal-footer .btn-wrap-cancle {
+  margin-right: 0px !important;
+}
+
+#updateFolder, #moveFolder, #layerIcon {
+  display: none;
+}
+
+.form-control:focus {
+  border-color: #61bc71 !important;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(83, 181, 112,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(83, 181, 112, 0.6);
+}
+
+#forgetContent div.hl-form {
+  min-height: 580px;
+}
+
+.layui-layer-green .layui-layer-title {
+  background-color: #61BC71;
+  color: #FFF;
+}
+.layui-layer-green .layui-layer-btn a {
+  background-color: #61BC71;
+  border-color: #61BC71;
+}
+
+.layui-layer-green .layui-layer-btn a:hover, .layui-layer-green .layui-layer-btn a:focus,
+.layui-layer-green .layui-layer-btn a:active {
+  background-color: #56A764;
+  border-color: #56A764;
+  opacity: 1;
+}
+
+.layui-layer-alarm {
+  height: 50px;
+  width: auto;
+  min-width: auto;
+}
+
+.layui-layer-alarm .layui-layer-content {
+  padding: 13px 20px 13px 60px !important;
+}
+
+.layui-layer-alarm .layui-layer-content .layui-layer-ico {
+  top: 10px !important;
+}
+
+.mobile-text label, .text-sub-title {
+  font-weight: normal;
+}
+
+.text-name {
+  font-size: 18px;
+}
+
+.layui-layer-prompt {
+  width: 380px;
+  min-width: 380px;
+}
+
+.layui-layer-prompt .layui-layer-content {
+  padding: 20px 60px 20px !important;
+}
+
+.layui-layer-prompt .layui-layer-btn a {
+  width: 88px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.layui-layer-prompt .layui-layer-btn .layui-layer-btn0 {
+  border: 1px solid #dedede;
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.layui-layer-prompt .layui-layer-btn .layui-layer-btn1 {
+  background-color: #61BC71;
+  border-color: #61BC71;
+  color: #fff;
+}
+
+#pwdPrompt {
+  position: absolute;
+  top: 0;
+  left: 315px;
+  width: 300px;
+}
+
+.ok-sign {
+  color: #61BC71;
+  position: absolute;
+  top: 12px;
+  left: 270px;
+}
+
+#tableBody tr.file-fails, #tableBody tr.comment-fails{
+  opacity: .5;
+  filter: alpha(opacity = 50);
+}
+
+#tableBody tr.comment-fails {
+  border-bottom: 1px dashed #D6D6D6;
+}
+
+.label-for-input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.webuploader-pick {
+  width: 142px;
+  height: 36px;
+  background: #61BC71 !important;
+  border: 1px solid #61BC71;
+}
+
+.webuploader-pick.webuploader-pick-hover {
+  background: #56A764 !important;
+  border-color: #56A764 !important;
+}
+
+.webuploader-container {
+  text-align: center;
+}
+
+#filePicker {
+  margin: 30px auto;
+  text-align: center;
+}
+
+#filePicker .webuploader-pick {
+  border-radius: 20px !important;
+  padding: 8px 15px !important;
+}
+
+#coverPicker .webuploader-pick {
+  font-size: 18px;
+  padding: 5px 15px !important;
+}
+
+#coverPicker {
+  float: left;
+  margin: -7px 15px 0px 15px;
+}
+
+#userPhotoPicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: .0;
+  filter: alpha(opacity = 0);
+}
+
+#userPhotoPicker div:nth-child(2) {
+  width: 200px !important;
+  height: 200px !important;
+}
+
+#indetifyPhotoPicker {
+  margin-top: 30px;
+  text-align: inherit;
+  display: none;
+}
+
+#indetifyPhotoPicker .webuploader-pick{
+  width: 90px !important;
+  border-radius: 20px;
+  padding: 0;
+  line-height: 36px;
+}
+
+#indetifyPhotoPicker div:nth-child(2) {
+  left: 0;
+}
+
+#id_card_front, #id_card_back {
+  opacity: .0;
+  filter: alpha(opacity = 0);
+  height: 200px;
+  z-index: 99;
+}
+
+#id_card_front .webuploader-pick, #id_card_back .webuploader-pick {
+  width: 330px;
+  height: 200px;
+}
+
+#other_card_first, #other_card_second, #other_card_third {
+  opacity: .0;
+  filter: alpha(opacity = 0);
+  height: 150px;
+  z-index: 99;
+}
+
+#other_card_first .webuploader-pick, #other_card_second .webuploader-pick, #other_card_third .webuploader-pick {
+  width: 220px;
+  height: 150px;
+}
+
+#flash-prompt {
+  background: rgb(250, 250, 250);
+  line-height: 20px;
+}

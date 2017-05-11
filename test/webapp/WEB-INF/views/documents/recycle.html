@@ -1,0 +1,224 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--回收站页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>回收站</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="navbar operation-wrap">
+        <div class="content-title">
+          <p>回收站</p>
+        </div>
+        <div class="operation-left">
+          <ul>
+            <li id="backFolder" class="enabled"><a href="javascript:void(0);"><span class="glyphicon glyphicon-arrow-left"></span>后退</a></li>
+            <li id="btnDelete"><a href="javascript:void(0);"><span class="menu-icon" id="delete-folder"></span>彻底删除</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- table-wrap开始 -->
+      <div class="table-wrap">
+        <div class="box">
+          <div class="box-header"></div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <div>
+                <div class="col-sm-12">
+                  <!-- table开始 -->
+                  <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                    <!-- table-thead开始 -->
+                    <thead>
+                      <tr role="row">
+                        <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">序号</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">名称</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">文件所属分类</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">文档状态</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">来源</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">上传日期</th>
+                      </tr>
+                    </thead>
+                    <!-- table-thead结束 -->
+                    <!-- table-body开始 -->
+                    <tbody id="tableBody">
+                    </tbody>
+                    <!-- table-body结束 -->
+                    <tfoot>
+                    </tfoot>
+                  </table>
+                  <!-- table结束 -->
+                </div>
+              </div>
+              <div class="dataTables_paginate paging_simple_numbers">
+                <ul class="pagination"></ul>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+          <!-- 模态框（Modal） -->
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">彻底删除文件</h4>
+                </div>
+                <div class="modal-body">
+                  <div>确认要从回收站删除文件吗？</div>
+                  <div>删除后无法找回。</div>
+                </div>
+                <div class="modal-footer">
+                  <a class="btn-wrap" id="completeRemove">确认</a> <a class="btn-wrap btn-wrap-cancle" data-dismiss="modal">取消</a>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+          </div>
+        </div>
+      </div>
+      <!-- table-wrap结束 -->
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <!-- 内容模板开始 -->
+  <script id="docs" type="text/html">
+    {{each items as value i}}
+        <tr role="row" class="odd files">
+            <td class="sorting_1"><input type="checkbox" name="checkbox" onclick="contentSelect(this);"></td>
+            <td>{{if value.coverImage}}<img alt="file" src="{{value.coverImage+'?w=60'}}" />{{else}}
+            <span class="file-image file-{{value.files[0].fileExt}}"></span>{{/if}} <a class="res-item" data-id={{value.resId}}>{{value.title}}</a></td>
+            <td>{{value.cateName}}{{if value.phaseCateName}}-&gt{{value.phaseCateName}}{{/if}}
+            {{if value.subjectCateName}}-&gt{{value.subjectCateName}}{{/if}}{{if value.editionCateName}}
+            -&gt{{value.editionCateName}}{{/if}}{{if value.gradeCateName}}-&gt{{value.gradeCateName}}{{/if}}</td>
+            <td>{{if value.latestStatus == 0}}私有{{else if value.latestStatus == 1}}审核中{{else if value.latestStatus == 2}}审核未通过
+            {{else if value.latestStatus == 3}}{{if value.paid == 0}}公开免费{{else if value.paid ==1}}公开付费{{/if}}
+            {{else if value.latestStatus ==4}}已删除到回收站{{/if}}</td>
+            <td>{{if value.fromType == 0}}上传{{else if value.fromType == 1}}下载{{else if value.fromType == 2}}购买{{/if}}</td>
+            <td>{{value.createTime | dateFormat:'yyyy-MM-dd'}}</td>
+        </tr>
+    {{/each}}
+  </script>
+  <!-- 内容模板结束 -->
+    <!-- 文件夹模板开始 -->
+  <script id="folders" type="text/html">
+    {{each data as value i}}
+        <tr role="row" class="odd folders">
+            <td class="sorting_1"><input type="checkbox" name="checkbox" onclick="contentSelect(this);"></td>
+            <td><img alt="file" src="${resourcesBaseUrl}/images/folder-01.png" />
+            <span data-id={{value.folderId}} data-type="{{value.type}}"
+            title="{{value.name}}" data-type="{{value.type}}">{{value.name}}<span></td>
+            <td></td>
+            <td>{{if value.type == 1}}公开免费{{else if value.type == 2}}公开付费{{else if value.type == 3}}班级私有{{/if}}</td>
+            <td>新建</td>
+            <td>{{value.resourceUpdateTime | dateFormat:'yyyy-MM-dd'}}</td>
+        </tr>
+    {{/each}}
+  </script>
+  <!-- 文件夹模板结束 -->
+  <script>
+      $(function() {
+        getFolders();
+        // 获取删除的文件夹列表
+        function getFolders() {
+          $.post(apiUrlConfig().getrecyclefolder, null, function(data) {
+            debugInfo(data);
+            templateDateParse();
+            $('#tableBody').html(template('folders', data));
+            paginationDone(4, 1);
+          }, function(err) {
+            layer_server_err();
+            debugInfo(err);
+          });
+        }
+
+        // 彻底删除文件或文件夹确认框
+        $('#btnDelete').click(function() {
+          var contentCheck = $("#tableBody input[name='checkbox']:checkbox:checked");
+          var dataType = contentCheck.parent().parent().find('a').attr('data-type');
+          if (contentCheck.length == 0) {
+            layer.msg('请先选择文件', {
+              time: 2000,
+              skin: 'layui-layer-alarm',
+              icon: 9,
+            });
+            return;
+          }
+          if(!dataType) {
+            $('#myModalLabel').text('彻底删除文件夹');
+            $('#deleteModal .modal-body div:first-child').text('确认要从回收站删除文件夹吗？');
+          } else {
+            $('#myModalLabel').text('彻底删除文件');
+            $('#deleteModal .modal-body div:first-child').text('确认要从回收站删除文件吗？');
+          }
+          $('#deleteModal').modal();
+        });
+
+        // 点击彻底删除
+        $('#completeRemove').click(function() {
+          var contentCheck = $("#tableBody input[name='checkbox']:checkbox:checked");
+          var resId = contentCheck.parent().parent().find('a').attr('data-id');
+          // 删除文件
+          if (resId) {
+            var data = {
+              'resId' : resId
+            }
+            $.post(apiUrlConfig().deleteContent, data, function(data) {
+              debugInfo(data);
+              $('#deleteModal').modal('hide');
+              getFolders();
+              setTimeout(function() {
+                close_load_layer(i);
+              }, 200);
+            }, function(err) {
+              close_load_layer(i);
+              layer_server_err();
+              debugInfo(err);
+            }, function() {
+              i = show_load_layer();
+            });
+          } else {
+            // 删除文件夹
+            permanentDeleteFolder(contentCheck);
+          }
+        });
+
+       /**
+         * 彻底删除文件夹
+         * @param contentCheck 当前选中checkbox对象
+         */
+        function permanentDeleteFolder(contentCheck) {
+          var data = {
+              'folderId': contentCheck.parent().parent().find('span').attr('data-id')
+          }
+          $.post(apiUrlConfig().permanentlydelete, data, function(data) {
+            debugInfo(data);
+            $('#deleteModal').modal('hide');
+            getFolders();
+            setTimeout(function() {
+              close_load_layer(i);
+            }, 200);
+          }, function(err) {
+            close_load_layer(i);
+            layer_server_err();
+            debugInfo(err);
+          }, function() {
+            i = show_load_layer();
+          });
+        }
+
+       // 分页后退
+       $('#backFolder').click(function(){
+         pageHistoryBack();
+       });
+      });
+  </script>
+</body>
+</html>

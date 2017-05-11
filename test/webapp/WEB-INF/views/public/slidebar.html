@@ -1,0 +1,85 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--sliderbar页面-->
+<!-- menu开始 -->
+<aside class="menu">
+  <div>
+    <ul class="nav nav-tabs nav-stacked">
+      <li class="active title-wrap">
+        <!-- menu-title开始 -->
+        <div class="menu-title">
+          <div class="menu-title-info">
+            <div><img id="photoImage" alt="photo" src="${resourcesBaseUrl}/images/man.jpg" /></div>
+            #if(${loginUser.userId})
+            <input id="user" type="hidden" value="${loginUser.userId}">
+            #end
+            #if(${loginUser.avatar})
+            <input id="userPhoto" type="hidden" value="${loginUser.avatar}">
+            #end
+          </div>
+          <div id="realname" class="menu-title-info"></div>
+          <div>
+            <a id="uploadContent" data-name="upload-file" href="/documents/upload-file" class="btnwrap">上传内容</a>
+          </div>
+        </div> <!-- menu-title结束 -->
+      </li>
+      <!-- documents开始 -->
+      <li>
+        <ul id="collapseDocument" class="panel-collapse collapse in nav nav-tabs nav-stacked submenu">
+          <li><a href="/documents/documents" data-name="documents"><span class="menu-icon" id="menu-icon-document"></span>我的文档</a></li>
+          <li><a href="/documents/donation-public" data-name="donation-public"><span class="menu-icon" id="menu-icon-donation"></span>我的贡献</a></li>
+          <li><a href="/documents/download" data-name="download"><span class="menu-icon" id="menu-icon-download"></span>我的下载</a></li>
+          <li><a href="/documents/recycle" data-name="recycle"><span class="menu-icon" id="menu-icon-recycle"></span>回收站</a></li>
+        </ul>
+      </li>
+      <!-- documents结束 -->
+      <!-- account开始 -->
+      <li>
+        <ul id="collapseAccount" class="panel-collapse collapse in nav nav-tabs nav-stacked submenu">
+          <li><a href="/user/personal" data-name="personal"><span class="menu-icon" id="menu-icon-data"></span>基本资料</a></li>
+          <li><a href="/user/identification" data-name="identification"><span class="menu-icon" id="menu-icon-certification"></span>用户认证</a></li>
+        </ul>
+      </li>
+      <!-- account结束 -->
+      <!-- profit开始 -->
+      <li>
+        <ul id="collapseProfit" class="panel-collapse collapse in nav nav-tabs nav-stacked submenu">
+          <li><a href="/documents/sales" data-name="sales"><span class="menu-icon" id="menu-icon-sale"></span>我的收益</a></li>
+        </ul>
+      </li>
+      <!-- profit结束 -->
+    </ul>
+  </div>
+</aside>
+<!-- menu结束 -->
+<script src="${resourcesBaseUrl}/vendors/jquery/jquery-3.1.1.min.js"></script>
+<script src="${resourcesBaseUrl}/js/commons/common.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var user = $('#user');
+        if (typeof (user) == "undefined" || sessionStorage.getItem('user-cache') == null) {
+          window.location.href = '/index';
+        }
+
+        // 获取用户信息
+        $('#realname').text(user.val());
+        $('#photoImage').attr('src',$('#userPhoto').val());
+
+        // 显示菜单栏当前状态
+        var address = window.location.href.split('/');
+        var lastAddress = address[address.length-1];
+        var currerntAddress = lastAddress.substring(0,lastAddress.indexOf('?') > 0?
+            lastAddress.indexOf('?') : lastAddress.length);
+        $('.menu li a').each(function() {
+            if ($(this).attr('data-name') == currerntAddress) {
+                $(this).addClass('active');
+            }
+        });
+
+        // 如果当前为选中状态则不跳转
+        $('.menu ul li a').click(function(){
+          if ($(this).hasClass('active')) {
+            return false;
+          }
+        })
+    });
+</script>

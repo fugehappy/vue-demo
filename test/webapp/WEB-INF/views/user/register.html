@@ -1,0 +1,89 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--注册页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>翰林第三方上传平台注册</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html")
+    <!-- container开始 -->
+    <div class="container">
+      <div class="form-list form-main-list">
+        <!-- form开始 -->
+        <form method="post" action="" id="registerForm">
+          <div class="form-group account-set">
+            <div class="form-item">
+              <span class="form-label form-label-b">账户设置</span> <span class="sub-title">请设置你的会员名和密码用于登录</span>
+            </div>
+            <div class="form-item">
+              <span class="form-label">用户名</span>
+              <div class="mobile-text">
+                <input autocomplete="off" maxlength="35" class="form-text err-input form-control required" id="username" type="text" value="" placeholder="请输入手机号/用户名">
+              </div>
+            </div>
+            <div class="form-item">
+              <span class="form-label tsl" data-phase-id="r_p_password">登录密码</span>
+              <div class="mobile-text">
+                <input class="form-text err-input form-control required" maxlength="20" type="password" placeholder="设置你的登录密码" id="password" value="">
+                <span id="pwdPrompt">密码6-16位，其中必须包含：字母，数字</span>
+              </div>
+            </div>
+            <div class="form-item">
+              <span class="form-label tsl">密码确认</span>
+              <div class="mobile-text">
+                <input class="form-text form-control required" id="rePassword" maxlength="20" type="password" placeholder="请再次输入你的密码" value="">
+              </div>
+            </div>
+          </div>
+          <div class="form-group basic-info">
+            <div class="form-item">
+              <span class="form-label form-label-b">基本信息</span> <span class="sub-title">请输入真实的信息</span>
+            </div>
+            <div class="form-item">
+              <span class="form-label">手机号</span>
+              <div class="mobile-text">
+                <input class="form-text form-control required" maxlength="20" id="phoneNo" type="text" value="" onpaste="return false;" placeholder="可用于登录和找回密码">
+              </div>
+            </div>
+            <div class="form-item btn-validate">
+              <span class="form-label">验证码</span>
+              <div class="mobile-text">
+                <div>
+                  <input class="form-text form-control required" id="valiCode" maxlength="10" name="mobile" type="text" value="" placeholder="请输入验证码">
+                </div>
+                <div class="code-wrap">
+                  <button type="button" id="btn-code">发送验证码</button>
+                </div>
+              </div>
+              <div></div>
+            </div>
+            <div class="form-item">
+              <span class="form-label"><label class="checkboxLabel" for="agreement"><input type="checkbox" checked="checked" id="agreement"></label></span>
+              <div class="mobile-text">
+                <label>阅读并接受 <a href="https://accounts.hle.com.tw/login/privacy-policy/" target="_blank">《翰林用户协议》</a>
+                </label>
+              </div>
+            </div>
+            <div class="form-item form-item-checkbox">
+              <span class="form-label"></span>
+              <div class="mobile-text">
+                <div>
+                  <button type="button" class="btn-wrap" id="register">立即注册</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- form结束 -->
+      </div>
+    </div>
+    <!-- container结束 -->
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+</body>
+</html>

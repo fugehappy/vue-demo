@@ -1,0 +1,275 @@
+<!--Copyright (C) 2017 QIANKUN HANLIN Corporation Limited-->
+<!--个人资料页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+#parse("public/base-header.html")
+<title>基本资料</title>
+</head>
+<body>
+  <!-- wrapper开始 -->
+  <div class="wrapper">
+    #parse("public/header.html") #parse("public/slidebar.html")
+    <div class="content">
+      <div class="nav-content">
+        <!-- navbar开始 -->
+        <div class="navbar">
+          <ul id="personInfoTab" class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#basicInfo">基本资料</a></li>
+            <li><a data-toggle="tab" href="#updateHead">修改头像</a></li>
+            <li><a data-toggle="tab" href="#updatePassword">修改密码</a></li>
+          </ul>
+        </div>
+        <!-- navbar结束 -->
+        <!-- table-wrap开始 -->
+        <div class="table-wrap tab-content">
+          <!-- basicInfo-form开始 -->
+          <form class="tab-pane fade active in" id="basicInfo" role="form">
+            <fieldset>
+              <div class="form-group">
+                <label class="control-labe operation-left">性别:</label>
+                <div class="operation-left">
+                  <label class="checkbox-inline btn-radio gender-radio" for="male" style="background-position: 0 100%">
+                    <input id="male" type="radio" name="gender" value="1" checked>男
+                  </label>
+                  <label class="checkbox-inline btn-radio gender-radio" for="female">
+                    <input id="female" type="radio" name="gender" value="0">女
+                  </label>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group" id="calendar">
+                <label class="control-labe operation-left">生日:</label>
+                <div class="operation-left">
+                  <div class="date-select">
+                    <select id="yearControl" class="form-control">
+                    </select>
+                  </div>
+                  <div class="date-select date-select-sm">
+                    <select id="monthControl" class="form-control">
+                    </select>
+                  </div>
+                  <div class="date-select date-select-sm">
+                    <select id="dayControl" class="form-control">
+                    </select>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-labe operation-left">支付宝用户名:</label>
+                <div class="operation-left">
+                  <input type="text" class="form-control" maxlength="50" id="alipayUsername" placeholder="请输入您的支付宝用户名"> <input type="hidden" id="wepayUsername">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-labe operation-left">支付宝账号:</label>
+                <div class="operation-left">
+                  <input type="text" class="form-control" maxlength="50" id="alipayAccount" placeholder="请输入您的支付宝账号"> <input type="hidden" id="wxAccount">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-labe operation-left">邮箱:</label>
+                <div class="operation-left">
+                  <input type="text" maxlength="32" class="form-control" id="email" placeholder="请输入您的邮箱">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-labe operation-left">手机号码:</label>
+                <div class="operation-left">
+                  <input type="text" maxlength="20" class="form-control" id="phoneNo" onpaste="return false;" placeholder="请输入手机号码" disabled="disabled">
+                </div>
+                <div class="col-sm-2">
+                  <button type="button" id="btn-code" class="btn btn-primary">发送验证码</button>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-labe operation-left">验证码:</label>
+                <div class="operation-left">
+                  <input type="text" maxlength="10" class="form-control" id="valiCode" placeholder="请输入验证码">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label for="lastname" class="control-labe operation-left">个人简介:</label>
+                <div class="operation-left">
+                  <textarea class="form-control" maxlength="200" rows="3" id="introduction"></textarea>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10">
+                  <a class="btn-wrap" id="btnUserInfo">确认</a>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <!-- basicInfo-form结束 -->
+          <!-- updateHead-form开始 -->
+          <form class="form-horizontal tab-pane fade" id="updateHead" role="form">
+            <div class="form-group">
+              <div id="person-image">
+                <div>
+                    <img src="${resourcesBaseUrl}/images/head.png" id="userImage" alt="修改头像"/>
+                    <!-- <input type="file" name="file" id="upload-head" accept=".jpg,.jpeg,.png,.gif"> -->
+                    <div id="userPhotoPicker"></div>
+                </div>
+                <div id="photo-info">
+                  <p>请点击选择图片</p>
+                  <p>仅支持JPG、JPEG、GIF、PNG格式的图片文件</p>
+                  <p>文件不能大于2MB</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div id="save-image-wrap">
+                <a class="btn-wrap" id="saveImage">保存头像</a>
+              </div>
+            </div>
+          </form>
+          <!-- updateHead-form结束 -->
+          <!-- updatePassword-form开始 -->
+          <form class="form-horizontal tab-pane fade" id="updatePassword" role="form">
+            <fieldset>
+              <div class="form-group">
+                <label class="control-label operation-left">当前密码：</label>
+                <div class="operation-left">
+                  <input type="password" maxlength="20" class="form-control" id="currentPass" placeholder="请输入你的原密码">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label operation-left">重置密码：</label>
+                <div class="operation-left">
+                  <input type="password" maxlength="20" class="form-control" id="newPassowrd" placeholder="请输入你的新密码">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label operation-left">密码确认：</label>
+                <div class="operation-left">
+                  <input type="password" maxlength="20" class="form-control" id="reNewPassowrd" placeholder="请再次输入你的新密码">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label"></label>
+                <div class="operation-left">
+                  <a class="btn-wrap" id="btnPassword">确认</a>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <!-- updatePassword-form结束 -->
+        </div>
+        <!-- table-wrap结束 -->
+      </div>
+    </div>
+    #parse("public/footer.html")
+  </div>
+  <!-- wrapper结束 -->
+  <script src="${resourcesBaseUrl}/vendors/calendar/calendar.js"></script>
+  <script>
+    $(function() {
+        // 日期控件初始化
+        $("#calendar").DateSelector({
+            ctlYearId : 'yearControl',
+            ctlMonthId : 'monthControl',
+            ctlDayId : 'dayControl',
+            defYear : 2017,
+            defMonth : 5,
+            defDay : 20,
+            minYear : 1950,
+            maxYear : 2050,
+        });
+
+        // 获取用户详情
+        $.post(apiUrlConfig().getdetail, null,
+            function(data) {
+                var user = data.data;
+                $('input:radio[name="gender"]').each(function() {
+                    $(this).parent().css('background-position', '0 0');
+                    if ($(this).val() == user.gender) {
+                        $(this).attr('checked', true);
+                        $(this).parent().css('background-position', '0 100%');
+                    }
+                });
+                $('#wxAccount').val(user.data.wepayAccount);
+                $('#wepayUsername').val(user.data.wepayUsername);
+                $('#alipayAccount').val(user.data.alipayAccount);
+                $('#alipayUsername').val(user.data.alipayUsername);
+                $('#phoneNo').val(user.phoneNo);
+                $('#email').val(user.data.email);
+                $('#introduction').val(user.data.introduction);
+                if (user.avatar) {
+                  $('#userImage').attr('src', user.avatar);
+                }
+                var birthday = user.data.birthday;
+                if (birthday) {
+                  $('#yearControl').val(birthday.substring(0,4));
+                  $('#monthControl').val(Number(birthday.substring(4,6)));
+                  $('#dayControl').val(Number(birthday.substring(6,8)));
+                }
+                debugInfo(data);
+            }, function(e) {
+                layer_server_err();
+                debugInfo(e);
+            });
+
+        new flashUpload().startUpload('IMAGE_TYPE', 'userPhotoPicker',function(data){
+          $('#userImage').attr('src','http://' + data.data.bucketHost + '/' + data.data.fileKey);
+        }, function(data) {
+          layer_server_err();
+          debugInfo(data);
+        }, function(data){
+          $('#userPhotoPicker').parent().find('.formtips').remove();
+          switch (data) {
+          // 超过上传文件限制
+          case 'Q_EXCEED_SIZE_LIMIT': {
+            var errorMsg = '头像不能大于2M';
+            $('#userPhotoPicker').parent().append('<span class="formtips onError">'
+                + errorMsg + '</span>');
+            break;
+          };
+          // 选择文件类型不满足
+          case 'Q_TYPE_DENIED': {
+            var errorMsg = '不支持的文件格式';
+            $('#userPhotoPicker').parent().append('<span class="formtips onError">'
+                            + errorMsg + '</span>');
+            break;
+          };
+          default: {
+            $('#userPhotoPicker').parent().append('<div id="flash-prompt">您尚未安装flash player或版本过低，<br><a class="log-xsend" href="https://get.adobe.com/cn/flashplayer/?no_redirect" target="_blank">点击此处</a>下载安装最新版本flash player</div>');
+            break;
+          }
+          }
+        }, function() {
+          $('#userPhotoPicker').parent().find('.formtips').remove();
+        });
+
+        // 保存用户头像
+        $('#saveImage').click(function() {
+            var data = {
+                'avatar' : $('#userImage').attr('src')
+            };
+            $.post(apiUrlConfig().updateavatar, data,
+                function(data) {
+                    layer.msg('修改用户头像成功', {
+                      time: 2000,
+                      skin: 'layui-layer-alarm',
+                      icon: 1,
+                    });
+                    setTimeout(function() {
+                      window.location.href = '/user/personal';
+                    }, 2000);
+                    debugInfo(data);
+                }, function(err) {
+                    layer_server_err();
+                    debugInfo(err);
+                });
+        });
+    });
+  </script>
+</body>
+</html>

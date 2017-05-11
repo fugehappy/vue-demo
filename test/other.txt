@@ -76,4 +76,101 @@ npm install element-ui@1.2.8
 前边的^表示主版本号不变，～表示主版本号和次版本号都不变
 所以这个项目被使用到，npm install的时候就会下载element-ui包，面对^的时候会'尽可能新的且能够保持兼容性的版本
 
+facebookincubator/create-react-app
+
+https://ant.design/index-cn
+
+gulp-mock
+
+https://github.com/sosout/react-antd
+
+
+demo
+https://github.com/kenberkeley/vue-demo
+https://github.com/kenberkeley/react-demo
+
+兼容性
+https://segmentfault.com/a/1190000005794242#articleHeader9
+
+
+这两个
+https://github.com/zuiidea/antd-admin
+https://github.com/sosout/react-antd
+
+
+拷贝数组时使用slice
+var items = [1,2,3,4];
+var itemsCopy = items.slice();
+console.log(itemsCopy)
+itemsCopy[0] = 5;
+console.log(itemsCopy) // [5,2,3,4]
+console.log(items) // [1,2,3,4]
+
+
+使用slice将类数组的对象转成数组
+function trigger() {
+  var args = [].slice.apply(arguments);
+}
+
+parseInt(inputValue, 10);
+
+利用promise的deferred对象解决延迟注册问题。
+var dtd = $.Deferred(); // 新建一个deferred对象
+var wait = function(dtd){
+　　　 var tasks = function(){
+　　　　　　alert("执行完毕！");
+　　　　　　dtd.resolve(); // 改变deferred对象的执行状态
+    };
+　　　　setTimeout(tasks,5000);
+　　　　return dtd;
+};
+
+基础类型， 相当于传值：string,number,boolean,null,undefined
+复杂类型， 相当于引用：object,array,function
+
+注释
+// FIXME
+// TODO
+
+ECMAScript 5兼容性
+尽量采用ES5方法，特别数组map、filter、forEach方法简化日常开发。在老式IE浏览器中引入ES5-shim。或者也可以考虑引入underscore、lodash 常用辅助库. 
+
+js规范
+http://www.cnblogs.com/whitewolf/p/4491447.html
+
+
+cross-env
+
+react小书
+https://github.com/huzidaha/react-naive-book
+
+React.js 是一个帮助你构建页面 UI 的库
+React 的组件就相当于 MVC 里面的 View
+组件化-可以复用
+props组件的配置参数，写在组件的标签上
+
+编译 Babel
+状态管理 Redux
+单页面应用 React-router
+
+JSX 就是 JavaScript 里面的对象
+组件树-由多个组件组成
+this.setState（对象或函数）
+JSX 的 {} 内可以嵌入任何表达式，{{}} 就是在 {} 内部用对象字面量返回一个对象而已
+默认配置 static defaultProps
+setState 会导致组件的重新渲染。
+（） => {}
+
+以前一个组件是通过继承 Component 来构建，一个子类就是一个组件。而用函数式的组件编写方式是一个函数就是一个组件
+函数式组件就是一种只能接受 props 和提供 render 方法的类组件。
+for (let user of users) {}
+users.map((user) => {return (<div>{user.name}</div>)})
+ref属性可获取已经挂载的元素的DOM节点
+props.children
+PropTypes 和组件参数验证
+
+
+https://github.com/sentsin
+http://layer.layui.com/mobile/
+
 

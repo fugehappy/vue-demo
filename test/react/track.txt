@@ -1,0 +1,27 @@
+SPA单页面应用
+1.mock中req.body是undefined
+删除package中的 "roadhog": "^0.6.0-beta.6"
+并且全局安装 npm i -g roadhog
+2.location.origin在IE低版本中是undefined
+做兼容性处理
+3.browserHistory与hashHistory的使用
+http://blog.csdn.net/hyy1115/article/details/53021807
+http://mirror.am0200.com/#15
+4.未有实现
+在生产环境中，首先搭建一个服务器，把它映射到dist目录
+
+5.vh
+相对于视口的高度。视口被均分为100单位的vh
+100vh就是视口的高度
+IE9以上就支持
+6.flex布局即是弹性布局
+兼容IE10以上
+display: flex; justify-content: space-between; 两栏布局
+7.httprequester的post使用
+URL：填写
+选择方式： post
+content Type：application/json
+Content 填写(注意使用双引号)
+{"username": "admin", "password": "admin"}
+最后一步操作：submit
+

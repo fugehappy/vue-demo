@@ -95,6 +95,16 @@ cd /etc/
 显示地址栏 = Ctrl + L
 打开终端 =  Ctrl + Alt + T
 终端tab = Ctrl + Shift + T
+清	屏：crtl+l
+
+命令行光标移动：
+　　crtl+a	移动到命令行首
+
+　　crtl+e	移动到命令行尾
+
+　　crtl+u 从当前光标所在位置向前清除命令
+
+　　crtl+c 中断操作
 
 
 
@@ -308,6 +318,14 @@ http协议调试代理工具介绍 http://www.cnblogs.com/workmore/p/6101028.htm
 1.HttpRequester
 2.Postman
 3.Fiddler
+
+linxins
+http://www.linxins.com/
+touch 文件
+mkdir 目录
+
+
+
 
 
 

@@ -1,0 +1,3 @@
+1.删除package中的roadhog, 全局安装npm install roadhog@0.6.0
+
+2.window.location.origin兼容性问题
